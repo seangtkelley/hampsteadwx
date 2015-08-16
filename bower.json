@@ -1,0 +1,20 @@
+{
+  "name": "keysmash",
+  "version": "0.0.1",
+  "authors": [
+    "(Sean Kelley <sgtkode01@gmail.com>) (Adam Hayward <achayhard1@gmail.com>) (Bernard Suwirjo <bsuwirjo@gmail.com>)"
+  ],
+  "description": "A community for young developers to build, collaborate, and learn together",
+  "license": "MIT",
+  "homepage": "dev.keysmash.org",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass-official": "~3.3.5"
+  }
+}
