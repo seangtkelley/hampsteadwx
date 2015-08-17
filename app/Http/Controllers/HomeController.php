@@ -58,11 +58,6 @@ class HomeController extends Controller{
             }
         }
 
-        $sitemap->add(\URL::to('/signup/github'), $lastWeek , '1.0', 'daily');
-        $sitemap->add(\URL::to('/signup/google'), $lastWeek , '1.0', 'daily');
-        $sitemap->add(\URL::to('/login/github'), $lastWeek , '1.0', 'daily');
-        $sitemap->add(\URL::to('/login/google'), $lastWeek , '1.0', 'daily');
-
         // Now, output the sitemap:
         return $sitemap->render('xml');
     }
