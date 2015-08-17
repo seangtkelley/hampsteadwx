@@ -10,8 +10,8 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a id="navBrand" class="navbar-brand" href="/" style="position: relative; top: -10px; width: 150px;">
-                    <img alt="NOAA" width="40" height="40" src="{{asset('img/NOAA.gif')}}" style="margin-right:0px; display: inline;" />
-                    <img alt="NWS" width="40" height="40" src="{{asset('img/NWS.png')}}" style="margin-right:0px; display: inline;"  />
+                    <img alt="NOAA" width="40" height="40" src="{{asset('img/NOAA.gif', true)}}" style="margin-right:0px; display: inline;" />
+                    <img alt="NWS" width="40" height="40" src="{{asset('img/NWS.png', true)}}" style="margin-right:0px; display: inline;"  />
                 </a>
             </div>
 
