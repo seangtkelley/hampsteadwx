@@ -24,7 +24,7 @@ $icon-font-path: "/fonts/";
 
 body {
   margin: 0;
-  padding-top: 0px;
+  padding-top: 70px;
   width: 100%;
   height: 100%;
   color: #000000;
@@ -38,10 +38,17 @@ body {
 }
 
 .navElement {
-  height: 55px;
+  //height: 55px;
 }
 
 .frontpageFormElements{
   @include centerer(true, false);
   width: 900px;
 }
+
+.betterRow {
+  margin-left:  0px !important;
+  margin-right: 0px !important;
+}
+
+li {list-style-type: none;}
