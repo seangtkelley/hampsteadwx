@@ -16,7 +16,7 @@ class HomeController extends Controller{
     */
 
     /**
-     * Handle the event.
+     * Show the welcome view and set the locale
      *
      * @param string $locale
      * @return mixed
@@ -29,7 +29,7 @@ class HomeController extends Controller{
     }
 
     /**
-     * Handle the event.
+     * Generate a sitemap based on the routes
      *
      * @return mixed
      */

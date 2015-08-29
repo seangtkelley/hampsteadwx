@@ -1,12 +1,12 @@
 <div id="footer" class="footer">
   <div class="row betterRow">
-    <div class="col-md-1 col-lg-1">
+    <!--<div class="col-md-1 col-lg-1">
 
-    </div>
-    <div class="col-md-10 col-lg-10" style="text-align: center">
+    </div>-->
+    <div class="col-md-12 col-lg-12" style="text-align: center">
       <div class="well">
         <div class="row betterRow">
-          <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+          <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2" style="text-align: center">
             <h4>Observations</h4>
             <ul>
               <li><a href="#">Daily</a></li>
@@ -64,8 +64,8 @@
         </div>
       </div>
     </div>
-    <div class="col-md-1 col-lg-1">
+    <!--<div class="col-md-1 col-lg-1">
 
-    </div>
+    </div>-->
   </div>
 </div>

@@ -33,7 +33,7 @@
                 <li class="dropdown navElement">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Summaries <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="#">Montly</a></li>
+                    <li><a href="{{route('monthlyDefault')}}">Montly</a></li>
                     <li><a href="#">Annual</a></li>
                     <li><a href="#">Snow Season</a></li>
                     <li><a href="#">Sunset Lake: Ice In/Ice Out</a></li>

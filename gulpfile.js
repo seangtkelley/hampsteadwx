@@ -15,25 +15,42 @@ var elixir = require('laravel-elixir');
 elixir.config.sourcemaps = false;
 
 var paths = {
-    'jquery': './bower_components/jquery/',
-    'bootstrap': './bower_components/bootstrap-sass-official/assets/'
+    'jquery'              : './bower_components/jquery/',
+    'bootstrap'           : './bower_components/bootstrap-sass-official/assets/',
+    'select2'             : './bower_components/select2/dist/',
+    'jqueryFileUpload'    : './bower_components/jquery-file-upload/',
+    'jqueryUI'            : './bower_components/jquery-ui/'
 };
 
 elixir(function(mix) {
 	//mix.less('app.less');
 
-    // compile scss files from resources/assets/sass
-	mix.sass("main.scss", 'public/css/', {includePaths: [paths.bootstrap + 'stylesheets/']});
+  // compile scss files from resources/assets/sass
+  mix.sass("main.scss", 'public/css/main.css', {includePaths: [paths.bootstrap + 'stylesheets/']});
 
-    // add more if need be
-    //mix.sass("<filename>.scss", 'public/css/', {includePaths: [paths.bootstrap + 'stylesheets/']});
+  // add more if need be
+  //mix.sass("<filename>.scss", 'public/css/', {includePaths: [paths.bootstrap + 'stylesheets/']});
 
-    // copy over bootstrap fonts
-    mix.copy(paths.bootstrap + 'fonts/bootstrap/**', 'public/fonts');
+  // create the addons css
+  mix.copy([
+    paths.jqueryFileUpload + 'css/jquery.fileupload.css',
+    paths.select2 + 'css/select2.css'
+  ], 'resources/assets/css');
+  mix.styles([
+    'jquery.fileupload.css',
+    'select2.css'
+  ], 'public/css/addons.css');
 
-    // combine bootstrap and jquery scripts into public/js/app.js
-    mix.scripts([
-	    paths.jquery + "dist/jquery.js",
-	    paths.bootstrap + "javascripts/bootstrap.js"
-	], 'public/js/app.js', './');
+  // copy over bootstrap fonts
+  mix.copy(paths.bootstrap + 'fonts/bootstrap/**', 'public/fonts');
+
+  // combine bootstrap and jquery scripts into public/js/app.js
+  mix.scripts([
+    paths.jquery + "dist/jquery.js",
+    paths.jqueryUI + "jquery-ui.js",
+    paths.bootstrap + "javascripts/bootstrap.js",
+    paths.jqueryFileUpload + 'js/jquery.iframe-transport.js',
+    paths.jqueryFileUpload + 'js/jquery.fileupload.js',
+    paths.select2 + 'js/select2.full.js'
+  ], 'public/js/app.js', './');
 });

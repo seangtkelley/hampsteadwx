@@ -21,5 +21,11 @@ Route::get('sitemap', array('uses'=>'HomeController@sitemap','index'=>false));
 /*
  * Welcome Page
  * */
-Route::get('/', array('uses'=>'HomeController@showWelcome','index'=>true));
-Route::get('/home', array('uses'=>'HomeController@showWelcome','index'=>true));
+Route::get('/', ['as' => 'index', 'uses'=>'HomeController@showWelcome','index'=>true]);
+Route::get('/home', ['as' => 'home', 'uses'=>'HomeController@showWelcome','index'=>true]);
+
+/*
+ * Observations
+ * */
+Route::get('/monthlyObs', ['as' => 'monthlyDefault', 'uses'=>'ObsController@showMonthly','index'=>true]);
+Route::get('/monthlyObs/{month}/{year}', ['as' => 'monthlySpecific', 'uses'=>'ObsController@showMonthly','index'=>true]);
