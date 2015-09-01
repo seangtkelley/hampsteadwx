@@ -23,10 +23,10 @@
                 <li class="dropdown navElement">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Observations <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="#">Daily</a></li>
-                    <li><a href="#">Weekly</a></li>
-                    <li><a href="#">Max/Min Temps for Past 7 Days</a></li>
-                    <li><a href="#">Max/Min Temps for Present Month</a></li>
+                    <li><a href="http://www.nws.noaa.gov/view/validProds.php?prod=HYD&amp;node=KGYX" target="_blank">Daily</a></li>
+                    <li><a href="http://www.nohrsc.noaa.gov/interactive/html/graph.html?station=HMPN3" target="_blank">Weekly</a></li>
+                    <li><a href="http://mesonet.agron.iastate.edu/sites/plot.php?prod=0&station=HMPN3&network=NH_COOP" target="_blank">Max/Min Temps for Past 7 Days</a></li>
+                    <li><a href="http://mesonet.agron.iastate.edu/sites/plot.php?prod=1&station=HMPN3&network=NH_COOP" target="_blank">Max/Min Temps for Present Month</a></li>
                   </ul>
                 </li>
 
