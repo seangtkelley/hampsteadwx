@@ -6,7 +6,7 @@
 
 
 @section('content')
-  <div class="container">
+  <div class="container" style="min-height: 500px;">
     <script>
       $(document).ready(function() {
         $(".monthSelect").select2({

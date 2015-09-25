@@ -51,6 +51,13 @@ elixir(function(mix) {
     paths.bootstrap + "javascripts/bootstrap.js",
     paths.jqueryFileUpload + 'js/jquery.iframe-transport.js',
     paths.jqueryFileUpload + 'js/jquery.fileupload.js',
+    paths.jqueryFileUpload + 'js/jquery.fileupload-ui.js',
+    paths.jqueryFileUpload + 'js/jquery.fileupload-jquery-ui.js',
+    paths.jqueryFileUpload + 'js/jquery.fileupload-process.js',
+    paths.jqueryFileUpload + 'js/jquery.fileupload-image.js',
+    paths.jqueryFileUpload + 'js/jquery.fileupload-audio.js',
+    paths.jqueryFileUpload + 'js/jquery.fileupload-video.js',
+    paths.jqueryFileUpload + 'js/jquery.fileupload-validate.js',
     paths.select2 + 'js/select2.full.js'
   ], 'public/js/app.js', './');
 });

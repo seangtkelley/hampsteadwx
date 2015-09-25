@@ -16,16 +16,20 @@
 /*
  * Sitemap
  */
-Route::get('sitemap', array('uses'=>'HomeController@sitemap','index'=>false));
+Route::get('sitemap',                         ['uses'=>'HomeController@sitemap','index'=>false]);
 
 /*
  * Welcome Page
  * */
-Route::get('/', ['as' => 'index', 'uses'=>'HomeController@showWelcome','index'=>true]);
-Route::get('/home', ['as' => 'home', 'uses'=>'HomeController@showWelcome','index'=>true]);
+Route::get('/',                               ['as' => 'index', 'uses'=>'HomeController@showWelcome','index'=>true]);
+Route::get('/home',                           ['as' => 'home', 'uses'=>'HomeController@showWelcome','index'=>true]);
 
 /*
  * Observations
  * */
-Route::get('/monthlyObs', ['as' => 'monthlyDefault', 'uses'=>'ObsController@showMonthly','index'=>true]);
-Route::get('/monthlyObs/{month}/{year}', ['as' => 'monthlySpecific', 'uses'=>'ObsController@showMonthly','index'=>true]);
+Route::get('/monthlySummary',                 ['as' => 'summaries.monthly.home', 'uses'=>'SummaryController@showMonthly','index'=>true]);
+Route::get('/monthlySummary/{month}/{year}',  ['as' => 'summaries.monthly.specific', 'uses'=>'SummaryController@showMonthly','index'=>true]);
+
+Route::get('/submitSummary',                  ['as' => 'summaries.submit', 'uses'=>'SummaryController@showSubmit','index'=>true]);
+Route::post('/submitSummary',                 ['as' => 'summaries.submit', 'uses'=>'SummaryController@calcSummary','index'=>false]);
+Route::post('/submitSummary/HandleFile',      ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);

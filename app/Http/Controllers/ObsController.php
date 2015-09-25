@@ -23,7 +23,7 @@ class ObsController extends Controller{
      * @return mixed
      */
     public function showMonthly(){
-        return view('obs.monthly');
+        return view('summaries.monthly');
     }
 
 }
