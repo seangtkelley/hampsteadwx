@@ -16,20 +16,21 @@
 /*
  * Sitemap
  */
-Route::get('sitemap',                         ['uses'=>'HomeController@sitemap','index'=>false]);
+Route::get('sitemap',                             ['uses'=>'HomeController@sitemap','index'=>false]);
 
 /*
  * Welcome Page
  * */
-Route::get('/',                               ['as' => 'index', 'uses'=>'HomeController@showWelcome','index'=>true]);
-Route::get('/home',                           ['as' => 'home', 'uses'=>'HomeController@showWelcome','index'=>true]);
+Route::get('/',                                   ['as' => 'index', 'uses'=>'HomeController@showWelcome','index'=>true]);
+Route::get('/home',                               ['as' => 'home', 'uses'=>'HomeController@showWelcome','index'=>true]);
 
 /*
  * Observations
  * */
-Route::get('/monthlySummary',                 ['as' => 'summaries.monthly.home', 'uses'=>'SummaryController@showMonthlyHome','index'=>true]);
-Route::get('/monthlySummary/{year}/{month}',  ['as' => 'summaries.monthly.view', 'uses'=>'SummaryController@showMonthlySummary','index'=>true]);
+Route::get('/monthlySummary',                     ['as' => 'summaries.monthly.home', 'uses'=>'SummaryController@showMonthlyHome','index'=>true]);
+Route::get('/monthlySummary/{year}/{month}',      ['as' => 'summaries.monthly.view', 'uses'=>'SummaryController@showMonthlySummary','index'=>true]);
+Route::get('/monthlySummary/raw/{year}/{month}',  ['as' => 'summaries.monthly.raw',  'uses'=>'SummaryController@showRawMonthlySummary','index'=>true]);
 
-Route::get('/submitSummary',                  ['as' => 'summaries.submit', 'uses'=>'SummaryController@showSubmit','index'=>false]);
-Route::post('/submitSummary',                 ['as' => 'summaries.submit', 'uses'=>'SummaryController@calcSummary','index'=>false]);
-Route::post('/submitSummary/HandleFile',      ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);
+Route::get('/submitSummary',                      ['as' => 'summaries.submit', 'uses'=>'SummaryController@showSubmit','index'=>false]);
+Route::post('/submitSummary',                     ['as' => 'summaries.submit', 'uses'=>'SummaryController@calcSummary','index'=>false]);
+Route::post('/submitSummary/HandleFile',          ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);

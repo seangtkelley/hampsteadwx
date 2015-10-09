@@ -662,7 +662,7 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showMonthlyHome(){
-        return view('summaries.monthly');
+        return view('summaries.monthly.view');
     }
 
     /**
@@ -674,7 +674,19 @@ class SummaryController extends Controller{
     public function showMonthlySummary(Request $request, $year, $month){
         $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
 
-        return view('summaries.monthly', ['summary' => $summary]);
+        return view('summaries.monthly.view', ['summary' => $summary]);
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showRawMonthlySummary(Request $request, $year, $month){
+        $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+
+        return view('summaries.monthly.raw', ['summary' => $summary]);
     }
 
 }

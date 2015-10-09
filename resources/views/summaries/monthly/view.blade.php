@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Home')
+@section('title', 'Monthly Summary')
 
 @section('navbar-type', 'fixed-top')
 
