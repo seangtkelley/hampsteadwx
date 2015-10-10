@@ -18,14 +18,14 @@
           allowClear: true
         });
         $('#find').click(function (){
-          window.location = "/monthlySummary/" + $(".yearSelect").val() + "/" + $(".monthSelect").val();
+          window.location = "/summaries/monthly/" + $(".yearSelect").val() + "/" + $(".monthSelect").val();
         });
       });
     </script>
     @if(!isset($summary))
       <div class="row betterRow">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">
-          <select class="monthSelect" multiple="multiple" style="width: 100%">
+          <select class="monthSelect" style="width: 100%">
             <option value="1">January</option>
             <option value="2">February</option>
             <option value="3">March</option>
@@ -41,7 +41,7 @@
           </select>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">
-          <select class="yearSelect" multiple="multiple" style="width: 100%">
+          <select class="yearSelect" style="width: 100%">
             <option value="2011">2011</option>
             <option value="2012">2012</option>
             <option value="2013">2013</option>
