@@ -14,7 +14,7 @@
             @include('layouts.alerts')
         @show
 
-        <div class="container-fluid">
+        <div id="main-content" class="">
             @yield('content')
         </div>
 
