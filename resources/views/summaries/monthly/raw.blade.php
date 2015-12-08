@@ -9,22 +9,22 @@
     }
   </style>
 
+  <script>
+
+  </script>
+
   <div class="" style="min-height: 500px; width: 100%;">
 
     @if(isset($summary))
       <div class="row betterRow">
-        <!--<div class="col-sm-2 col-md-2 col-lg-2" style="min-height: 50px"></div>-->
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h2 style="text-align: center;">
-            NOAA/ National Weather Service <br>
-            Cooperative Climatological Station <br>
-            West Hampstead, NH <br>
-          </h2>
-        </div>
 
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px; text-align: center;"> <h3>{{ date('F', mktime(0, 0, 0, $summary->month, 10)) }}</h3> </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="min-height: 25px"></div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px; text-align: center;"> <h3>{{ $summary->year }}</h3> </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px; text-align: center; padding-top: 20px;"> <h3>{{ date('F', mktime(0, 0, 0, $summary->month, 10)) }}</h3> </div>
+        <h3 class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="min-height: 25px; text-align: center; ">
+          NOAA/ National Weather Service <br>
+          Cooperative Climatological Station <br>
+          West Hampstead, NH <br>
+        </h3>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px; text-align: center; padding-top: 20px;"> <h3>{{ $summary->year }}</h3> </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
 
@@ -67,7 +67,7 @@
         <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="min-height: 20px;"></div>
         <div class="col-xs-3 col-sm-3 col-md-6 col-lg-6" style="min-height: 20px;"> 0 or lower: {{ $summary->min_below0 }} </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px; min-height: 5px; border-top: 1px solid grey;"></div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Precipitation (in.)</h4></div>
 
@@ -144,7 +144,7 @@
         <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2" style="min-height: 20px;"> 5.00" or greater: N/A  </div>
         <div class="col-xs-5 col-sm-6 col-md-6 col-lg-6" style="min-height: 20px;"> 10.00" or greater: N/A  </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 10px; border-top: 1px solid grey;"></div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px; min-height: 10px; border-top: 1px solid grey;"></div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Remarks</h4></div>
 
