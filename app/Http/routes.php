@@ -31,6 +31,10 @@ Route::get('/summaries/monthly',                      ['as' => 'summaries.monthl
 Route::get('/summaries/monthly/{year}/{month}',       ['as' => 'summaries.monthly.view', 'uses'=>'SummaryController@showMonthlySummary','index'=>true]);
 Route::get('/summaries/monthly/raw/{year}/{month}',   ['as' => 'summaries.monthly.raw',  'uses'=>'SummaryController@showRawMonthlySummary','index'=>true]);
 
+Route::get('/summaries/annual',                       ['as' => 'summaries.annual.home', 'uses'=>'SummaryController@showAnnualHome','index'=>true]);
+Route::get('/summaries/annual/{year}',                ['as' => 'summaries.annual.view', 'uses'=>'SummaryController@showAnnualSummary','index'=>true]);
+Route::get('/summaries/annual/raw/{year}',            ['as' => 'summaries.annual.raw',  'uses'=>'SummaryController@showRawAnnualSummary','index'=>true]);
+
 Route::get('/summaries/submit',                       ['as' => 'summaries.submit', 'uses'=>'SummaryController@showSubmit','index'=>false]);
 Route::post('/summaries/submit',                      ['as' => 'summaries.submit', 'uses'=>'SummaryController@calcSummary','index'=>false]);
 Route::post('/summaries/submit/HandleFile',           ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);

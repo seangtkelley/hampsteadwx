@@ -689,4 +689,38 @@ class SummaryController extends Controller{
         return view('summaries.monthly.raw', ['summary' => $summary]);
     }
 
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showAnnualHome(){
+        return view('summaries.annual.view');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showAnnualSummary(Request $request, $year){
+        $summary = \App\AnnualObs::where('year', $year)->first();
+
+        return view('summaries.annual.view', ['summary' => $summary]);
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showRawAnnualSummary(Request $request, $year){
+        $summary = \App\AnnualObs::where('year', $year)->first();
+
+        return view('summaries.annual.raw', ['summary' => $summary]);
+    }
 }
