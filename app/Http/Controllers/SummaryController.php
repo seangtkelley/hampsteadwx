@@ -24,8 +24,8 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
-    public function showSubmit(){
-        return view('summaries.submit');
+    public function showMonthlySubmit(){
+        return view('summaries.monthly.submit');
     }
 
     /**
@@ -34,7 +34,17 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
-    public function calcSummary(){
+    public function showAnnualSubmit(){
+        return view('summaries.annual.submit');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function calcMonthly(){
 
       if(\Input::get('password') == "cfs613"){
         $year  = \Input::get('year');
@@ -641,6 +651,17 @@ class SummaryController extends Controller{
         return redirect()->route('summaries.monthly.submit');
       }
     }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function calcAnnual(){
+
+    }
+
 
     /**
      * Handle the event.
