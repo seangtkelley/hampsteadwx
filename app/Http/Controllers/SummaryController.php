@@ -587,7 +587,7 @@ class SummaryController extends Controller{
               return redirect()->route('summaries.monthly.view', [ 'year' => $year, 'month' => $month ]);
             } else {
               event(new Alert('create', array('type' => 'danger', 'body' => 'Summary Not Successfully Created.')));
-              return redirect()->route('summaries.submit');
+              return redirect()->route('summaries.monthly.submit');
             }
         } else {
             $monthlyObsObject = new \App\MonthlyObs;
@@ -629,16 +629,16 @@ class SummaryController extends Controller{
               return redirect()->route('summaries.monthly.view', [ 'year' => $year, 'month' => $month ]);
             } else {
               event(new Alert('create', array('type' => 'danger', 'body' => 'Summary Not Successfully Created.')));
-              return redirect()->route('summaries.submit');
+              return redirect()->route('summaries.monthly.submit');
             }
           }
         } else {
           event(new Alert('create', array('type' => 'danger', 'body' => 'Invalid File.')));
-          return redirect()->route('summaries.submit');
+          return redirect()->route('summaries.monthly.submit');
         }
       } else {
         event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect Password.')));
-        return redirect()->route('summaries.submit');
+        return redirect()->route('summaries.monthly.submit');
       }
     }
 
