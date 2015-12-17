@@ -6005,6 +6005,9 @@ body {
   font-weight: 100;
   font-family: 'Helvetica', serif; }
 
+#main-content {
+  min-height: 600px; }
+
 #alerts {
   position: fixed;
   top: 58px; }

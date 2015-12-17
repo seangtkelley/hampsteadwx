@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Submit Summary')
+@section('title', 'Submit Monthly Summary')
 
 @section('navbar-type', 'fixed-top')
 
@@ -13,9 +13,9 @@
   <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image-exif.js"></script>
   <script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image-exif-map.js"></script>
   <div class="container">
-    <form action="{{route('summaries.submit')}}" enctype="multipart/form-data" method="POST">
+    <form action="{{route('summaries.monthly.submit')}}" enctype="multipart/form-data" method="POST">
       <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-      <h2>Submit Summary</h2>
+      <h2>Submit Monthly Summary</h2>
       <h4>Summary must be in .CSV format.</h4>
 
       <script>
