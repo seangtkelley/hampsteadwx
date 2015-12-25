@@ -64,7 +64,7 @@
                   </ul>
                 </li>
 
-                <li><a href="#">Info</a></li>
+                <li><a href="{{route('info')}}">Info</a></li>
 
                 <li class="dropdown navElement">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Photos <span class="caret"></span></a>

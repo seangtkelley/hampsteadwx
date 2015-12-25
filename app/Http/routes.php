@@ -23,6 +23,7 @@ Route::get('sitemap',                                 ['uses'=>'HomeController@s
  * */
 Route::get('/',                                       ['as' => 'index', 'uses'=>'HomeController@showWelcome','index'=>true]);
 Route::get('/home',                                   ['as' => 'home', 'uses'=>'HomeController@showWelcome','index'=>true]);
+Route::get('/info',                                   ['as' => 'info', 'uses'=>'HomeController@showInfo','index'=>true]);
 
 /*
  * Observations

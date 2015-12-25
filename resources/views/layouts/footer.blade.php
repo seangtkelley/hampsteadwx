@@ -3,7 +3,7 @@
     <!--<div class="col-md-1 col-lg-1">
 
     </div>-->
-    <div class="col-md-12 col-lg-12" style="text-align: center">
+    <div class="col-md-12 col-lg-12" style="text-align: center; padding-left: 0px; padding-right: 0px">
       <div class="well">
         <div class="row betterRow">
           <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2" style="text-align: center">
