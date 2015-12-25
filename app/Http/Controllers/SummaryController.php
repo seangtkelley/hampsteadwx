@@ -24,8 +24,8 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
-    public function showSubmit(){
-        return view('summaries.submit');
+    public function showMonthlySubmit(){
+        return view('summaries.monthly.submit');
     }
 
     /**
@@ -34,7 +34,17 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
-    public function calcSummary(){
+    public function showAnnualSubmit(){
+        return view('summaries.annual.submit');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function calcMonthly(){
 
       if(\Input::get('password') == "cfs613"){
         $year  = \Input::get('year');
@@ -587,7 +597,7 @@ class SummaryController extends Controller{
               return redirect()->route('summaries.monthly.view', [ 'year' => $year, 'month' => $month ]);
             } else {
               event(new Alert('create', array('type' => 'danger', 'body' => 'Summary Not Successfully Created.')));
-              return redirect()->route('summaries.submit');
+              return redirect()->route('summaries.monthly.submit');
             }
         } else {
             $monthlyObsObject = new \App\MonthlyObs;
@@ -629,18 +639,29 @@ class SummaryController extends Controller{
               return redirect()->route('summaries.monthly.view', [ 'year' => $year, 'month' => $month ]);
             } else {
               event(new Alert('create', array('type' => 'danger', 'body' => 'Summary Not Successfully Created.')));
-              return redirect()->route('summaries.submit');
+              return redirect()->route('summaries.monthly.submit');
             }
           }
         } else {
           event(new Alert('create', array('type' => 'danger', 'body' => 'Invalid File.')));
-          return redirect()->route('summaries.submit');
+          return redirect()->route('summaries.monthly.submit');
         }
       } else {
         event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect Password.')));
-        return redirect()->route('summaries.submit');
+        return redirect()->route('summaries.monthly.submit');
       }
     }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function calcAnnual(){
+
+    }
+
 
     /**
      * Handle the event.
@@ -689,4 +710,38 @@ class SummaryController extends Controller{
         return view('summaries.monthly.raw', ['summary' => $summary]);
     }
 
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showAnnualHome(){
+        return view('summaries.annual.view');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showAnnualSummary(Request $request, $year){
+        $summary = \App\AnnualObs::where('year', $year)->first();
+
+        return view('summaries.annual.view', ['summary' => $summary]);
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showRawAnnualSummary(Request $request, $year){
+        $summary = \App\AnnualObs::where('year', $year)->first();
+
+        return view('summaries.annual.raw', ['summary' => $summary]);
+    }
 }
