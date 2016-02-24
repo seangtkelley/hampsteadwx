@@ -1,6 +1,6 @@
 @extends('layouts.raw')
 
-@section('title', 'Monthly Summary')
+@section('title', date('F', mktime(0, 0, 0, $summary->month, 10)) . ' - Monthly Summary')
 
 @section('content')
   <style>
@@ -94,11 +94,11 @@
           }
         ?> </div>
 
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Precip to date: {{ $precip_toDate }}</div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
         <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;">Greatest Day: {{ $summary->grts_precip }}</div>
         <div class="col-xs-7 col-sm-8 col-md-9 col-lg-9" style="min-height: 20px;">Dates: {{ $summary->grts_precip_dates }}</div>
+
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Precip to date: {{ $precip_toDate }}</div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px;"></div>
 
