@@ -710,7 +710,7 @@ class SummaryController extends Controller{
       $AVG_PRECIP = $avg_precip_array[$month-1];
       $AVG_SNFL = $avg_snfl_array[$month-1];
 
-      return view('summaries.monthly.view', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL]);
+      return view('summaries.monthly.view', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => 'N/A']);
     }
 
     /**

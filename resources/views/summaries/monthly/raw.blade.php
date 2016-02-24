@@ -49,7 +49,15 @@
         <div class="col-xs-1 col-sm-2 col-md-3 col-lg-3" style="min-height: 20px;"></div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Depart. from Normal: {{ $summary->depart_temp_avg }}</div>
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Depart. from Normal: <?php
+          $depart_temp_avg = $summary->avg - $AVG_TEMP;
+          $depart_temp_avg = round($depart_temp_avg, 1);
+          if($depart_temp_avg > 0){
+              echo "+" . $summary->depart_temp_avg;
+          } else {
+              echo $summary->depart_temp_avg;
+          }
+        ?></div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px;"></div>
 
@@ -77,9 +85,16 @@
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Mean Total: {{ $AVG_PRECIP }} </div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Depart. from Normal: N/A </div>
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Depart. from Normal: <?php
+          $depart_precip_avg = $summary->total_precip - $AVG_PRECIP;
+          if($depart_precip_avg > 0){
+              echo "+" . $depart_precip_avg;
+          } else {
+              echo $depart_precip_avg;
+          }
+        ?> </div>
 
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Precip to date: N/A</div>
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Precip to date: {{ $precip_toDate }}</div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
         <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;">Greatest Day: {{ $summary->grts_precip }}</div>
@@ -106,7 +121,14 @@
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Mean Total: {{ $AVG_SNFL }} </div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Departure from Normal: N/A </div>
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Departure from Normal: <?php
+          $depart_snfl_avg = $summary->total_SF - $AVG_SNFL;
+          if($depart_snfl_avg > 0){
+              echo "+" . $depart_snfl_avg;
+          } else {
+              echo $depart_snfl_avg;
+          }
+        ?> </div>
 
         <div class="col-xs-5 col-sm-4 col-md-3 col-lg-3" style="min-height: 20px;">Greatest Snowfall: {{ $summary->grts_sf }}</div>
         <div class="col-xs-6 col-sm-7 col-md-8 col-lg-8" style="min-height: 20px;">Dates: {{ $summary->grts_sf_dates }}</div>
