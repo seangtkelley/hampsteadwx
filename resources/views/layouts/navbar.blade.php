@@ -53,16 +53,7 @@
                   </ul>
                 </li>
 
-                <li class="dropdown navElement">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Normals <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">All Normals</a></li>
-                    <li><a href="#">Air Temperature</a></li>
-                    <li><a href="#">Precipitation</a></li>
-                    <li><a href="#">Heating/Cooling Degree Days</a></li>
-                    <li><a href="#">Snowfall</a></li>
-                  </ul>
-                </li>
+                <li><a href="{{route('normals')}}">Normals</a></li>
 
                 <li><a href="{{route('info')}}">Info</a></li>
 

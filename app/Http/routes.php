@@ -19,11 +19,12 @@
 Route::get('sitemap',                                 ['uses'=>'HomeController@sitemap','index'=>false]);
 
 /*
- * Welcome Page
+ * Basic Pages
  * */
 Route::get('/',                                       ['as' => 'index', 'uses'=>'HomeController@showWelcome','index'=>true]);
 Route::get('/home',                                   ['as' => 'home', 'uses'=>'HomeController@showWelcome','index'=>true]);
 Route::get('/info',                                   ['as' => 'info', 'uses'=>'HomeController@showInfo','index'=>true]);
+Route::get('/normals',                                ['as' => 'normals', 'uses'=>'HomeController@showNormals','index'=>true]);
 
 /*
  * Observations

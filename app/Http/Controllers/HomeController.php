@@ -39,6 +39,16 @@ class HomeController extends Controller{
     }
 
     /**
+     * Show the welcome view and set the locale
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showNormals($locale=null){
+        return view('normals');
+    }
+
+    /**
      * Generate a sitemap based on the routes
      *
      * @return mixed
