@@ -118,7 +118,16 @@ class SummaryController extends Controller{
           $grtr100 = 0;
           $precip_grtrTrace = 0;
           $SF_grtrTrace = 0;
+          $SF_grtr50 = 0;
+          $SF_grtr100 = 0;
+          $SF_grtr500 = 0;
+          $SF_grtr1000 = 0;
           $SD_grtrTrace = 0;
+          $SD_grtr50 = 0;
+          $SD_grtr100 = 0;
+          $SD_grtr500 = 0;
+          $SD_grtr1000 = 0;
+
           // loop through 2D $obs_array, making it into 1D $obs array
           // each loop is another row(day) in the csv file
           foreach($obs_array as $ob){
@@ -171,7 +180,15 @@ class SummaryController extends Controller{
               global $grtr100;
               global $precip_grtrTrace;
               global $SF_grtrTrace;
+              global $SF_grtr50;
+              global $SF_grtr100;
+              global $SF_grtr500;
+              global $SF_grtr1000;
               global $SD_grtrTrace;
+              global $SD_grtr50;
+              global $SD_grtr100;
+              global $SD_grtr500;
+              global $SD_grtr1000;
               // add that days max and min into the total of all the maxes and mins
               $max_total += $max;
               $min_total += $min;
@@ -285,12 +302,6 @@ class SummaryController extends Controller{
               if($ob[4] == "T" OR $precip >= 0.01){
                   $precip_grtrTrace++;
               }
-              if($ob[5] == "T" OR $SF >= 0.1){
-                  $SF_grtrTrace++;
-              }
-              if($ob[6] == "T" OR $SD >= 1){
-                  $SD_grtrTrace++;
-              }
               if($precip >= 0.01){
                   $grtr01++;
               }
@@ -302,6 +313,36 @@ class SummaryController extends Controller{
               }
               if($precip >= 1.00){
                   $grtr100++;
+              }
+              if($ob[5] == "T" OR $SF >= 0.1){
+                  $SF_grtrTrace++;
+              }
+              if($SF >= 0.5){
+                  $SF_grtr50++;
+              }
+              if($SF >= 1.0){
+                  $SF_grtr100++;
+              }
+              if($SF >= 5.0){
+                  $SF_grtr500++;
+              }
+              if($SF >= 10.0){
+                  $SF_grtr1000++;
+              }
+              if($ob[6] == "T" OR $SD >= 1){
+                  $SD_grtrTrace++;
+              }
+              if($SD >= 0.5){
+                  $SD_grtr50++;
+              }
+              if($SD >= 1.0){
+                  $SD_grtr100++;
+              }
+              if($SD >= 5.0){
+                  $SD_grtr500++;
+              }
+              if($SD >= 10.0){
+                  $SD_grtr1000++;
               }
               if($count == 0){
                   // set default values for greatest precip, snowfall and snowdepth temps
@@ -557,7 +598,7 @@ class SummaryController extends Controller{
           //write all monthly values to annuals database table
           if(\App\MonthlyObs::where('month', $month)->where('year', $year)->count() > 0){
             $monthlyObsObject = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
-            $monthlyObsObject->month = $$month;
+            $monthlyObsObject->month = $month;
             $monthlyObsObject->year = intval($year);
             $monthlyObsObject->max_avg = $max_avg;
             $monthlyObsObject->min_avg = $min_avg;
@@ -581,16 +622,22 @@ class SummaryController extends Controller{
             $monthlyObsObject->grts_sf_dates = $SF_dates_str;
             $monthlyObsObject->grts_sd = $grts_SD;
             $monthlyObsObject->grts_sd_dates = $SD_dates_str;
+            $monthlyObsObject->precip_grtrtrace = ($precip_grtrTrace == null ? 0 : $precip_grtrTrace);
             $monthlyObsObject->grtr01 = ($grtr01 == null ? 0 : $grtr01);
             $monthlyObsObject->grtr10 = ($grtr10 == null ? 0 : $grtr10);
             $monthlyObsObject->grtr50 = ($grtr50 == null ? 0 : $grtr50);
             $monthlyObsObject->grtr100 = ($grtr100 == null ? 0 : $grtr100);
-            $monthlyObsObject->precip_grtrtrace = ($precip_grtrTrace == null ? 0 : $precip_grtrTrace);
             $monthlyObsObject->sf_grtrtrace = ($SF_grtrTrace == null ? 0 : $SF_grtrTrace);
+            $monthlyObsObject->SF_grtr50 = ($SF_grtr50 == null ? 0 : $SF_grtr50);
+            $monthlyObsObject->SF_grtr100 = ($SF_grtr100 == null ? 0 : $SF_grtr100);
+            $monthlyObsObject->SF_grtr500 = ($SF_grtr500 == null ? 0 : $SF_grtr500);
+            $monthlyObsObject->SF_grtr1000 = ($SF_grtr1000 == null ? 0 : $SF_grtr1000);
             $monthlyObsObject->sd_grtrtrace = ($SD_grtrTrace == null ? 0 : $SD_grtrTrace);
-            if(($monthlyObsObject->remarks == "<br />" || $monthlyObsObject->remarks == "") || $remarks != "<br />"){
-                $monthlyObsObject->remarks = $remarks;
-            }
+            $monthlyObsObject->SD_grtr50 = ($SD_grtr50 == null ? 0 : $SD_grtr50);
+            $monthlyObsObject->SD_grtr100 = ($SD_grtr100 == null ? 0 : $SD_grtr100);
+            $monthlyObsObject->SD_grtr500 = ($SD_grtr500 == null ? 0 : $SD_grtr500);
+            $monthlyObsObject->SD_grtr1000 = ($SD_grtr1000 == null ? 0 : $SD_grtr1000);
+            $monthlyObsObject->remarks = $monthlyObsObject->remarks;
             $monthlyObsObject->csv_file = $fullpath;
             if($monthlyObsObject->save()){
               event(new Alert('create', array('type' => 'success', 'body' => 'Summary Successfully Created.')));
@@ -625,13 +672,21 @@ class SummaryController extends Controller{
             $monthlyObsObject->grts_sf_dates = $SF_dates_str;
             $monthlyObsObject->grts_sd = $grts_SD;
             $monthlyObsObject->grts_sd_dates = $SD_dates_str;
+            $monthlyObsObject->precip_grtrtrace = ($precip_grtrTrace == null ? 0 : $precip_grtrTrace);
             $monthlyObsObject->grtr01 = ($grtr01 == null ? 0 : $grtr01);
             $monthlyObsObject->grtr10 = ($grtr10 == null ? 0 : $grtr10);
             $monthlyObsObject->grtr50 = ($grtr50 == null ? 0 : $grtr50);
             $monthlyObsObject->grtr100 = ($grtr100 == null ? 0 : $grtr100);
-            $monthlyObsObject->precip_grtrtrace = ($precip_grtrTrace == null ? 0 : $precip_grtrTrace);
             $monthlyObsObject->sf_grtrtrace = ($SF_grtrTrace == null ? 0 : $SF_grtrTrace);
+            $monthlyObsObject->SF_grtr50 = ($SF_grtr50 == null ? 0 : $SF_grtr50);
+            $monthlyObsObject->SF_grtr100 = ($SF_grtr100 == null ? 0 : $SF_grtr100);
+            $monthlyObsObject->SF_grtr500 = ($SF_grtr500 == null ? 0 : $SF_grtr500);
+            $monthlyObsObject->SF_grtr1000 = ($SF_grtr1000 == null ? 0 : $SF_grtr1000);
             $monthlyObsObject->sd_grtrtrace = ($SD_grtrTrace == null ? 0 : $SD_grtrTrace);
+            $monthlyObsObject->SD_grtr50 = ($SD_grtr50 == null ? 0 : $SD_grtr50);
+            $monthlyObsObject->SD_grtr100 = ($SD_grtr100 == null ? 0 : $SD_grtr100);
+            $monthlyObsObject->SD_grtr500 = ($SD_grtr500 == null ? 0 : $SD_grtr500);
+            $monthlyObsObject->SD_grtr1000 = ($SD_grtr1000 == null ? 0 : $SD_grtr1000);
             $monthlyObsObject->remarks = "";
             $monthlyObsObject->csv_file = $fullpath;
             if($monthlyObsObject->save()){

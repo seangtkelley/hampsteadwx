@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSunsetLakeTable extends Migration
+class CreateSunsetlakeIceiniceoutTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class CreateSunsetLakeTable extends Migration
      */
     public function up()
     {
-      if (!Schema::hasTable('sunsetlake')) {
-        Schema::create('sunsetlake', function (Blueprint $table) {
+      if (!Schema::hasTable('sunsetlake_iceiniceout')) {
+        Schema::create('sunsetlake_iceiniceout', function (Blueprint $table) {
             $table->increments('id');
             $table->string('season');
             $table->string('icein');
@@ -31,6 +31,6 @@ class CreateSunsetLakeTable extends Migration
      */
     public function down()
     {
-      Schema::drop('sunsetlake');
+        Schema::drop('sunsetlake_iceiniceout');
     }
 }

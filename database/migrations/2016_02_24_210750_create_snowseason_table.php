@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSnowSeasonTable extends Migration
+class CreateSnowseasonTable extends Migration
 {
     /**
      * Run the migrations.
@@ -36,6 +36,6 @@ class CreateSnowSeasonTable extends Migration
      */
     public function down()
     {
-      Schema::drop('snowseason');
+        Schema::drop('snowseason');
     }
 }

@@ -146,12 +146,12 @@
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" style="min-height: 20px;"> <b>Snowfall: </b></div>
 
         <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> A trace or more: {{ $summary->sf_grtrtrace }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.50" or greater: N/A </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 1.00" or greater: N/A </div>
+        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.50" or greater: {{ $summary->SF_grtr50 }} </div>
+        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 1.00" or greater: {{ $summary->SF_grtr100 }} </div>
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 5.00" or greater: N/A  </div>
-        <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8" style="min-height: 20px;"> 10.00" or greater: N/A  </div>
+        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 5.00" or greater: {{ $summary->SF_grtr500 }}  </div>
+        <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8" style="min-height: 20px;"> 10.00" or greater: {{ $summary->SF_grtr1000 }}  </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 25px"></div>
 
@@ -159,12 +159,12 @@
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" style="min-height: 20px;"> <b>Snow Depth: </b></div>
 
         <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> A trace or more: {{ $summary->sd_grtrtrace }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.50" or greater: N/A </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 1.00" or greater: N/A </div>
+        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.50" or greater: {{ $summary->SD_grtr50 }} </div>
+        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 1.00" or greater: {{ $summary->SD_grtr100 }} </div>
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 5.00" or greater: N/A  </div>
-        <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6" style="min-height: 20px;"> 10.00" or greater: N/A  </div>
+        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 5.00" or greater: {{ $summary->SD_grtr500 }}  </div>
+        <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6" style="min-height: 20px;"> 10.00" or greater: {{ $summary->SD_grtr1000 }}  </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px; min-height: 10px; border-top: 1px solid grey;"></div>
 

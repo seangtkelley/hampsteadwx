@@ -174,6 +174,7 @@
             <option value="2013">2013</option>
             <option value="2014">2014</option>
             <option value="2015">2015</option>
+            <option value="2016">2016</option>
           </select>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 30px;"></div>
