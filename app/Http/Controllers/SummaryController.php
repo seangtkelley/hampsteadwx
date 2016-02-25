@@ -827,9 +827,27 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showAnnualSummary(Request $request, $year){
-        $summary = \App\AnnualObs::where('year', $year)->first();
+      //open 30 year normal file and if it cant be opened; die
+      $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
+      if(!$yr_avg_handle){
+          die("Couldn't read monthly climate normals file.");
+      }
 
-        return view('summaries.annual.view', ['summary' => $summary]);
+      // get 30 year average temp, precip, and snowfall
+      $avg_temp_array = fgetcsv($yr_avg_handle);
+      $avg_precip_array = fgetcsv($yr_avg_handle);
+      $avg_snfl_array = fgetcsv($yr_avg_handle);
+      $AVG_TEMP = $avg_temp_array[12];
+      $AVG_PRECIP = $avg_precip_array[12];
+      $AVG_SNFL = $avg_snfl_array[12];
+
+      //create object array of all the year's observations
+      $obs_array = \App\MonthlyObs::where('year', $year)->get();
+      if(empty($obs_array) OR $obs_array == NULL){
+           die("Observation doesn't exist.");
+      }
+
+      return view('summaries.annual.view', ['year' => $year, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'obs_array' => $obs_array]);
     }
 
     /**
@@ -839,8 +857,26 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showRawAnnualSummary(Request $request, $year){
-        $summary = \App\AnnualObs::where('year', $year)->first();
+      //open 30 year normal file and if it cant be opened; die
+      $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
+      if(!$yr_avg_handle){
+          die("Couldn't read monthly climate normals file.");
+      }
 
-        return view('summaries.annual.raw', ['summary' => $summary]);
+      // get 30 year average temp, precip, and snowfall
+      $avg_temp_array = fgetcsv($yr_avg_handle);
+      $avg_precip_array = fgetcsv($yr_avg_handle);
+      $avg_snfl_array = fgetcsv($yr_avg_handle);
+      $AVG_TEMP = $avg_temp_array[12];
+      $AVG_PRECIP = $avg_precip_array[12];
+      $AVG_SNFL = $avg_snfl_array[12];
+
+      //create object array of all the year's observations
+      $obs_array = \App\MonthlyObs::where('year', $year)->get();
+      if(empty($obs_array) OR $obs_array == NULL){
+           die("Observation doesn't exist.");
+      }
+
+      return view('summaries.annual.raw', ['year' => $year, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'obs_array' => $obs_array]);
     }
 }
