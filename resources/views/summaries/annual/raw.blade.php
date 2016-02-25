@@ -281,7 +281,7 @@
           Cooperative Climatological Station <br>
           West Hampstead, NH <br>
         </h3>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px; text-align: center; padding-top: 20px;"> <h3>John G. W. Kelley</h3> </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px; text-align: center; padding-top: 20px;"> <h3>John Kelley</h3> </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
 
