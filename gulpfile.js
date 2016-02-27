@@ -19,7 +19,8 @@ var paths = {
     'bootstrap'           : './bower_components/bootstrap-sass-official/assets/',
     'select2'             : './bower_components/select2/dist/',
     'jqueryFileUpload'    : './bower_components/jquery-file-upload/',
-    'jqueryUI'            : './bower_components/jquery-ui/'
+    'jqueryUI'            : './bower_components/jquery-ui/',
+    'chartjs'             : './bower_components/Chart.js/'
 };
 
 elixir(function(mix) {
@@ -58,6 +59,7 @@ elixir(function(mix) {
     paths.jqueryFileUpload + 'js/jquery.fileupload-audio.js',
     paths.jqueryFileUpload + 'js/jquery.fileupload-video.js',
     paths.jqueryFileUpload + 'js/jquery.fileupload-validate.js',
-    paths.select2 + 'js/select2.full.js'
+    paths.select2 + 'js/select2.full.js',
+    paths.chartjs + 'Chart.js'
   ], 'public/js/app.js', './');
 });
