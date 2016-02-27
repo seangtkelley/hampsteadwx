@@ -1,29 +1,209 @@
 @extends('layouts.master')
 
-@section('title', 'Monthly Summary')
+@section('title', date('F', mktime(0, 0, 0, $summary->month, 10)) . 'Monthly Summary')
 
 @section('navbar-type', 'fixed-top')
 
 
 @section('content')
   <div class="container" style="min-height: 650px;">
+    @if(!isset($summary))
+      <script>
+        $(document).ready(function() {
+          $(".monthSelect").select2({
+            placeholder: "Select a Month",
+            allowClear: true
+          });
+          $('.monthSelect').val('').trigger('change');
+          $(".yearSelect").select2({
+            placeholder: "Select a Year",
+            allowClear: true
+          });
+          $('.yearSelect').val('').trigger('change');
+          $('#find').click(function (){
+            window.location = "/summaries/monthly/" + $(".yearSelect").val() + "/" + $(".monthSelect").val();
+          });
+        });
+      </script>
+    @endif
+    @if(isset($summary))
     <script>
       $(document).ready(function() {
-        $(".monthSelect").select2({
-          placeholder: "Select a Month",
-          allowClear: true
-        });
-        $('.monthSelect').val('').trigger('change');
-        $(".yearSelect").select2({
-          placeholder: "Select a Year",
-          allowClear: true
-        });
-        $('.yearSelect').val('').trigger('change');
-        $('#find').click(function (){
-          window.location = "/summaries/monthly/" + $(".yearSelect").val() + "/" + $(".monthSelect").val();
-        });
+        var options = {
+            ///Boolean - Whether grid lines are shown across the chart
+            scaleShowGridLines : true,
+            //String - Colour of the grid lines
+            scaleGridLineColor : "rgba(0,0,0,.05)",
+            //Number - Width of the grid lines
+            scaleGridLineWidth : 1,
+            //Boolean - Whether to show horizontal lines (except X axis)
+            scaleShowHorizontalLines: true,
+            //Boolean - Whether to show vertical lines (except Y axis)
+            scaleShowVerticalLines: true,
+            //Boolean - Whether the line is curved between points
+            bezierCurve : false,
+            //Number - Tension of the bezier curve between points
+            bezierCurveTension : 0.4,
+            //Boolean - Whether to show a dot for each point
+            pointDot : true,
+            //Number - Radius of each point dot in pixels
+            pointDotRadius : 4,
+            //Number - Pixel width of point dot stroke
+            pointDotStrokeWidth : 1,
+            //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+            pointHitDetectionRadius : 20,
+            //Boolean - Whether to show a stroke for datasets
+            datasetStroke : true,
+            //Number - Pixel width of dataset stroke
+            datasetStrokeWidth : 2,
+            //Boolean - Whether to fill the dataset with a colour
+            datasetFill : true,
+            //String - A legend template
+            legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+        };
+
+        /**
+          Maximum Temperature Line Chart
+        */
+        var maxtemp_data = {
+          labels: [<?php
+            $datastr = "";
+            $i = 1;
+            foreach($dailyObs as $ob){
+              if(isset($dailyObs[$i])){
+                  $datastr .= $i . ",";
+              } else {
+                  $datastr .= $i;
+              }
+              $i++;
+            }
+            echo $datastr;
+          ?>],
+          datasets: [
+              {
+                  label: "Max",
+                  fillColor: "rgba(220,220,220,0.2)",
+                  strokeColor: "rgba(220,220,220,1)",
+                  pointColor: "rgba(220,220,220,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
+                  data: [<?php
+                    $datastr = "";
+                    $i = 0;
+                    foreach($dailyObs as $ob){
+                      if(isset($dailyObs[$i+1])){
+                          $datastr .= $ob->max . ",";
+                      } else {
+                          $datastr .= $ob->max;
+                      }
+                      $i++;
+                    }
+                    echo $datastr;
+                  ?>]
+              },
+              {
+                  label: "Max Avg",
+                  fillColor: "rgba(151,187,205,0.2)",
+                  strokeColor: "rgba(151,187,205,1)",
+                  pointColor: "rgba(151,187,205,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: [<?php
+                    $datastr = "";
+                    $i = 0;
+                    foreach($dailyObs as $ob){
+                      if(isset($dailyObs[$i+1])){
+                          $datastr .= $summary->max_avg . ",";
+                      } else {
+                          $datastr .= $summary->max_avg;
+                      }
+                      $i++;
+                    }
+                    echo $datastr;
+                  ?>]
+              }
+          ]
+        };
+
+        // Get context with jQuery - using jQuery's .get() method.
+        var maxtemp_ctx = $("#maxtemp").get(0).getContext("2d");
+        // This will get the first returned node in the jQuery collection.
+        var maxtempLineChart = new Chart(maxtemp_ctx).Line(maxtemp_data, options);
+
+        /**
+          Minimum Temperature Line Chart
+        */
+        var mintemp_data = {
+          labels: [<?php
+            $datastr = "";
+            $i = 1;
+            foreach($dailyObs as $ob){
+              if(isset($dailyObs[$i])){
+                  $datastr .= $i . ",";
+              } else {
+                  $datastr .= $i;
+              }
+              $i++;
+            }
+            echo $datastr;
+          ?>],
+          datasets: [
+              {
+                  label: "Max",
+                  fillColor: "rgba(220,220,220,0.2)",
+                  strokeColor: "rgba(220,220,220,1)",
+                  pointColor: "rgba(220,220,220,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
+                  data: [<?php
+                    $datastr = "";
+                    $i = 0;
+                    foreach($dailyObs as $ob){
+                      if(isset($dailyObs[$i+1])){
+                          $datastr .= $ob->min . ",";
+                      } else {
+                          $datastr .= $ob->min;
+                      }
+                      $i++;
+                    }
+                    echo $datastr;
+                  ?>]
+              },
+              {
+                  label: "Max Avg",
+                  fillColor: "rgba(151,187,205,0.2)",
+                  strokeColor: "rgba(151,187,205,1)",
+                  pointColor: "rgba(151,187,205,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: [<?php
+                    $datastr = "";
+                    $i = 0;
+                    foreach($dailyObs as $ob){
+                      if(isset($dailyObs[$i+1])){
+                          $datastr .= $summary->min_avg . ",";
+                      } else {
+                          $datastr .= $summary->min_avg;
+                      }
+                      $i++;
+                    }
+                    echo $datastr;
+                  ?>]
+              }
+          ]
+        };
+
+        // Get context with jQuery - using jQuery's .get() method.
+        var mintemp_ctx = $("#mintemp").get(0).getContext("2d");
+        // This will get the first returned node in the jQuery collection.
+        var mintempLineChart = new Chart(mintemp_ctx).Line(mintemp_data, options);
       });
     </script>
+    @endif
     @if(!isset($summary))
       <h2 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #777;">Find Summary</h2>
       <div class="row betterRow">
@@ -50,6 +230,7 @@
             <option value="2013">2013</option>
             <option value="2014">2014</option>
             <option value="2015">2015</option>
+            <option value="2016">2016</option>
           </select>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">
@@ -59,137 +240,28 @@
     @endif
     @if(isset($summary))
       <div class="row betterRow">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px; text-align: center; padding-top: 20px;">
-          <h3>{{ date('F', mktime(0, 0, 0, $summary->month, 10)) }}</h3>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
+          <h1>{{date('F', mktime(0, 0, 0, $summary->month, 10))}} Monthly Summary</h1>
         </div>
-        <h3 class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="min-height: 25px; text-align: center; ">
-          NOAA/ National Weather Service <br>
-          Cooperative Climatological Station <br>
-          West Hampstead, NH <br>
-        </h3>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px; text-align: center; padding-top: 20px;"> <h3>{{ $summary->year }}</h3> </div>
-
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Air Temperature (°F)</h4></div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" style="min-height: 20px;">Average Maximum: {{ $summary->max_avg }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;">Highest: {{ $summary->highest }}</div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;">Dates: {{ $summary->highest_dates }}</div>
-
-        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" style="min-height: 20px;">Average Minimum: {{ $summary->min_avg }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;">Lowest: {{ $summary->lowest }}</div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;">Dates: {{ $summary->lowest_dates }}</div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" style="min-height: 20px;">Average: {{ $summary->avg }}</div>
-        <div class="col-xs-6 col-sm-5 col-md-5 col-lg-5" style="min-height: 20px;">Total Heating Degree Days: {{ $summary->hdd_count }}</div>
-        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-3" style="min-height: 20px;"></div>
-
-        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" style="min-height: 20px;">Mean Temp: N/A</div>
-        <div class="col-xs-6 col-sm-5 col-md-5 col-lg-5" style="min-height: 20px;">Total Cooling Degree Days: {{ $summary->cdd_count }}</div>
-        <div class="col-xs-1 col-sm-2 col-md-3 col-lg-3" style="min-height: 20px;"></div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Depart. from Normal: {{ $summary->depart_temp_avg }}</div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px;"></div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;"><h5>Number of Days with: </h5></div>
-
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px"></div>
-        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="min-height: 20px;"><b>Maximums:</b> </div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 90 or greater: {{ $summary->max_over90 }} </div>
-        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="min-height: 20px;"><b>Minimums:</b> </div>
-        <div class="col-xs-3 col-sm-3 col-md-6 col-lg-6" style="min-height: 20px;"> 32 or lower: {{ $summary->min_below32 }} </div>
-
-        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 32 or lower: {{ $summary->max_below32 }} </div>
-        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="min-height: 20px;"></div>
-        <div class="col-xs-3 col-sm-3 col-md-6 col-lg-6" style="min-height: 20px;"> 0 or lower: {{ $summary->min_below0 }} </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px; min-height: 5px; border-top: 1px solid grey;"></div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Precipitation (in.)</h4></div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Precipitation: {{ $summary->total_precip }} </div>
-
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Mean Total: N/A </div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Depart. from Normal: N/A  </div>
-
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Precip to date: N/A</div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;">Greatest Day: {{ $summary->grts_precip }}</div>
-        <div class="col-xs-7 col-sm-8 col-md-9 col-lg-9" style="min-height: 20px;">Dates: {{ $summary->grts_precip_dates }}</div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px;"></div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;"><h5>Number of Days with: </h5></div>
-
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> A trace or more: {{ $summary->precip_grtrtrace }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.01" or greater: {{ $summary->grtr01 }} </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 0.10" or greater: {{ $summary->grtr10 }} </div>
-
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.50" or greater: {{ $summary->grtr50 }}  </div>
-        <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6" style="min-height: 20px;"> 1.00" or greater: {{ $summary->grtr100 }}  </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px;"></div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Snowfall: {{ $summary->total_sf }} </div>
-
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Mean Total: N/A </div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Departure from Normal: N/A </div>
-
-        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-3" style="min-height: 20px;">Greatest Snowfall: {{ $summary->grts_sf }}</div>
-        <div class="col-xs-6 col-sm-7 col-md-8 col-lg-8" style="min-height: 20px;">Dates: {{ $summary->grts_sf_dates }}</div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-3" style="min-height: 20px;">Greatest Snow Depth: {{ $summary->grts_sd }}</div>
-        <div class="col-xs-5 col-sm-6 col-md-7 col-lg-7" style="min-height: 20px;">Dates: {{ $summary->grts_sd_dates }}</div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px;"></div>
-
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 25px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;"><h5>Number of Days with: </h5></div>
-
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px"></div>
-        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" style="min-height: 20px;"> <b>Snowfall: </b></div>
-
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> A trace or more: {{ $summary->sf_grtrtrace }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.50" or greater: N/A </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 1.00" or greater: N/A </div>
-
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 5.00" or greater: N/A  </div>
-        <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8" style="min-height: 20px;"> 10.00" or greater: N/A  </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 25px"></div>
-
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px"></div>
-        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" style="min-height: 20px;"> <b>Snow Depth: </b></div>
-
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> A trace or more: {{ $summary->sd_grtrtrace }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.50" or greater: N/A </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 1.00" or greater: N/A </div>
-
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 25px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 5.00" or greater: N/A  </div>
-        <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6" style="min-height: 20px;"> 10.00" or greater: N/A  </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px; min-height: 10px; border-top: 1px solid grey;"></div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Remarks</h4></div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left; margin-bottom:5px;">
+          <a href="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month,])}}" class="btn btn-primary"><span class="glyphicon glyphicon-font" aria-hidden="true"></span>&nbsp; View Text Summary</a>
+          <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp; Download Text PDF</a>
+          <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; Edit Remarks</a>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+          <h2>Maximum Temperature</h2>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+          <canvas id="maxtemp" style="width: 100%; height: 400px;"></canvas>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+          <h2>Minimum Temperature</h2>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+          <canvas id="mintemp" style="width: 100%; height: 400px;"></canvas>
+        </div>
       </div>
     @endif
 
