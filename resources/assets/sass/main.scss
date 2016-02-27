@@ -50,9 +50,13 @@ body {
   width: 900px;
 }
 
-.betterRow {
+.better-row {
   margin-left:  0px !important;
   margin-right: 0px !important;
 }
 
 li {list-style-type: none;}
+
+.img-circle {
+    border-radius: 50%;
+}
