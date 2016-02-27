@@ -305,7 +305,7 @@
       // Get context with jQuery - using jQuery's .get() method.
       var precip_ctx = $("#precip").get(0).getContext("2d");
       // This will get the first returned node in the jQuery collection.
-      var precipLineChart = new Chart(precip_ctx).Line(precip_data, options);
+      var precipLineChart = new Chart(precip_ctx).Bar(precip_data, options);
 
       /**
         Snowfall/SnowDepth Line Chart

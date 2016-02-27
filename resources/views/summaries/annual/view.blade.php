@@ -322,7 +322,63 @@
       // Get context with jQuery - using jQuery's .get() method.
       var precip_ctx = $("#precip").get(0).getContext("2d");
       // This will get the first returned node in the jQuery collection.
-      var precipLineChart = new Chart(precip_ctx).Line(precip_data, options);
+      var precipLineChart = new Chart(precip_ctx).Bar(precip_data, options);
+
+      /**
+        Precip Line Chart
+      */
+      var precip_data = {
+        labels: [<?php
+          $datastr = "";
+          $i = 0;
+          foreach($monthlyObs as $ob){
+            if(isset($monthlyObs[$i+1])){
+                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
+            } else {
+                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
+            }
+            $i++;
+          }
+          echo $datastr;
+        ?>],
+        datasets: [
+            {
+                label: "Precip",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: [<?php
+                  $datastr = "";
+                  $i = 0;
+                  foreach($monthlyObs as $ob){
+                    if(isset($monthlyObs[$i+1])){
+                        if($ob->precip == -77){
+                          $datastr .= 0.001 . ",";
+                        } else {
+                          $datastr .= $ob->total_precip . ",";
+                        }
+                    } else {
+                      if($ob->precip == -77){
+                        $datastr .= 0.001;
+                      } else {
+                        $datastr .= $ob->total_precip;
+                      }
+                    }
+                    $i++;
+                  }
+                  echo $datastr;
+                ?>]
+            }
+        ]
+      };
+
+      // Get context with jQuery - using jQuery's .get() method.
+      var grtsprecip_ctx = $("#grtsprecip").get(0).getContext("2d");
+      // This will get the first returned node in the jQuery collection.
+      var grtsprecipLineChart = new Chart(grtsprecip_ctx).Bar(grtsprecip_data, options);
 
       /**
         Snowfall Line Chart
@@ -378,29 +434,28 @@
       // Get context with jQuery - using jQuery's .get() method.
       var sf_ctx = $("#sf").get(0).getContext("2d");
       // This will get the first returned node in the jQuery collection.
-      var sfLineChart = new Chart(sf_ctx).Line(sf_data, options);
+      var sfLineChart = new Chart(sf_ctx).Bar(sf_data, options);
 
       /**
         Snowdepth Line Chart
       */
       <?php
-      $winterDays = array();
+      /*$winterDays = array();
       foreach($dailyObs as $ob){
         if(in_array($ob->month, array(10,11,12,1,2,3,4))){
          array_push($winterDays, $ob);
         }
-      }
+      }*/
       ?>
-      /*
       var sd_data = {
         labels: [<?php
           $datastr = "";
           $i = 0;
-          foreach($winterDays as $ob){
-            if(isset($winterDays[$i+1])){
-                $datastr .= $i . ",";
+          foreach($monthlyObs as $ob){
+            if(isset($monthlyObs[$i+1])){
+                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
             } else {
-                $datastr .= $i;
+                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
             }
             $i++;
           }
@@ -418,18 +473,18 @@
                 data: [<?php
                   $datastr = "";
                   $i = 0;
-                  foreach($winterDays as $ob){
-                    if(isset($winterDays[$i+1])){
-                      if($ob->snowdepth == -77){
+                  foreach($monthlyObs as $ob){
+                    if(isset($monthlyObs[$i+1])){
+                      if($ob->grts_sd == -77){
                         $datastr .= 0.001 . ",";
                       } else {
-                        $datastr .= $ob->snowdepth . ",";
+                        $datastr .= $ob->grts_sd . ",";
                       }
                     } else {
-                      if($ob->snowdepth == -77){
+                      if($ob->grts_sd == -77){
                         $datastr .= 0.001;
                       } else {
-                        $datastr .= $ob->snowdepth;
+                        $datastr .= $ob->grts_sd;
                       }
                     }
                     $i++;
@@ -443,7 +498,7 @@
       // Get context with jQuery - using jQuery's .get() method.
       var sd_ctx = $("#sd").get(0).getContext("2d");
       // This will get the first returned node in the jQuery collection.
-      var sdLineChart = new Chart(sd_ctx).Line(sd_data, options);*/
+      var sdLineChart = new Chart(sd_ctx).Bar(sd_data, options);
     });
 
 
@@ -535,7 +590,7 @@
             <h4>Average Temp: {{ $A_str }}</h4>
           </div>-->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Precipitation (in.)</h2>
+            <h2>Total Precipitation (in.)</h2>
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
@@ -555,14 +610,14 @@
             <h4>Total Snowfall: {{ $total_SF }}</h4>
             <h4>Greatest Snowdepth: {{ $grts_SD }}</h4>
           </div>-->
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Snowdepth (in.)</h2>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <h2>Greatest Snowdepth (in.)</h2>
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <canvas id="sd" style="width: 100%; height: 400px;"></canvas>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
+          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Snowfall: {{ $total_SF }}</h4>
             <h4>Greatest Snowdepth: {{ $grts_SD }}</h4>
           </div>-->

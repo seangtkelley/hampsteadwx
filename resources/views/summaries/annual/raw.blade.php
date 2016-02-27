@@ -213,12 +213,6 @@
         <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6" style="min-height: 20px;"> 10.00" or greater: {{ $SD_grtr1000 }}  </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px; min-height: 10px; border-top: 1px solid grey;"></div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Remarks</h4></div>
-
-
-
-
       </div>
     @endif
 
