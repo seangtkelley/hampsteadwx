@@ -524,7 +524,7 @@
         </div>
         <div id="textSummary" style="display:none;">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <iframe id="textSummaryiFrame" style="width:100%; border:none;" onload="iframeLoaded()" src="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month,])}}"></iframe>
+            <iframe id="textSummaryiFrame" style="width:100%; border:none;" onload="iframeLoaded()" src="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
           </div>
         </div>
       </div>

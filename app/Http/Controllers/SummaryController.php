@@ -101,16 +101,16 @@ class SummaryController extends Controller{
           $max_below32 = 0;
           $min_below0 = 0;
           $min_below32 = 0;
-          $total_precip;
-          $total_SF;
-          $grts_precip;
-          $grts_precip_dates;
+          $total_precip = 0;
+          $total_SF = 0;
+          $grts_precip = 0;
+          $grts_precip_dates = "";
           $GPI = 0;
-          $grts_SF;
-          $grts_SF_dates;
+          $grts_SF = 0;
+          $grts_SF_dates = "";
           $GSFI = 0;
-          $grts_SD;
-          $grts_SD_dates;
+          $grts_SD = 0;
+          $grts_SD_dates = "";
           $GSDI = 0;
           $grtr01 = 0;
           $grtr10 = 0;
@@ -614,13 +614,13 @@ class SummaryController extends Controller{
             $monthlyObsObject->max_below32 = ($max_below32 == null ? 0 : $max_below32);
             $monthlyObsObject->min_below32 = ($min_below32 == null ? 0 : $min_below32);
             $monthlyObsObject->min_below0 = ($min_below0 == null ? 0 : $min_below0);
-            $monthlyObsObject->total_precip = $total_precip;
-            $monthlyObsObject->total_sf = $total_SF;
+            $monthlyObsObject->total_precip = ($total_precip == null ? 0 : $total_precip);
+            $monthlyObsObject->total_sf = ($total_SF == null ? 0 : $total_SF);
             $monthlyObsObject->grts_precip = $grts_precip;
             $monthlyObsObject->grts_precip_dates = $precip_dates_str;
-            $monthlyObsObject->grts_sf = $grts_SF;
+            $monthlyObsObject->grts_sf = ($grts_SF == null ? 0 : $grts_SF);
             $monthlyObsObject->grts_sf_dates = $SF_dates_str;
-            $monthlyObsObject->grts_sd = $grts_SD;
+            $monthlyObsObject->grts_sd = ($grts_SD == null ? 0 : $grts_SD);
             $monthlyObsObject->grts_sd_dates = $SD_dates_str;
             $monthlyObsObject->precip_grtrtrace = ($precip_grtrTrace == null ? 0 : $precip_grtrTrace);
             $monthlyObsObject->grtr01 = ($grtr01 == null ? 0 : $grtr01);
@@ -664,13 +664,13 @@ class SummaryController extends Controller{
             $monthlyObsObject->max_below32 = ($max_below32 == null ? 0 : $max_below32);
             $monthlyObsObject->min_below32 = ($min_below32 == null ? 0 : $min_below32);
             $monthlyObsObject->min_below0 = ($min_below0 == null ? 0 : $min_below0);
-            $monthlyObsObject->total_precip = $total_precip;
-            $monthlyObsObject->total_sf = $total_SF;
+            $monthlyObsObject->total_precip = ($total_precip == null ? 0 : $total_precip);
+            $monthlyObsObject->total_sf = ($total_SF == null ? 0 : $total_SF);
             $monthlyObsObject->grts_precip = $grts_precip;
             $monthlyObsObject->grts_precip_dates = $precip_dates_str;
-            $monthlyObsObject->grts_sf = $grts_SF;
+            $monthlyObsObject->grts_sf = ($grts_SF == null ? 0 : $grts_SF);
             $monthlyObsObject->grts_sf_dates = $SF_dates_str;
-            $monthlyObsObject->grts_sd = $grts_SD;
+            $monthlyObsObject->grts_sd = ($grts_SD == null ? 0 : $grts_SD);
             $monthlyObsObject->grts_sd_dates = $SD_dates_str;
             $monthlyObsObject->precip_grtrtrace = ($precip_grtrTrace == null ? 0 : $precip_grtrTrace);
             $monthlyObsObject->grtr01 = ($grtr01 == null ? 0 : $grtr01);
@@ -713,8 +713,335 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
-    public function calcAnnual(){
+    public function calcAnnual($year){
+      //open 30 year normal file and if it cant be opened; die
+      $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
+      if(!$yr_avg_handle){
+          die("Couldn't read monthly climate normals file.");
+      }
 
+      // get 30 year average temp, precip, and snowfall
+      $avg_temp_array = fgetcsv($yr_avg_handle);
+      $avg_precip_array = fgetcsv($yr_avg_handle);
+      $avg_snfl_array = fgetcsv($yr_avg_handle);
+      $AVG_TEMP = $avg_temp_array[12];
+      $AVG_PRECIP = $avg_precip_array[12];
+      $AVG_SNFL = $avg_snfl_array[12];
+
+      //create object array of all the year's observations
+      $obs_array = \App\MonthlyObs::where('year', $year)->get();
+      if(empty($obs_array) OR $obs_array == NULL){
+           die("Observation doesn't exist.");
+      }
+
+      // get all daily obs
+      $dailyObs = \App\DailyObs::where('year', $year)->orderBy('month', 'asc')->get();
+
+      $count;
+      $hi = 0;
+      $li = 0;
+      $max_total;
+      $min_total;
+      $avg_total;
+      $highest;
+      $highest_dates = array();
+      $lowest;
+      $lowest_dates = array();
+      $hdd_count = 0;
+      $cdd_count = 0;
+      $max_over90 = 0;
+      $max_below32 = 0;
+      $min_below0 = 0;
+      $min_below32 = 0;
+      $total_precip;
+      $total_SF;
+      $grts_precip;
+      $grts_precip_dates;
+      $GPI = 0;
+      $grts_SF;
+      $grts_SF_dates;
+      $GSFI = 0;
+      $grts_SD;
+      $grts_SD_dates;
+      $GSDI = 0;
+      $grtr01 = 0;
+      $grtr10 = 0;
+      $grtr50 = 0;
+      $grtr100 = 0;
+      $precip_grtrTrace = 0;
+      $SF_grtrTrace = 0;
+      $SF_grtr50 = 0;
+      $SF_grtr100 = 0;
+      $SF_grtr500 = 0;
+      $SF_grtr1000 = 0;
+      $SD_grtrTrace = 0;
+      $SD_grtr50 = 0;
+      $SD_grtr100 = 0;
+      $SD_grtr500 = 0;
+      $SD_grtr1000 = 0;
+      // loop through object observation array
+      // each loop is another row(month) in the database
+      foreach($obs_array as $ob){
+          // find max and min for that month
+          $max = $ob->max_avg;
+          $min = $ob->min_avg;
+
+          // find precip, snowfall and snowdepth for that day
+          $precip = $ob->total_precip;
+          $SF = $ob->total_sf;
+
+          // pull in global variables for use in foreach loop
+          global $highest;
+          global $highest_dates;
+          global $lowest;
+          global $lowest_dates;
+          global $hdd_count;
+          global $cdd_count;
+          global $max_over90;
+          global $max_below32;
+          global $min_below32;
+          global $min_below0;
+          global $max_total;
+          global $min_total;
+          global $avg_total;
+          global $count;
+          global $hi;
+          global $li;
+          global $month_num;
+          global $total_precip;
+          global $total_SF;
+          global $grts_precip;
+          global $grts_precip_dates;
+          global $GPI;
+          global $grts_SF;
+          global $grts_SF_dates;
+          global $GSFI;
+          global $grts_SD;
+          global $grts_SD_dates;
+          global $GSDI;
+          global $grtr01;
+          global $grtr10;
+          global $grtr50;
+          global $grtr100;
+          global $precip_grtrTrace;
+          global $SF_grtrTrace;
+          global $SF_grtr50;
+          global $SF_grtr100;
+          global $SF_grtr500;
+          global $SF_grtr1000;
+          global $SD_grtrTrace;
+          global $SD_grtr50;
+          global $SD_grtr100;
+          global $SD_grtr500;
+          global $SD_grtr1000;
+
+          // add that months max and min into the total of all the maxes and mins
+          $max_total += $max;
+          $min_total += $min;
+          $avg_total += $ob->avg;
+
+          // add the months extremes to current totals
+          $max_over90 += $ob->max_over90;
+          $max_below32 += $ob->max_below32;
+          $min_below32 += $ob->min_below32;
+          $min_below0 += $ob->min_below0;
+
+          // calculate heating or cooling degree days
+          $hdd_count += $ob->hdd_count;
+          $cdd_count += $ob->cdd_count;
+
+          if($count == 0){
+              // set default values for highest and lowest temps
+              $highest = $ob->highest;
+              $lowest = $ob->lowest;
+              $highest_dates[$hi] = $ob->highest_dates;
+              $lowest_dates[$li] = $ob->lowest_dates;
+              $hi++;
+              $li++;
+              $count++;
+              continue;
+          } else {
+              // compare that months highest and lowest to highest and lowest temp so far
+              if( $ob->highest > $highest){
+                  $highest = $ob->highest;
+                  $highest_dates = array();
+                  $highest_dates[0] = $ob->highest_dates;
+                  $hi = 1;
+              } elseif($ob->highest == $highest) {
+                  $highest_dates[$hi] = $ob->highest_dates;
+                  $hi++;
+              }
+              if($ob->lowest < $lowest){
+                  $lowest = $ob->lowest;
+                  $lowest_dates = array();
+                  $lowest_dates[0] = $ob->lowest_dates;
+                  $li = 1;
+              } elseif($ob->lowest == $lowest) {
+                  $lowest_dates[$li] = $ob->lowest_dates;
+                  $li++;
+              }
+          }
+
+          // add that months precip to total precip and add that months snowfall to total snowfall
+          $total_precip += $precip;
+          $total_SF += $SF;
+
+          // add the months extremes to current totals
+          $grtr01 += $ob->grtr01;
+          $grtr10 += $ob->grtr10;
+          $grtr50 += $ob->grtr50;
+          $grtr100 += $ob->grtr100;
+          $precip_grtrTrace += $ob->precip_grtrTrace;
+          $SF_grtrTrace += $ob->sf_grtrtrace;
+          $SF_grtr50 += $ob->SF_grtr50;
+          $SF_grtr100 += $ob->SF_grtr100;
+          $SF_grtr500 += $ob->SF_grtr500;
+          $SF_grtr1000 += $ob->SF_grtr1000;
+          $SD_grtrTrace += $ob->sd_grtrtrace;
+          $SD_grtr50 += $ob->SD_grtr50;
+          $SD_grtr100 += $ob->SD_grtr100;
+          $SD_grtr500 += $ob->SD_grtr500;
+          $SD_grtr1000 += $ob->SD_grtr1000;
+
+          if($count == 0){
+              // set default values for greatest precip, snowfall and snowdepth temps
+              $grts_precip = $ob->grts_precip;
+              $grts_SF = $ob->grts_sf;
+              $grts_SD = $ob->grts_sd;
+              $grts_precip_dates[$GPI] = $ob->grts_precip_dates;
+              $grts_SF_dates[$GSFI] = $ob->grts_SF_dates;
+              $grts_SD_dates[$GSDI] = $ob->grts_SD_dates;
+              $GPI++;
+              $GSFI++;
+              $GSDI++;
+              $count++;
+              continue;
+          } else {
+              // compare that months greatest precip, snowfall and snowdepth to
+              // greatest precip, snowfall and snowdepth temp so far
+              if($ob->grts_precip > $grts_precip){
+                  $grts_precip = $ob->grts_precip;
+                  $grts_precip_dates = array();
+                  $grts_precip_dates[0] = $ob->grts_precip_dates;
+                  $GPI = 1;
+              } elseif($ob->grts_precip == $grts_precip) {
+                  $grts_precip_dates[$GPI] = $ob->grts_precip_dates;
+                  $GPI++;
+              }
+
+              if($ob->grts_sf > $grts_SF){
+                  $grts_SF = $ob->grts_sf;
+                  $grts_SF_dates = array();
+                  $grts_SF_dates[0] = $ob->grts_sf_dates;
+                  $GSFI = 1;
+              } elseif($ob->grts_sf == $grts_SF) {
+                  $grts_SF_dates[$GSFI] = $ob->grts_sf_dates;
+                  $GSFI++;
+              }
+
+              if($ob->grts_sd > $grts_SD){
+                  $grts_SD = $ob->grts_sd;
+                  $grts_SD_dates = array();
+                  $grts_SD_dates[0] = $ob->grts_sd_dates;
+                  $GSDI = 1;
+              } elseif($ob->grts_sd == $grts_SD) {
+                  $grts_SD_dates[$GSDI] = $ob->grts_sd_dates;
+                  $GSDI++;
+              }
+          }
+          $count++;
+      }
+      // calculate monthly max and min and average and format them appropriatly
+      $max_avg = round($max_total / $count, 1);
+      $min_avg = round($min_total / $count, 1);
+      $avg = round($avg_total / $count, 1);
+      $MxA_str = strval($max_avg);
+      $MnA_str = strval($min_avg);
+      $A_str = strval($avg);
+      if(!strpos($MxA_str, ".")){
+          $MxA_str .= ".0";
+      }
+      if(!strpos($MnA_str, ".")){
+          $MnA_str .= ".0";
+      }
+      if(!strpos($A_str, ".")){
+          $A_str .= ".0";
+      }
+
+      // find how much monthly average departs from 30 year normals
+      $depart_temp_avg = $avg - $AVG_TEMP;
+      if($depart_temp_avg > 0){
+          $depart_temp_avg_str = "+" . number_format($depart_temp_avg, 1);
+      } else {
+          $depart_temp_avg_str = number_format($depart_temp_avg, 1);
+      }
+
+      // find how much monthly average departs from 30 year normals for precip and snowfall
+      $depart_precip_avg = $total_precip - $AVG_PRECIP;
+      if($depart_precip_avg > 0){
+          $depart_precip_avg_str = "+" . number_format($depart_precip_avg, 2);
+      } else {
+          $depart_precip_avg_str = number_format($depart_precip_avg, 2);
+      }
+
+      $depart_snfl_avg = $total_SF - $AVG_SNFL;
+      if($depart_snfl_avg > 0){
+          $depart_snfl_avg_str = "+" . number_format($depart_snfl_avg, 1);
+      } else {
+          $depart_snfl_avg_str = number_format($depart_snfl_avg, 1);
+      }
+
+      $result = array(
+        'year' => $year,
+        'monthlyObs' => $obs_array,
+        'dailyObs' => $dailyObs,
+        'AVG_TEMP' => $AVG_TEMP,
+        'AVG_PRECIP' => $AVG_PRECIP,
+        'AVG_SNFL' => $AVG_SNFL,
+        'max_avg' => $max_avg,
+        'min_avg' => $min_avg,
+        'avg' => $avg,
+        'MxA_str' => $MxA_str,
+        'MnA_str' => $MnA_str,
+        'A_str' => $A_str,
+        'depart_temp_avg_str' => $depart_temp_avg_str,
+        'highest' => $highest,
+        'highest_dates' => $highest_dates,
+        'lowest' => $lowest,
+        'lowest_dates' => $lowest_dates,
+        'hdd_count' => $hdd_count,
+        'cdd_count' => $cdd_count,
+        'max_over90' => $max_over90,
+        'max_below32' => $max_below32,
+        'min_below0' => $min_below0,
+        'min_below32' => $min_below32,
+        'total_precip' => $total_precip,
+        'total_SF' => $total_SF,
+        'grts_precip' => $grts_precip,
+        'grts_precip_dates' => $grts_precip_dates,
+        'depart_precip_avg_str' => $depart_precip_avg_str,
+        'grts_SF' => $grts_SF,
+        'grts_SF_dates' => $grts_SF_dates,
+        'depart_snfl_avg_str' => $depart_snfl_avg_str,
+        'grts_SD' => $grts_SD,
+        'grts_SD_dates' => $grts_SD_dates,
+        'grtr01' => $grtr01,
+        'grtr10' => $grtr10,
+        'grtr50' => $grtr50,
+        'grtr100' => $grtr100,
+        'precip_grtrTrace' => $precip_grtrTrace,
+        'SF_grtrTrace' => $SF_grtrTrace,
+        'SF_grtr50' => $SF_grtr50,
+        'SF_grtr100' => $SF_grtr100,
+        'SF_grtr500' => $SF_grtr500,
+        'SF_grtr1000' => $SF_grtr1000,
+        'SD_grtrTrace' => $SD_grtrTrace,
+        'SD_grtr50' => $SD_grtr50,
+        'SD_grtr100' => $SD_grtr100,
+        'SD_grtr500' => $SD_grtr500,
+        'SD_grtr1000' => $SD_grtr1000
+      );
+      return $result;
     }
 
 
@@ -820,7 +1147,13 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showAnnualHome(){
-        return view('summaries.annual.view');
+      if(!isset($year) || is_null($year) || empty($year)){
+        $data = array('year' => null);
+      } else {
+        $data = $this->calcAnnual($year);
+      }
+
+      return view('summaries.annual.view', $data);
     }
 
     /**
@@ -830,27 +1163,13 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showAnnualSummary(Request $request, $year){
-      //open 30 year normal file and if it cant be opened; die
-      $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
-      if(!$yr_avg_handle){
-          die("Couldn't read monthly climate normals file.");
+      if(!isset($year) || is_null($year) || empty($year)){
+        $data = array('year' => null);
+      } else {
+        $data = $this->calcAnnual($year);
       }
 
-      // get 30 year average temp, precip, and snowfall
-      $avg_temp_array = fgetcsv($yr_avg_handle);
-      $avg_precip_array = fgetcsv($yr_avg_handle);
-      $avg_snfl_array = fgetcsv($yr_avg_handle);
-      $AVG_TEMP = $avg_temp_array[12];
-      $AVG_PRECIP = $avg_precip_array[12];
-      $AVG_SNFL = $avg_snfl_array[12];
-
-      //create object array of all the year's observations
-      $obs_array = \App\MonthlyObs::where('year', $year)->get();
-      if(empty($obs_array) OR $obs_array == NULL){
-           die("Observation doesn't exist.");
-      }
-
-      return view('summaries.annual.view', ['year' => $year, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'obs_array' => $obs_array]);
+      return view('summaries.annual.view', $data);
     }
 
     /**
@@ -860,26 +1179,8 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showRawAnnualSummary(Request $request, $year){
-      //open 30 year normal file and if it cant be opened; die
-      $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
-      if(!$yr_avg_handle){
-          die("Couldn't read monthly climate normals file.");
-      }
+      $data = $this->calcAnnual($year);
 
-      // get 30 year average temp, precip, and snowfall
-      $avg_temp_array = fgetcsv($yr_avg_handle);
-      $avg_precip_array = fgetcsv($yr_avg_handle);
-      $avg_snfl_array = fgetcsv($yr_avg_handle);
-      $AVG_TEMP = $avg_temp_array[12];
-      $AVG_PRECIP = $avg_precip_array[12];
-      $AVG_SNFL = $avg_snfl_array[12];
-
-      //create object array of all the year's observations
-      $obs_array = \App\MonthlyObs::where('year', $year)->get();
-      if(empty($obs_array) OR $obs_array == NULL){
-           die("Observation doesn't exist.");
-      }
-
-      return view('summaries.annual.raw', ['year' => $year, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'obs_array' => $obs_array]);
+      return view('summaries.annual.raw', $data);
     }
 }
