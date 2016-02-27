@@ -299,13 +299,13 @@
                   $i = 0;
                   foreach($monthlyObs as $ob){
                     if(isset($monthlyObs[$i+1])){
-                        if($ob->precip == -77){
+                        if($ob->total_precip == -77){
                           $datastr .= 0.001 . ",";
                         } else {
                           $datastr .= $ob->total_precip . ",";
                         }
                     } else {
-                      if($ob->precip == -77){
+                      if($ob->total_precip == -77){
                         $datastr .= 0.001;
                       } else {
                         $datastr .= $ob->total_precip;
@@ -325,9 +325,9 @@
       var precipLineChart = new Chart(precip_ctx).Bar(precip_data, options);
 
       /**
-        Precip Line Chart
+        Greatest Day Precip Line Chart
       */
-      var precip_data = {
+      var grtsprecip_data = {
         labels: [<?php
           $datastr = "";
           $i = 0;
@@ -355,16 +355,16 @@
                   $i = 0;
                   foreach($monthlyObs as $ob){
                     if(isset($monthlyObs[$i+1])){
-                        if($ob->precip == -77){
+                        if($ob->grts_precip == -77){
                           $datastr .= 0.001 . ",";
                         } else {
-                          $datastr .= $ob->total_precip . ",";
+                          $datastr .= $ob->grts_precip . ",";
                         }
                     } else {
-                      if($ob->precip == -77){
+                      if($ob->grts_precip == -77){
                         $datastr .= 0.001;
                       } else {
-                        $datastr .= $ob->total_precip;
+                        $datastr .= $ob->grts_precip;
                       }
                     }
                     $i++;
@@ -598,6 +598,16 @@
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Precipitation: {{ $total_precip }}</h4>
+          </div>-->
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <h2>Greatest Precipitation Day (in.)</h2>
+            <h4>0.001 = Trace</h4>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <canvas id="grtsprecip" style="width: 100%; height: 400px;"></canvas>
+          </div>
+          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
+            <h4>Greatest Precipitation: {{ $grts_precip }}</h4>
           </div>-->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Snowfall (in.)</h2>
