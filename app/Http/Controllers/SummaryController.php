@@ -102,7 +102,7 @@ class SummaryController extends Controller{
           $min_below0 = 0;
           $min_below32 = 0;
           $total_precip = 0;
-          $total_SF = 0;
+          $total_sf = 0;
           $grts_precip = 0;
           $grts_precip_dates = "";
           $GPI = 0;
@@ -116,17 +116,19 @@ class SummaryController extends Controller{
           $grtr10 = 0;
           $grtr50 = 0;
           $grtr100 = 0;
-          $precip_grtrTrace = 0;
-          $SF_grtrTrace = 0;
-          $SF_grtr50 = 0;
-          $SF_grtr100 = 0;
-          $SF_grtr500 = 0;
-          $SF_grtr1000 = 0;
-          $SD_grtrTrace = 0;
-          $SD_grtr50 = 0;
-          $SD_grtr100 = 0;
-          $SD_grtr500 = 0;
-          $SD_grtr1000 = 0;
+          $precip_grtrtrace = 0;
+          $sf_grtrtrace = 0;
+          $sf_grtr1 = 0;
+          $sf_grtr3 = 0;
+          $sf_grtr6 = 0;
+          $sf_grtr12 = 0;
+          $sf_grtr18 = 0;
+          $sd_grtrtrace = 0;
+          $sd_grtr1 = 0;
+          $sd_grtr3 = 0;
+          $sd_grtr6 = 0;
+          $sd_grtr12 = 0;
+          $sd_grtr18 = 0;
 
           // loop through 2D $obs_array, making it into 1D $obs array
           // each loop is another row(day) in the csv file
@@ -164,7 +166,7 @@ class SummaryController extends Controller{
               global $hi;
               global $li;
               global $total_precip;
-              global $total_SF;
+              global $total_sf;
               global $grts_precip;
               global $grts_precip_dates;
               global $GPI;
@@ -178,17 +180,19 @@ class SummaryController extends Controller{
               global $grtr10;
               global $grtr50;
               global $grtr100;
-              global $precip_grtrTrace;
-              global $SF_grtrTrace;
-              global $SF_grtr50;
-              global $SF_grtr100;
-              global $SF_grtr500;
-              global $SF_grtr1000;
-              global $SD_grtrTrace;
-              global $SD_grtr50;
-              global $SD_grtr100;
-              global $SD_grtr500;
-              global $SD_grtr1000;
+              global $precip_grtrtrace;
+              global $sf_grtrtrace;
+              global $sf_grtr1;
+              global $sf_grtr3;
+              global $sf_grtr6;
+              global $sf_grtr12;
+              global $sf_grtr18;
+              global $sd_grtrtrace;
+              global $sd_grtr1;
+              global $sd_grtr3;
+              global $sd_grtr6;
+              global $sd_grtr12;
+              global $sd_grtr18;
               // add that days max and min into the total of all the maxes and mins
               $max_total += $max;
               $min_total += $min;
@@ -297,10 +301,10 @@ class SummaryController extends Controller{
 
               // add that days precip to total precip and add that days snowfall to total snowfall
               $total_precip += $precip;
-              $total_SF += $SF;
+              $total_sf += $SF;
               // test precip, snowfall, and snowdepth if it is greater than certain amounts
               if($ob[4] == "T" OR $precip >= 0.01){
-                  $precip_grtrTrace++;
+                  $precip_grtrtrace++;
               }
               if($precip >= 0.01){
                   $grtr01++;
@@ -315,34 +319,40 @@ class SummaryController extends Controller{
                   $grtr100++;
               }
               if($ob[5] == "T" OR $SF >= 0.1){
-                  $SF_grtrTrace++;
+                  $sf_grtrtrace++;
               }
-              if($SF >= 0.5){
-                  $SF_grtr50++;
+              if($SF >= 1){
+                  $sf_grtr1++;
               }
-              if($SF >= 1.0){
-                  $SF_grtr100++;
+              if($SF >= 3){
+                  $sf_grtr3++;
               }
-              if($SF >= 5.0){
-                  $SF_grtr500++;
+              if($SF >= 6){
+                  $sf_grtr++;
               }
-              if($SF >= 10.0){
-                  $SF_grtr1000++;
+              if($SF >= 12){
+                  $sf_grtr12++;
               }
-              if($ob[6] == "T" OR $SD >= 1){
-                  $SD_grtrTrace++;
+              if($SF >= 18){
+                  $sf_grtr18++;
               }
-              if($SD >= 0.5){
-                  $SD_grtr50++;
+              if($ob[6] == "T"){
+                  $sd_grtrtrace++;
               }
-              if($SD >= 1.0){
-                  $SD_grtr100++;
+              if($SD >= 1){
+                  $sd_grtr1++;
               }
-              if($SD >= 5.0){
-                  $SD_grtr500++;
+              if($SD >= 3){
+                  $sd_grtr3++;
               }
-              if($SD >= 10.0){
-                  $SD_grtr1000++;
+              if($SD >= 6){
+                  $sd_grtr6++;
+              }
+              if($SD >= 12){
+                  $sd_grtr12++;
+              }
+              if($SD >= 18){
+                  $sd_grtr18++;
               }
               if($count == 0){
                   // set default values for greatest precip, snowfall and snowdepth temps
@@ -413,45 +423,14 @@ class SummaryController extends Controller{
           $max_avg = round($max_total / $count, 1);
           $min_avg = round($min_total / $count, 1);
           $avg = round(($max_avg + $min_avg) / 2, 1);
-          $MxA_str = strval($max_avg);
-          $MnA_str = strval($min_avg);
-          $A_str = strval($avg);
-          if(!strpos($MxA_str, ".")){
-              $MxA_str .= ".0";
-          }
-          if(!strpos($MnA_str, ".")){
-              $MnA_str .= ".0";
-          }
-          if(!strpos($A_str, ".")){
-              $A_str .= ".0";
-          }
+
 
           // find how much monthly average departs from 30 year normals
           $depart_temp_avg = $avg - $AVG_TEMP;
-          $depart_temp_avg = round($depart_temp_avg, 1);
-          if($depart_temp_avg > 0){
-              $depart_temp_avg_str = "+" . $depart_temp_avg;
-          } else {
-              $depart_temp_avg_str = $depart_temp_avg;
-          }
 
-          // find how much monthly average departs from 30 year normals for precip and snowfall
-          $depart_precip_avg = $total_precip - $AVG_PRECIP;
-          if($depart_precip_avg > 0){
-              $depart_precip_avg_str = "+" . $depart_precip_avg;
-          } else {
-              $depart_precip_avg_str = $depart_precip_avg;
-          }
-
-          $depart_snfl_avg = $total_SF - $AVG_SNFL;
-          if($depart_snfl_avg > 0){
-              $depart_snfl_avg_str = "+" . $depart_snfl_avg;
-          } else {
-              $depart_snfl_avg_str = $depart_snfl_avg;
-          }
 
           //find if greatest values are traces
-          if($grts_precip == 0 && $precip_grtrTrace > 0){
+          if($grts_precip == 0 && $precip_grtrtrace > 0){
               $grts_precip = -77;
               $tempObArray = \App\DailyObs::where('month', $month)->where('year', $year)->get();
               $datesArray = array();
@@ -464,7 +443,7 @@ class SummaryController extends Controller{
               }
               $grts_precip_dates = $datesArray;
           }
-          if($grts_SF == 0 && $SF_grtrTrace > 0){
+          if($grts_SF == 0 && $sf_grtrtrace > 0){
               $grts_SF = -77;
               $tempObArray = \App\DailyObs::where('month', $month)->where('year', $year)->get();
               $datesArray = array();
@@ -477,7 +456,7 @@ class SummaryController extends Controller{
               }
               $grts_SF_dates = $datesArray;
           }
-          if($grts_SD == 0 && $SD_grtrTrace > 0){
+          if($grts_SD == 0 && $sd_grtrtrace > 0){
               $grts_SD = -77;
               $tempObArray = \App\DailyObs::where('month', $month)->where('year', $year)->get();
               $datesArray = array();
@@ -489,42 +468,6 @@ class SummaryController extends Controller{
                   }
               }
               $grts_SD_dates = $datesArray;
-          }
-
-          //calculate total precip to date
-          $current_year_obs = \App\MonthlyObs::where('year', $year)->get();
-          $year_precip = 0;
-          if($current_year_obs) {
-              for ($i = 0; $i <= $month - 2; $i++) {
-                  $year_precip += $current_year_obs[$i]->total_precip;
-              }
-          }
-
-          // handle traces
-          if($total_precip == 0 AND $precip_grtrTrace > 0){
-              $total_precip_str = "Trace";
-          } else {
-              $total_precip_str = number_format($total_precip, 2);
-          }
-          if($total_SF == 0 AND $SF_grtrTrace > 0){
-              $total_SF_str = "Trace";
-          } else {
-              $total_SF_str = number_format($total_SF, 1);
-          }
-          if($grts_precip == -77){
-              $grts_precip_str = "Trace";
-          } else {
-              $grts_precip_str = number_format($grts_precip, 2);
-          }
-          if($grts_SF == -77){
-              $grts_SF_str = "Trace";
-          } else {
-              $grts_SF_str = number_format($grts_SF, 1);
-          }
-          if($grts_SD == -77){
-              $grts_SD_str = "Trace";
-          } else {
-              $grts_SD_str = number_format($grts_SD, 0);
           }
 
           // format all date strings
@@ -615,28 +558,30 @@ class SummaryController extends Controller{
             $monthlyObsObject->min_below32 = ($min_below32 == null ? 0 : $min_below32);
             $monthlyObsObject->min_below0 = ($min_below0 == null ? 0 : $min_below0);
             $monthlyObsObject->total_precip = ($total_precip == null ? 0 : $total_precip);
-            $monthlyObsObject->total_sf = ($total_SF == null ? 0 : $total_SF);
+            $monthlyObsObject->total_sf = ($total_sf == null ? 0 : $total_sf);
             $monthlyObsObject->grts_precip = $grts_precip;
             $monthlyObsObject->grts_precip_dates = $precip_dates_str;
             $monthlyObsObject->grts_sf = ($grts_SF == null ? 0 : $grts_SF);
             $monthlyObsObject->grts_sf_dates = $SF_dates_str;
             $monthlyObsObject->grts_sd = ($grts_SD == null ? 0 : $grts_SD);
             $monthlyObsObject->grts_sd_dates = $SD_dates_str;
-            $monthlyObsObject->precip_grtrtrace = ($precip_grtrTrace == null ? 0 : $precip_grtrTrace);
+            $monthlyObsObject->precip_grtrtrace = ($precip_grtrtrace == null ? 0 : $precip_grtrtrace);
             $monthlyObsObject->grtr01 = ($grtr01 == null ? 0 : $grtr01);
             $monthlyObsObject->grtr10 = ($grtr10 == null ? 0 : $grtr10);
             $monthlyObsObject->grtr50 = ($grtr50 == null ? 0 : $grtr50);
             $monthlyObsObject->grtr100 = ($grtr100 == null ? 0 : $grtr100);
-            $monthlyObsObject->sf_grtrtrace = ($SF_grtrTrace == null ? 0 : $SF_grtrTrace);
-            $monthlyObsObject->SF_grtr50 = ($SF_grtr50 == null ? 0 : $SF_grtr50);
-            $monthlyObsObject->SF_grtr100 = ($SF_grtr100 == null ? 0 : $SF_grtr100);
-            $monthlyObsObject->SF_grtr500 = ($SF_grtr500 == null ? 0 : $SF_grtr500);
-            $monthlyObsObject->SF_grtr1000 = ($SF_grtr1000 == null ? 0 : $SF_grtr1000);
-            $monthlyObsObject->sd_grtrtrace = ($SD_grtrTrace == null ? 0 : $SD_grtrTrace);
-            $monthlyObsObject->SD_grtr50 = ($SD_grtr50 == null ? 0 : $SD_grtr50);
-            $monthlyObsObject->SD_grtr100 = ($SD_grtr100 == null ? 0 : $SD_grtr100);
-            $monthlyObsObject->SD_grtr500 = ($SD_grtr500 == null ? 0 : $SD_grtr500);
-            $monthlyObsObject->SD_grtr1000 = ($SD_grtr1000 == null ? 0 : $SD_grtr1000);
+            $monthlyObsObject->sf_grtrtrace = ($sf_grtrtrace == null ? 0 : $sf_grtrtrace);
+            $monthlyObsObject->sf_grtr1 = ($sf_grtr1 == null ? 0 : $sf_grtr1);
+            $monthlyObsObject->sf_grtr3 = ($sf_grtr3 == null ? 0 : $sf_grtr3);
+            $monthlyObsObject->sf_grtr6 = ($sf_grtr6 == null ? 0 : $sf_grtr6);
+            $monthlyObsObject->sf_grtr12 = ($sf_grtr12 == null ? 0 : $sf_grtr12);
+            $monthlyObsObject->sf_grtr18 = ($sf_grtr18 == null ? 0 : $sf_grtr18);
+            $monthlyObsObject->sd_grtrtrace = ($sd_grtrtrace == null ? 0 : $sd_grtrtrace);
+            $monthlyObsObject->sd_grtr1 = ($sd_grtr1 == null ? 0 : $sd_grtr1);
+            $monthlyObsObject->sd_grtr3 = ($sd_grtr3 == null ? 0 : $sd_grtr3);
+            $monthlyObsObject->sd_grtr6 = ($sd_grtr6 == null ? 0 : $sd_grtr6);
+            $monthlyObsObject->sd_grtr12 = ($sd_grtr12 == null ? 0 : $sd_grtr12);
+            $monthlyObsObject->sd_grtr18 = ($sd_grtr18 == null ? 0 : $sd_grtr18);
             $monthlyObsObject->remarks = $monthlyObsObject->remarks;
             $monthlyObsObject->csv_file = $fullpath;
             if($monthlyObsObject->save()){
@@ -665,28 +610,30 @@ class SummaryController extends Controller{
             $monthlyObsObject->min_below32 = ($min_below32 == null ? 0 : $min_below32);
             $monthlyObsObject->min_below0 = ($min_below0 == null ? 0 : $min_below0);
             $monthlyObsObject->total_precip = ($total_precip == null ? 0 : $total_precip);
-            $monthlyObsObject->total_sf = ($total_SF == null ? 0 : $total_SF);
+            $monthlyObsObject->total_sf = ($total_sf == null ? 0 : $total_sf);
             $monthlyObsObject->grts_precip = $grts_precip;
             $monthlyObsObject->grts_precip_dates = $precip_dates_str;
             $monthlyObsObject->grts_sf = ($grts_SF == null ? 0 : $grts_SF);
             $monthlyObsObject->grts_sf_dates = $SF_dates_str;
             $monthlyObsObject->grts_sd = ($grts_SD == null ? 0 : $grts_SD);
             $monthlyObsObject->grts_sd_dates = $SD_dates_str;
-            $monthlyObsObject->precip_grtrtrace = ($precip_grtrTrace == null ? 0 : $precip_grtrTrace);
+            $monthlyObsObject->precip_grtrtrace = ($precip_grtrtrace == null ? 0 : $precip_grtrtrace);
             $monthlyObsObject->grtr01 = ($grtr01 == null ? 0 : $grtr01);
             $monthlyObsObject->grtr10 = ($grtr10 == null ? 0 : $grtr10);
             $monthlyObsObject->grtr50 = ($grtr50 == null ? 0 : $grtr50);
             $monthlyObsObject->grtr100 = ($grtr100 == null ? 0 : $grtr100);
-            $monthlyObsObject->sf_grtrtrace = ($SF_grtrTrace == null ? 0 : $SF_grtrTrace);
-            $monthlyObsObject->SF_grtr50 = ($SF_grtr50 == null ? 0 : $SF_grtr50);
-            $monthlyObsObject->SF_grtr100 = ($SF_grtr100 == null ? 0 : $SF_grtr100);
-            $monthlyObsObject->SF_grtr500 = ($SF_grtr500 == null ? 0 : $SF_grtr500);
-            $monthlyObsObject->SF_grtr1000 = ($SF_grtr1000 == null ? 0 : $SF_grtr1000);
-            $monthlyObsObject->sd_grtrtrace = ($SD_grtrTrace == null ? 0 : $SD_grtrTrace);
-            $monthlyObsObject->SD_grtr50 = ($SD_grtr50 == null ? 0 : $SD_grtr50);
-            $monthlyObsObject->SD_grtr100 = ($SD_grtr100 == null ? 0 : $SD_grtr100);
-            $monthlyObsObject->SD_grtr500 = ($SD_grtr500 == null ? 0 : $SD_grtr500);
-            $monthlyObsObject->SD_grtr1000 = ($SD_grtr1000 == null ? 0 : $SD_grtr1000);
+            $monthlyObsObject->sf_grtrtrace = ($sf_grtrtrace == null ? 0 : $sf_grtrtrace);
+            $monthlyObsObject->sf_grtr1 = ($sf_grtr1 == null ? 0 : $sf_grtr1);
+            $monthlyObsObject->sf_grtr3 = ($sf_grtr3 == null ? 0 : $sf_grtr3);
+            $monthlyObsObject->sf_grtr6 = ($sf_grtr6 == null ? 0 : $sf_grtr6);
+            $monthlyObsObject->sf_grtr12 = ($sf_grtr12 == null ? 0 : $sf_grtr12);
+            $monthlyObsObject->sf_grtr18 = ($sf_grtr18 == null ? 0 : $sf_grtr18);
+            $monthlyObsObject->sd_grtrtrace = ($sd_grtrtrace == null ? 0 : $sd_grtrtrace);
+            $monthlyObsObject->sd_grtr1 = ($sd_grtr1 == null ? 0 : $sd_grtr1);
+            $monthlyObsObject->sd_grtr3 = ($sd_grtr3 == null ? 0 : $sd_grtr3);
+            $monthlyObsObject->sd_grtr6 = ($sd_grtr6 == null ? 0 : $sd_grtr6);
+            $monthlyObsObject->sd_grtr12 = ($sd_grtr12 == null ? 0 : $sd_grtr12);
+            $monthlyObsObject->sd_grtr18 = ($sd_grtr18 == null ? 0 : $sd_grtr18);
             $monthlyObsObject->remarks = "";
             $monthlyObsObject->csv_file = $fullpath;
             if($monthlyObsObject->save()){
@@ -754,31 +701,33 @@ class SummaryController extends Controller{
       $min_below0 = 0;
       $min_below32 = 0;
       $total_precip;
-      $total_SF;
+      $total_sf;
       $grts_precip;
       $grts_precip_dates;
       $GPI = 0;
-      $grts_SF;
-      $grts_SF_dates;
+      $grts_sf;
+      $grts_sf_dates;
       $GSFI = 0;
-      $grts_SD;
-      $grts_SD_dates;
+      $grts_sd;
+      $grts_sd_dates;
       $GSDI = 0;
       $grtr01 = 0;
       $grtr10 = 0;
       $grtr50 = 0;
       $grtr100 = 0;
-      $precip_grtrTrace = 0;
-      $SF_grtrTrace = 0;
-      $SF_grtr50 = 0;
-      $SF_grtr100 = 0;
-      $SF_grtr500 = 0;
-      $SF_grtr1000 = 0;
-      $SD_grtrTrace = 0;
-      $SD_grtr50 = 0;
-      $SD_grtr100 = 0;
-      $SD_grtr500 = 0;
-      $SD_grtr1000 = 0;
+      $precip_grtrtrace = 0;
+      $sf_grtrtrace = 0;
+      $sf_grtr1 = 0;
+      $sf_grtr3 = 0;
+      $sf_grtr6 = 0;
+      $sf_grtr12 = 0;
+      $sf_grtr18 = 0;
+      $SD_grtrtrace = 0;
+      $sd_grtr1 = 0;
+      $sd_grtr3 = 0;
+      $sd_grtr6 = 0;
+      $sd_grtr12 = 0;
+      $sd_grtr18 = 0;
       // loop through object observation array
       // each loop is another row(month) in the database
       foreach($obs_array as $ob){
@@ -809,31 +758,33 @@ class SummaryController extends Controller{
           global $li;
           global $month_num;
           global $total_precip;
-          global $total_SF;
+          global $total_sf;
           global $grts_precip;
           global $grts_precip_dates;
           global $GPI;
-          global $grts_SF;
-          global $grts_SF_dates;
+          global $grts_sf;
+          global $grts_sf_dates;
           global $GSFI;
-          global $grts_SD;
-          global $grts_SD_dates;
+          global $grts_sd;
+          global $grts_sd_dates;
           global $GSDI;
           global $grtr01;
           global $grtr10;
           global $grtr50;
           global $grtr100;
-          global $precip_grtrTrace;
-          global $SF_grtrTrace;
-          global $SF_grtr50;
-          global $SF_grtr100;
-          global $SF_grtr500;
-          global $SF_grtr1000;
-          global $SD_grtrTrace;
-          global $SD_grtr50;
-          global $SD_grtr100;
-          global $SD_grtr500;
-          global $SD_grtr1000;
+          global $precip_grtrtrace;
+          global $sf_grtrtrace;
+          global $sf_grtr1;
+          global $sf_grtr3;
+          global $sf_grtr6;
+          global $sf_grtr12;
+          global $sf_grtr18;
+          global $sd_grtrtrace;
+          global $sd_grtr1;
+          global $sd_grtr3;
+          global $sd_grtr6;
+          global $sd_grtr12;
+          global $sd_grtr18;
 
           // add that months max and min into the total of all the maxes and mins
           $max_total += $max;
@@ -884,33 +835,37 @@ class SummaryController extends Controller{
 
           // add that months precip to total precip and add that months snowfall to total snowfall
           $total_precip += $precip;
-          $total_SF += $SF;
+          $total_sf += $SF;
 
           // add the months extremes to current totals
+          $precip_grtrtrace += $ob->precip_grtrtrace;
           $grtr01 += $ob->grtr01;
           $grtr10 += $ob->grtr10;
           $grtr50 += $ob->grtr50;
           $grtr100 += $ob->grtr100;
-          $precip_grtrTrace += $ob->precip_grtrTrace;
-          $SF_grtrTrace += $ob->sf_grtrtrace;
-          $SF_grtr50 += $ob->SF_grtr50;
-          $SF_grtr100 += $ob->SF_grtr100;
-          $SF_grtr500 += $ob->SF_grtr500;
-          $SF_grtr1000 += $ob->SF_grtr1000;
-          $SD_grtrTrace += $ob->sd_grtrtrace;
-          $SD_grtr50 += $ob->SD_grtr50;
-          $SD_grtr100 += $ob->SD_grtr100;
-          $SD_grtr500 += $ob->SD_grtr500;
-          $SD_grtr1000 += $ob->SD_grtr1000;
+
+          $sf_grtrtrace += $ob->sf_grtrtrace;
+          $sf_grtr1 += $ob->sf_grtr1;
+          $sf_grtr3 += $ob->sf_grtr3;
+          $sf_grtr6 += $ob->sf_grtr6;
+          $sf_grtr12 += $ob->sf_grtr12;
+          $sf_grtr18 += $ob->sf_grtr18;
+
+          $sd_grtrtrace += $ob->sd_grtrtrace;
+          $sd_grtr1 += $ob->sd_grtr1;
+          $sd_grtr3 += $ob->sd_grtr3;
+          $sd_grtr6 += $ob->sd_grtr6;
+          $sd_grtr12 += $ob->sd_grtr12;
+          $sd_grtr18 += $ob->sd_grtr18;
 
           if($count == 0){
               // set default values for greatest precip, snowfall and snowdepth temps
               $grts_precip = $ob->grts_precip;
-              $grts_SF = $ob->grts_sf;
-              $grts_SD = $ob->grts_sd;
+              $grts_sf = $ob->grts_sf;
+              $grts_sd = $ob->grts_sd;
               $grts_precip_dates[$GPI] = $ob->grts_precip_dates;
-              $grts_SF_dates[$GSFI] = $ob->grts_SF_dates;
-              $grts_SD_dates[$GSDI] = $ob->grts_SD_dates;
+              $grts_sf_dates[$GSFI] = $ob->grts_sf_dates;
+              $grts_sd_dates[$GSDI] = $ob->grts_sd_dates;
               $GPI++;
               $GSFI++;
               $GSDI++;
@@ -929,23 +884,23 @@ class SummaryController extends Controller{
                   $GPI++;
               }
 
-              if($ob->grts_sf > $grts_SF){
-                  $grts_SF = $ob->grts_sf;
-                  $grts_SF_dates = array();
-                  $grts_SF_dates[0] = $ob->grts_sf_dates;
+              if($ob->grts_sf > $grts_sf){
+                  $grts_sf = $ob->grts_sf;
+                  $grts_sf_dates = array();
+                  $grts_sf_dates[0] = $ob->grts_sf_dates;
                   $GSFI = 1;
-              } elseif($ob->grts_sf == $grts_SF) {
-                  $grts_SF_dates[$GSFI] = $ob->grts_sf_dates;
+              } elseif($ob->grts_sf == $grts_sf) {
+                  $grts_sf_dates[$GSFI] = $ob->grts_sf_dates;
                   $GSFI++;
               }
 
-              if($ob->grts_sd > $grts_SD){
-                  $grts_SD = $ob->grts_sd;
-                  $grts_SD_dates = array();
-                  $grts_SD_dates[0] = $ob->grts_sd_dates;
+              if($ob->grts_sd > $grts_sd){
+                  $grts_sd = $ob->grts_sd;
+                  $grts_sd_dates = array();
+                  $grts_sd_dates[0] = $ob->grts_sd_dates;
                   $GSDI = 1;
-              } elseif($ob->grts_sd == $grts_SD) {
-                  $grts_SD_dates[$GSDI] = $ob->grts_sd_dates;
+              } elseif($ob->grts_sd == $grts_sd) {
+                  $grts_sd_dates[$GSDI] = $ob->grts_sd_dates;
                   $GSDI++;
               }
           }
@@ -984,7 +939,7 @@ class SummaryController extends Controller{
           $depart_precip_avg_str = number_format($depart_precip_avg, 2);
       }
 
-      $depart_snfl_avg = $total_SF - $AVG_SNFL;
+      $depart_snfl_avg = $total_sf - $AVG_SNFL;
       if($depart_snfl_avg > 0){
           $depart_snfl_avg_str = "+" . number_format($depart_snfl_avg, 1);
       } else {
@@ -1016,30 +971,32 @@ class SummaryController extends Controller{
         'min_below0' => $min_below0,
         'min_below32' => $min_below32,
         'total_precip' => $total_precip,
-        'total_SF' => $total_SF,
+        'total_sf' => $total_sf,
         'grts_precip' => $grts_precip,
         'grts_precip_dates' => $grts_precip_dates,
         'depart_precip_avg_str' => $depart_precip_avg_str,
-        'grts_SF' => $grts_SF,
-        'grts_SF_dates' => $grts_SF_dates,
+        'grts_sf' => $grts_sf,
+        'grts_sf_dates' => $grts_sf_dates,
         'depart_snfl_avg_str' => $depart_snfl_avg_str,
-        'grts_SD' => $grts_SD,
-        'grts_SD_dates' => $grts_SD_dates,
+        'grts_sd' => $grts_sd,
+        'grts_sd_dates' => $grts_sd_dates,
         'grtr01' => $grtr01,
         'grtr10' => $grtr10,
         'grtr50' => $grtr50,
         'grtr100' => $grtr100,
-        'precip_grtrTrace' => $precip_grtrTrace,
-        'SF_grtrTrace' => $SF_grtrTrace,
-        'SF_grtr50' => $SF_grtr50,
-        'SF_grtr100' => $SF_grtr100,
-        'SF_grtr500' => $SF_grtr500,
-        'SF_grtr1000' => $SF_grtr1000,
-        'SD_grtrTrace' => $SD_grtrTrace,
-        'SD_grtr50' => $SD_grtr50,
-        'SD_grtr100' => $SD_grtr100,
-        'SD_grtr500' => $SD_grtr500,
-        'SD_grtr1000' => $SD_grtr1000
+        'precip_grtrtrace' => $precip_grtrtrace,
+        'sf_grtrtrace' => $sf_grtrtrace,
+        'sf_grtr1' => $sf_grtr1,
+        'sf_grtr3' => $sf_grtr3,
+        'sf_grtr6' => $sf_grtr6,
+        'sf_grtr12' => $sf_grtr12,
+        'sf_grtr18' => $sf_grtr18,
+        'sd_grtrtrace' => $sd_grtrtrace,
+        'sd_grtr1' => $sd_grtr1,
+        'sd_grtr3' => $sd_grtr3,
+        'sd_grtr6' => $sd_grtr6,
+        'sd_grtr12' => $sd_grtr12,
+        'sd_grtr18' => $sd_grtr18
       );
       return $result;
     }
