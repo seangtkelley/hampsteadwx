@@ -1096,6 +1096,28 @@ class SummaryController extends Controller{
       return view('summaries.monthly.raw', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
     }
 
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function editMonthlyRemarks(Request $request, $year, $month){
+      $remarks = strip_tags(\Input::get('remarks'), '<p><a><h5><b><i><ul><li>');
+      $password = \Input::get('password');
+
+      if($password == 'cfs613'){
+        $monthlyObsObject = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+        $monthlyObsObject->remarks = $remarks;
+        if($monthlyObsObject->save()){
+          event(new Alert('create', array('type' => 'success', 'body' => 'Remarks Successfully Saved.')));
+          return redirect()->route('summaries.monthly.view', [ 'year' => $year, 'month' => $month ]);
+        } else {
+          event(new Alert('create', array('type' => 'danger', 'body' => 'Remarks Not Successfully Created.')));
+          return redirect()->route('summaries.monthly.view', [ 'year' => $year, 'month' => $month ]);
+        }
+      }
+    }
 
     /**
      * Handle the event.

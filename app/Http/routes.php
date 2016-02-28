@@ -38,6 +38,7 @@ Route::get('/normals',                                ['as' => 'normals', 'uses'
 Route::get('/summaries/monthly',                      ['as' => 'summaries.monthly.home', 'uses'=>'SummaryController@showMonthlyHome','index'=>true]);
 Route::get('/summaries/monthly/{year}/{month}',       ['as' => 'summaries.monthly.view', 'uses'=>'SummaryController@showMonthlySummary','index'=>true]);
 Route::get('/summaries/monthly/raw/{year}/{month}',   ['as' => 'summaries.monthly.raw',  'uses'=>'SummaryController@showRawMonthlySummary','index'=>true]);
+Route::post('/summaries/monthly/{year}/{month}/editRemarks',   ['as' => 'summaries.monthly.editRemarks',  'uses'=>'SummaryController@editMonthlyRemarks','index'=>false]);
 
 Route::get('/summaries/annual',                       ['as' => 'summaries.annual.home', 'uses'=>'SummaryController@showAnnualHome','index'=>true]);
 Route::get('/summaries/annual/{year}',                ['as' => 'summaries.annual.view', 'uses'=>'SummaryController@showAnnualSummary','index'=>true]);

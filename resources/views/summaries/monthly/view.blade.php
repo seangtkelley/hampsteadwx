@@ -410,6 +410,10 @@
       $('#chartsBtn').attr('disabled','disabled');
     }
 
+    function showEditRemarks(){
+
+    }
+
     function iframeLoaded() {
       var iFrameID = document.getElementById('textSummaryiFrame');
       if(iFrameID) {
@@ -467,7 +471,9 @@
           <a href="#" id="textBtn" onclick="viewTextSummary()" class="btn btn-primary"><span class="glyphicon glyphicon-font" aria-hidden="true"></span>&nbsp; View Text Summary</a>
           <a href="#" id="chartsBtn" onclick="viewCharts()" class="btn btn-primary"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp; View Charts</a>
           <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp; Download Text PDF</a>
-          <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; Edit Remarks</a>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRemarks">
+            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; Edit Remarks
+          </button>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
         <div id="charts">
@@ -525,9 +531,32 @@
         </div>
         <div id="textSummary" style="display:none;">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <iframe id="textSummaryiFrame" style="width:100%; border:none;" onload="iframeLoaded()" src="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
+            <iframe id="textSummaryiFrame" style="width:100%; height: 1250px; border:none;" src="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
           </div>
         </div>
+        <div id="editRemarks" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Remarks</h4>
+              </div>
+              <form action="{{route('summaries.monthly.editRemarks', ['year' => $summary->year, 'month' => $summary->month])}}" method="post">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                <div class="modal-body">
+                  <textarea name="remarks" rows="10" cols="70" style="margin-bottom: 10px;">
+                    {{ $summary->remarks }}
+                  </textarea>
+                  <input type="password" name="password" class="form-control" placeholder="Enter Password" />
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <input type="submit" class="btn btn-primary" value="Save changes">
+                </div>
+              </form>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
       </div>
     @endif
 

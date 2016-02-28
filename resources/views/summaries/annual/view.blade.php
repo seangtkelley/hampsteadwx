@@ -635,7 +635,7 @@
         </div>
         <div id="textSummary" style="display:none;">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <iframe id="textSummaryiFrame" style="width:100%; border:none;" onload="iframeLoaded()" src="{{route('summaries.annual.raw', ['year' => $year])}}"></iframe>
+            <iframe id="textSummaryiFrame" style="width:100%; height: 1250px; border:none;" src="{{route('summaries.annual.raw', ['year' => $year])}}"></iframe>
           </div>
         </div>
       </div>
