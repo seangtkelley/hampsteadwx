@@ -4,6 +4,7 @@
 <link href="{{asset('css/main.css')}}" rel="stylesheet" type="text/css">
 <link href="{{asset('css/addons.css')}}" rel="stylesheet" type="text/css">
 <script src="{{asset('js/app.js')}}"></script>
+<!--<script src="{{asset('js/ChartNew.js')}}"></script>-->
 <script>
     $( document ).ready(function() {
         $("#alerts").width($(window).width());

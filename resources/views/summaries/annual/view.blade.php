@@ -26,6 +26,10 @@
       $('#chartsBtn').attr('disabled', 'disabled');
 
       var options = {
+          responsive: true,
+          scaleBeginAtZero: true,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
           ///Boolean - Whether grid lines are shown across the chart
           scaleShowGridLines : true,
           //String - Colour of the grid lines
@@ -269,6 +273,53 @@
       var avgtempLineChart = new Chart(avgtemp_ctx).Line(avgtemp_data, options);
 
       /**
+        Depart Temperature Bar Chart
+      */
+      var departtemp_data = {
+        labels: [<?php
+          $datastr = "";
+          $i = 0;
+          foreach($monthlyObs as $ob){
+            if(isset($monthlyObs[$i+1])){
+                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
+            } else {
+                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
+            }
+            $i++;
+          }
+          echo $datastr;
+        ?>],
+        datasets: [
+            {
+                label: "Temp",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                data: [<?php
+                  $datastr = "";
+                  $i = 0;
+                  foreach($monthlyObs as $ob){
+                    if(isset($monthlyObs[$i+1])){
+                        $datastr .= $ob->depart_temp_avg . ",";
+                    } else {
+                        $datastr .= $ob->depart_temp_avg;
+                    }
+                    $i++;
+                  }
+                  echo $datastr;
+                ?>]
+            }
+        ]
+      };
+
+      // Get context with jQuery - using jQuery's .get() method.
+      var departtemp_ctx = $("#departtemp").get(0).getContext("2d");
+      // This will get the first returned node in the jQuery collection.
+      var departtempLineChart = new Chart(departtemp_ctx).Bar(departtemp_data, options);
+
+      /**
         Precip Line Chart
       */
       var precip_data = {
@@ -323,6 +374,53 @@
       var precip_ctx = $("#precip").get(0).getContext("2d");
       // This will get the first returned node in the jQuery collection.
       var precipLineChart = new Chart(precip_ctx).Bar(precip_data, options);
+
+      /**
+        Depart Precip Bar Chart
+      */
+      var departprecip_data = {
+        labels: [<?php
+          $datastr = "";
+          $i = 0;
+          foreach($monthlyObs as $ob){
+            if(isset($monthlyObs[$i+1])){
+                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
+            } else {
+                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
+            }
+            $i++;
+          }
+          echo $datastr;
+        ?>],
+        datasets: [
+            {
+                label: "Temp",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                data: [<?php
+                  $datastr = "";
+                  $i = 0;
+                  foreach($monthlyObs as $ob){
+                    if(isset($monthlyObs[$i+1])){
+                        $datastr .= $ob->total_precip - $avg_precip_array[$ob->month-1] . ",";
+                    } else {
+                        $datastr .= $ob->total_precip - $avg_precip_array[$ob->month-1];
+                    }
+                    $i++;
+                  }
+                  echo $datastr;
+                ?>]
+            }
+        ]
+      };
+
+      // Get context with jQuery - using jQuery's .get() method.
+      var departprecip_ctx = $("#departprecip").get(0).getContext("2d");
+      // This will get the first returned node in the jQuery collection.
+      var departprecipLineChart = new Chart(departprecip_ctx).Bar(departprecip_data, options);
 
       /**
         Greatest Day Precip Line Chart
@@ -589,6 +687,15 @@
             <h4>Average Temp: {{ $A_str }}</h4>
           </div>-->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <h2>Monthly Temperature Departure (°F)</h2>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <canvas id="departtemp" style="width: 100%; height: 400px;"></canvas>
+          </div>
+          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
+            <h4>Average Temp: {{ $A_str }}</h4>
+          </div>-->
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Total Precipitation (in.)</h2>
             <h4>0.001 = Trace</h4>
           </div>
@@ -597,6 +704,15 @@
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Precipitation: {{ $total_precip }}</h4>
+          </div>-->
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <h2>Monthly Precipitation Departure (in.)</h2>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <canvas id="departprecip" style="width: 100%; height: 400px;"></canvas>
+          </div>
+          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
+            <h4>Average Temp: {{ $A_str }}</h4>
           </div>-->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Greatest Precipitation Day (in.)</h2>
