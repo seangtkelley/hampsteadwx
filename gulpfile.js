@@ -28,6 +28,7 @@ elixir(function(mix) {
 
   // compile scss files from resources/assets/sass
   mix.sass("main.scss", 'public/css/main.css', {includePaths: [paths.bootstrap + 'stylesheets/']});
+  mix.sass("raw.scss", 'public/css/raw.css', {includePaths: [paths.bootstrap + 'stylesheets/']});
 
   // add more if need be
   //mix.sass("<filename>.scss", 'public/css/', {includePaths: [paths.bootstrap + 'stylesheets/']});

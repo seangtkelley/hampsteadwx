@@ -1102,6 +1102,83 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
+    public function downloadMonthlyHTML(Request $request, $year, $month){
+      // get summary
+      $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+
+      //open 30 year normal file and if it cant be opened; die
+      $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
+      if(!$yr_avg_handle){
+          die("Couldn't read monthly climate normals file.");
+      }
+
+      // find precip to date
+      $allSummaries = \App\MonthlyObs::where('year', $year)->get();
+      $precip_toDate = 0;
+      foreach ($allSummaries as $result){
+        $precip_toDate += $result->total_precip;
+      }
+
+      // get 30 year average temp, precip, and snowfall
+      $avg_temp_array = fgetcsv($yr_avg_handle);
+      $avg_precip_array = fgetcsv($yr_avg_handle);
+      $avg_snfl_array = fgetcsv($yr_avg_handle);
+      $AVG_TEMP = $avg_temp_array[$month-1];
+      $AVG_PRECIP = $avg_precip_array[$month-1];
+      $AVG_SNFL = $avg_snfl_array[$month-1];
+
+      $view = \View::make('summaries.monthly.raw', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+      $contents = $view->render();
+
+      //PDF file is stored under project/public/download/info.pdf
+      $headers = array(
+        'Content-Type' => 'text/html',
+        'Content-Disposition' => 'attachment; filename="West_Hampstead-' . $year . '_' . $month . '-MonthlySummary.html"'
+      );
+      return \Response::make($contents, 200, $headers);
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function downloadMonthlyPDF(Request $request, $year, $month){
+      // get summary
+      $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+
+      //open 30 year normal file and if it cant be opened; die
+      $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
+      if(!$yr_avg_handle){
+          die("Couldn't read monthly climate normals file.");
+      }
+
+      // find precip to date
+      $allSummaries = \App\MonthlyObs::where('year', $year)->get();
+      $precip_toDate = 0;
+      foreach ($allSummaries as $result){
+        $precip_toDate += $result->total_precip;
+      }
+
+      // get 30 year average temp, precip, and snowfall
+      $avg_temp_array = fgetcsv($yr_avg_handle);
+      $avg_precip_array = fgetcsv($yr_avg_handle);
+      $avg_snfl_array = fgetcsv($yr_avg_handle);
+      $AVG_TEMP = $avg_temp_array[$month-1];
+      $AVG_PRECIP = $avg_precip_array[$month-1];
+      $AVG_SNFL = $avg_snfl_array[$month-1];
+
+      $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.monthly.raw', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+      return $pdf->download('West_Hampstead-' . $year . '_' . $month . '-MonthlySummary.pdf');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
     public function editMonthlyRemarks(Request $request, $year, $month){
       $remarks = strip_tags(\Input::get('remarks'), '<p><a><h5><b><i><ul><li>');
       $password = \Input::get('password');
@@ -1161,5 +1238,46 @@ class SummaryController extends Controller{
       $data = $this->calcAnnual($year);
 
       return view('summaries.annual.raw', $data);
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function downloadAnnualPDF(Request $request, $year){
+      if(!isset($year) || is_null($year) || empty($year)){
+        $data = array('year' => null);
+      } else {
+        $data = $this->calcAnnual($year);
+      }
+
+      $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.annual.raw', $data);
+      return $pdf->download('West_Hampstead-' . $year . '-AnnualSummary.pdf');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function downloadAnnualHTML(Request $request, $year){
+      if(!isset($year) || is_null($year) || empty($year)){
+        $data = array('year' => null);
+      } else {
+        $data = $this->calcAnnual($year);
+      }
+
+      $view = \View::make('summaries.annual.raw', $data);
+      $contents = $view->render();
+
+      //PDF file is stored under project/public/download/info.pdf
+      $headers = array(
+        'Content-Type' => 'text/html',
+        'Content-Disposition' => 'attachment; filename="West_Hampstead-' . $year . '-AnnualSummary.html"'
+      );
+      return \Response::make($contents, 200, $headers);
     }
 }

@@ -470,7 +470,7 @@
           <a href="{{route('summaries.monthly.home')}}" class="btn btn-info"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>&nbsp; Back</a>
           <a href="#" id="textBtn" onclick="viewTextSummary()" class="btn btn-primary"><span class="glyphicon glyphicon-font" aria-hidden="true"></span>&nbsp; View Text Summary</a>
           <a href="#" id="chartsBtn" onclick="viewCharts()" class="btn btn-primary"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp; View Charts</a>
-          <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp; Download Text PDF</a>
+          <a href="{{route('summaries.monthly.html', ['year' => $summary->year, 'month' => $summary->month])}}" class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp; Download HTML</a>
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRemarks">
             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; Edit Remarks
           </button>
