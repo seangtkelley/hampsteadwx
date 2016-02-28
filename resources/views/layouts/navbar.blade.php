@@ -1,4 +1,15 @@
 <div id="navbar">
+    <script>
+    $(document).ready(function() {
+      $( window ).resize(function() {
+        if($( window ).width() < 1200){
+          $(".navbar-text").html("");
+        } else {
+          $(".navbar-text").html("Cooperative Climatological Station, West Hampstead, NH");
+        }
+      });
+    });
+    </script>
     <nav class="navbar navbar-default navbar-@yield('navbar-type')" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->

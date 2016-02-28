@@ -617,8 +617,8 @@
             <canvas id="sf" style="width: 100%; height: 400px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Total Snowfall: {{ $total_SF }}</h4>
-            <h4>Greatest Snowdepth: {{ $grts_SD }}</h4>
+            <h4>Total Snowfall: {{ $total_sf }}</h4>
+            <h4>Greatest Snowdepth: {{ $grts_sd }}</h4>
           </div>-->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Greatest Snowdepth (in.)</h2>
@@ -628,9 +628,10 @@
             <canvas id="sd" style="width: 100%; height: 400px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Total Snowfall: {{ $total_SF }}</h4>
-            <h4>Greatest Snowdepth: {{ $grts_SD }}</h4>
+            <h4>Total Snowfall: {{ $total_sf }}</h4>
+            <h4>Greatest Snowdepth: {{ $grts_sd }}</h4>
           </div>-->
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left; min-height: 20px;"></div>
         </div>
         <div id="textSummary" style="display:none;">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

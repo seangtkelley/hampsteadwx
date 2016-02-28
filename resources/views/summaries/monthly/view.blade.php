@@ -521,6 +521,7 @@
             <h4>Greatest Snowdepth: {{ $summary->grts_sd }}</h4>
           </div>-->
           @endif
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left; min-height: 20px;"></div>
         </div>
         <div id="textSummary" style="display:none;">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

@@ -46,7 +46,7 @@
   </div>-->
   <div class="col-md-12 col-lg-12" style="text-align: center; padding-left: 0px; padding-right: 0px">
     <div class="well" style="margin-bottom: 0px;">
-      <h1 style="margin-top: 0px;">Related Sites</h1>
+      <h2 style="margin-top: 0px;">Related Sites</h2>
       <div class="row betterRow">
         <div class="col-md-1 col-lg-1"></div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2" style="text-align: center">
