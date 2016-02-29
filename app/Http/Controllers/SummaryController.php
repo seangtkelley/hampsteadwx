@@ -34,16 +34,6 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
-    public function showAnnualSubmit(){
-        return view('summaries.annual.submit');
-    }
-
-    /**
-     * Handle the event.
-     *
-     * @param string $locale
-     * @return mixed
-     */
     public function calcMonthly(){
 
       if(\Input::get('password') == "cfs613"){

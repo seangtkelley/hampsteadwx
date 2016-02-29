@@ -31,8 +31,6 @@ Route::get('/normals',                                ['as' => 'normals', 'uses'
  * */
  Route::get('/summaries/monthly/submit',              ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@showMonthlySubmit','index'=>false]);
  Route::post('/summaries/monthly/submit',             ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@calcMonthly','index'=>false]);
- Route::get('/summaries/annual/submit',               ['as' => 'summaries.annual.submit', 'uses'=>'SummaryController@showAnnualSubmit','index'=>false]);
- Route::post('/summaries/annual/submit',              ['as' => 'summaries.annual.submit', 'uses'=>'SummaryController@calcAnnual','index'=>false]);
  Route::post('/summaries/submit/HandleFile',          ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);
 
 Route::get('/summaries/monthly',                      ['as' => 'summaries.monthly.home', 'uses'=>'SummaryController@showMonthlyHome','index'=>true]);
@@ -59,5 +57,5 @@ Route::post('/events/submit',                         ['as' => 'events.submit', 
   * Photos
   * */
 Route::get('/photos',                                 ['as' => 'photos.home', 'uses'=>'PhotosController@showPhotosHome','index'=>true]);
-Route::get('/photos/submit',                          ['as' => 'photos.submit', 'uses'=>'PhotosController@showPhotosHomeSubmit','index'=>false]);
+Route::get('/photos/submit',                          ['as' => 'photos.submit', 'uses'=>'PhotosController@showPhotosSubmit','index'=>false]);
 Route::post('/photos/submit',                         ['as' => 'photos.submit', 'uses'=>'PhotosController@submitPhoto','index'=>false]);

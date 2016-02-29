@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Events\Alert;
 use Carbon\Carbon;
 
 class PhotosController extends Controller{
@@ -22,7 +23,9 @@ class PhotosController extends Controller{
      * @return mixed
      */
     public function showPhotosHome(){
-        return view('photos.home');
+        $photos = \App\Photos::all();
+
+        return view('photos.home', [ 'photos' => $photos]);
     }
 
     /**
@@ -42,6 +45,55 @@ class PhotosController extends Controller{
      * @return mixed
      */
     public function submitPhoto(){
+      if(\Input::get('password') == "cfs613"){
+
+        // getting all of the post data
+        $file = array('image' => \Input::file('image'));
+        //return $file;
+        // setting up rules
+        $rules = array(
+          'uploadedimage' => 'image|max:5000',
+          'uploaded' => 'mimes:jpeg,bmp,png'
+        );
+        // doing the validation, passing post data, rules and the messages
+        $validator = \Validator::make($file, $rules);
+        if ($validator->fails()) {
+         // send back to the page with the input data and errors
+         event(new Alert('create', array('type' => 'danger', 'body' => 'Error uploading photo.')));
+        } else {
+         // checking file is valid.
+         if (\Input::file('image')->isValid()) {
+           $destinationPath = "./img";
+           $fileName = \Input::file('image')->getClientOriginalName();
+           $extension = \Input::file('image')->getClientOriginalExtension(); // getting image extension
+           $fullpath = $destinationPath . "/" . $fileName;
+
+           if(\Input::file('image')->move($destinationPath, $fileName)){
+             $photoObject = new \App\Photos;
+             $photoObject->url = str_replace("./", "", $fullpath);
+             $photoObject->caption = \Input::get('caption');
+
+             if($photoObject->save()){
+               event(new Alert('create', array('type' => 'success', 'body' => 'Photo uploaded successfully.')));
+               return redirect()->route('photos.home');
+             } else {
+               event(new Alert('create', array('type' => 'danger', 'body' => 'Photo not uploaded successfully.')));
+               return redirect()->route('photos.home');
+             }
+
+           } else {
+             event(new Alert('create', array('type' => 'danger', 'body' => 'Photo not uploaded successfully.')));
+             return redirect()->route('photos.home');
+           }
+         } else {
+           // sending back with error message.
+           event(new Alert('create', array('type' => 'success', 'body' => 'Photo not valid.')));
+           return redirect()->route('photos.home');
+         }
+        }
+      } else {
+        event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect password.')));
         return redirect()->route('photos.home');
+      }
     }
 }
