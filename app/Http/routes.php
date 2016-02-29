@@ -29,11 +29,11 @@ Route::get('/normals',                                ['as' => 'normals', 'uses'
 /*
  * Observations
  * */
- Route::get('/summaries/monthly/submit',               ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@showMonthlySubmit','index'=>false]);
- Route::post('/summaries/monthly/submit',              ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@calcMonthly','index'=>false]);
- Route::get('/summaries/annual/submit',                ['as' => 'summaries.annual.submit', 'uses'=>'SummaryController@showAnnualSubmit','index'=>false]);
- Route::post('/summaries/annual/submit',               ['as' => 'summaries.annual.submit', 'uses'=>'SummaryController@calcAnnual','index'=>false]);
- Route::post('/summaries/submit/HandleFile',           ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);
+ Route::get('/summaries/monthly/submit',              ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@showMonthlySubmit','index'=>false]);
+ Route::post('/summaries/monthly/submit',             ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@calcMonthly','index'=>false]);
+ Route::get('/summaries/annual/submit',               ['as' => 'summaries.annual.submit', 'uses'=>'SummaryController@showAnnualSubmit','index'=>false]);
+ Route::post('/summaries/annual/submit',              ['as' => 'summaries.annual.submit', 'uses'=>'SummaryController@calcAnnual','index'=>false]);
+ Route::post('/summaries/submit/HandleFile',          ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);
 
 Route::get('/summaries/monthly',                      ['as' => 'summaries.monthly.home', 'uses'=>'SummaryController@showMonthlyHome','index'=>true]);
 Route::get('/summaries/monthly/{year}/{month}',       ['as' => 'summaries.monthly.view', 'uses'=>'SummaryController@showMonthlySummary','index'=>true]);
@@ -47,3 +47,17 @@ Route::get('/summaries/annual/{year}',                ['as' => 'summaries.annual
 Route::get('/summaries/annual/{year}/text',           ['as' => 'summaries.annual.raw',  'uses'=>'SummaryController@showRawAnnualSummary','index'=>true]);
 Route::get('/summaries/annual/{year}/html',           ['as' => 'summaries.annual.html', 'uses'=>'SummaryController@downloadAnnualHTML','index'=>false]);
 Route::get('/summaries/annual/{year}/pdf',            ['as' => 'summaries.annual.pdf',  'uses'=>'SummaryController@downloadAnnualPDF','index'=>false]);
+
+/*
+ * Events
+ * */
+Route::get('/events',                                 ['as' => 'events.home', 'uses'=>'EventsController@showEventsHome','index'=>true]);
+Route::get('/events/submit',                          ['as' => 'events.submit', 'uses'=>'EventsController@showEventsSubmit','index'=>false]);
+Route::post('/events/submit',                         ['as' => 'events.submit', 'uses'=>'EventsController@submitEvent','index'=>false]);
+
+ /*
+  * Photos
+  * */
+Route::get('/photos',                                 ['as' => 'photos.home', 'uses'=>'PhotosController@showPhotosHome','index'=>true]);
+Route::get('/photos/submit',                          ['as' => 'photos.submit', 'uses'=>'PhotosController@showPhotosHomeSubmit','index'=>false]);
+Route::post('/photos/submit',                         ['as' => 'photos.submit', 'uses'=>'PhotosController@submitPhoto','index'=>false]);

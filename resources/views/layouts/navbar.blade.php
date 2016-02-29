@@ -53,31 +53,13 @@
                   </ul>
                 </li>
 
-                <li class="dropdown navElement">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Events <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Snow Storms</a></li>
-                    <li><a href="#">Ice Storms</a></li>
-                    <li><a href="#">Severe Thunderstorms</a></li>
-                    <li><a href="#">Flooding</a></li>
-                    <li><a href="#">Wind Storms</a></li>
-                  </ul>
-                </li>
+                <li><a href="{{route('events.home')}}">Events</a></li>
 
                 <li><a href="{{route('normals')}}">Normals</a></li>
 
                 <li><a href="{{route('info')}}">Info</a></li>
 
-                <li class="dropdown navElement">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Photos <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Winter</a></li>
-                    <li><a href="#">Spring</a></li>
-                    <li><a href="#">Summer</a></li>
-                    <li><a href="#">Autumn</a></li>
-                    <li><a href="#">Nearby Stations</a></li>
-                  </ul>
-                </li>
+                <li><a href="{{route('photos.home')}}">Photos</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

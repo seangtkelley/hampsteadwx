@@ -8,11 +8,11 @@
     "jquery": ">=1.6"
   },
   "homepage": "https://github.com/components/jqueryui",
-  "_release": "c34f8dbf3b",
+  "_release": "81fac70b2b",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "c34f8dbf3ba57b3784b93f26119f436c0e8288e1"
+    "commit": "81fac70b2b2c6f71c49225bde8316ea1a0849799"
   },
   "_source": "git://github.com/components/jqueryui.git",
   "_target": "master",
