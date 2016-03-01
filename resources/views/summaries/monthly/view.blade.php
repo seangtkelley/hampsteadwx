@@ -544,9 +544,7 @@
               <form action="{{route('summaries.monthly.editRemarks', ['year' => $summary->year, 'month' => $summary->month])}}" method="post">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
-                  <textarea name="remarks" rows="10" cols="70" style="margin-bottom: 10px;">
-                    {{ $summary->remarks }}
-                  </textarea>
+                  <textarea name="remarks" rows="10" cols="70" style="margin-bottom: 10px;" class="form-control">{{ $summary->remarks }}</textarea>
                   <input type="password" name="password" class="form-control" placeholder="Enter Password" />
                 </div>
                 <div class="modal-footer">

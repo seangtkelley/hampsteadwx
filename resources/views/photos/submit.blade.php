@@ -26,9 +26,7 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 30px;"><h4>Caption:</h4></div>
       <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 30px;"></div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">
-        <textarea rows="2" cols="75" name="caption">
-
-        </textarea>
+        <textarea rows="2" cols="75" name="caption" class="form-control"></textarea>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 30px;"></div>
 

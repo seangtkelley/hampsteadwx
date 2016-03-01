@@ -36,10 +36,12 @@ elixir(function(mix) {
   // create the addons css
   mix.copy([
     paths.jqueryFileUpload + 'css/jquery.fileupload.css',
+    paths.jqueryUI + 'themes/smoothness/jquery-ui.css',
     paths.select2 + 'css/select2.css'
   ], 'resources/assets/css');
   mix.styles([
     'jquery.fileupload.css',
+    'jquery-ui.css',
     'select2.css'
   ], 'public/css/addons.css');
 
