@@ -33,11 +33,17 @@
       </div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="min-height: 30px;" ></div>
 
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 30px;"><h4>Date:</h4></div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 30px;"><h4>Start Date:</h4></div>
       <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 30px;"></div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">
-        Start: <input type="text" id="startDate" name="startDate">
-        End: <input type="text" id="endDate" name="startDate">
+        <input type="text" id="startDate" name="startDate" class="form-control">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 30px;"></div>
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 30px;"><h4>End Date:</h4></div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 30px;"></div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">
+        <input type="text" id="endDate" name="endDate" class="form-control">
       </div>
       <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 30px;"></div>
 

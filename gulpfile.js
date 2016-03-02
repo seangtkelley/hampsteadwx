@@ -45,6 +45,9 @@ elixir(function(mix) {
     'select2.css'
   ], 'public/css/addons.css');
 
+  // copy over jquery ui images
+  mix.copy(paths.jqueryUI + 'themes/smoothness/images/**', 'public/css/images');
+
   // copy over bootstrap fonts
   mix.copy(paths.bootstrap + 'fonts/bootstrap/**', 'public/fonts');
 
