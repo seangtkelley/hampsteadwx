@@ -60,6 +60,7 @@ class PhotosController extends Controller{
         if ($validator->fails()) {
          // send back to the page with the input data and errors
          event(new Alert('create', array('type' => 'danger', 'body' => 'Error uploading photo.')));
+         return redirect()->route('photos.submit');
         } else {
          // checking file is valid.
          if (\Input::file('image')->isValid()) {
@@ -75,25 +76,25 @@ class PhotosController extends Controller{
 
              if($photoObject->save()){
                event(new Alert('create', array('type' => 'success', 'body' => 'Photo uploaded successfully.')));
-               return redirect()->route('photos.home');
+               return redirect()->route('photos.submit');
              } else {
                event(new Alert('create', array('type' => 'danger', 'body' => 'Photo not uploaded successfully.')));
-               return redirect()->route('photos.home');
+               return redirect()->route('photos.submit');
              }
 
            } else {
              event(new Alert('create', array('type' => 'danger', 'body' => 'Photo not uploaded successfully.')));
-             return redirect()->route('photos.home');
+             return redirect()->route('photos.submit');
            }
          } else {
            // sending back with error message.
            event(new Alert('create', array('type' => 'success', 'body' => 'Photo not valid.')));
-           return redirect()->route('photos.home');
+           return redirect()->route('photos.submit');
          }
         }
       } else {
         event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect password.')));
-        return redirect()->route('photos.home');
+        return redirect()->route('photos.submit');
       }
     }
 }

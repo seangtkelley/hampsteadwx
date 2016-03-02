@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Events\Alert;
 use Carbon\Carbon;
 
 class EventsController extends Controller{
@@ -42,6 +43,23 @@ class EventsController extends Controller{
      * @return mixed
      */
     public function submitEvent(){
-        return redirect()->route('events.home');
+      if(\Input::get('password') == "cfs613"){
+        $eventObject = new \App\Events;
+        $eventObject->type = trim(\Input::get('type'));
+        $eventObject->startdate = trim(\Input::get('startdate'));
+        $eventObject->enddate = trim(\Input::get('enddate'));
+        $eventObject->description = trim(\Input::get('description'));
+
+        if($eventObject->save()){
+          event(new Alert('create', array('type' => 'success', 'body' => 'Event submitted successfully.')));
+          return redirect()->route('events.submit');
+        } else {
+          event(new Alert('create', array('type' => 'danger', 'body' => 'Event not submitted successfully.')));
+          return redirect()->route('events.submit');
+        }
+      } else {
+        event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect password.')));
+        return redirect()->route('events.submit');
+      }
     }
 }

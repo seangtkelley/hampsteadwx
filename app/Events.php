@@ -8,6 +8,6 @@ class Events extends Model {
 
   protected $table = 'events';
 
-  protected $fillable = array('url','caption');
+  protected $fillable = array('type', 'startdate', 'enddate', 'description');
 
 }

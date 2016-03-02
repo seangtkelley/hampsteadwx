@@ -8,7 +8,7 @@
 @section('content')
 
 <div class="container" style="min-height: 650px;">
-  <form action="{{route('events.submit')}}" enctype="multipart/form-data" method="POST">
+  <form action="{{route('events.submit')}}" method="POST">
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
     <h2>Submit Weather Event</h2>
 
@@ -46,7 +46,7 @@
 
       <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 40px;"><h4>Description:</h4></div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">
-        <textarea rows="4" cols="75" name="caption" class="form-control"></textarea>
+        <textarea rows="4" cols="75" name="description" class="form-control"></textarea>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="min-height: 100px;"></div>
 
