@@ -427,7 +427,7 @@
   <div id="" class="container" style="min-height: 650px;">
     @if(!isset($summary))
       <h2 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #777;">Find Summary</h2>
-      <div class="row betterRow">
+      <div class="row better-row">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">
           <select class="monthSelect" style="width: 100%">
             <option value="1">January</option>
@@ -461,7 +461,7 @@
       </div>
     @endif
     @if(isset($summary))
-      <div class="row betterRow">
+      <div class="row better-row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
           <h1>{{date('F', mktime(0, 0, 0, $summary->month, 10))}} Monthly Summary</h1>
         </div>

@@ -7,7 +7,7 @@
 
 @section('content')
 
-<div class="container" style="min-height: 650px;">
+<div class="container">
   <form action="{{route('events.submit')}}" method="POST">
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
     <h2>Submit Weather Event</h2>
@@ -24,7 +24,7 @@
       });
     </script>
 
-    <div class="row betterRow">
+    <div class="row better-row">
 
       <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 40px;"><h4>Type:</h4></div>
       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center">

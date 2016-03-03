@@ -15,7 +15,7 @@
     <script>
 
     </script>
-    <div class="row betterRow">
+    <div class="row better-row">
 
       <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="min-height: 40px;"><h4>Photo:</h4></div>
       <input class="col-xs-12 col-sm-12 col-md-4 col-lg-4" type="file" name="image" />

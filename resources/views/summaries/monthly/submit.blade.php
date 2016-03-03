@@ -124,7 +124,7 @@
                 .parent().addClass($.support.fileInput ? undefined : 'disabled');*/
         });
       </script>
-      <div class="row betterRow">
+      <div class="row better-row">
         <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <!-- The file upload form used as target for the file upload widget
           <span class="btn btn-success fileinput-button">

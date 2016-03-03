@@ -628,7 +628,7 @@
   <div id="" class="container" style="min-height: 650px;">
     @if(is_null($year))
       <h2 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #777;">Find Summary</h2>
-      <div class="row betterRow">
+      <div class="row better-row">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="text-align: center" placeholder="Select a Year">
           <select class="yearSelect" style="width: 100%">
             <option value="2011">2011</option>
@@ -646,7 +646,7 @@
       </div>
     @endif
     @if(!is_null($year))
-      <div class="row betterRow">
+      <div class="row better-row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
           <h1>{{$year}} Annual Summary</h1>
         </div>

@@ -17,7 +17,7 @@
   <div class="" style="min-height: 500px; width: 100%;">
 
     @if(isset($year))
-      <div class="row betterRow" style="max-width: 960px;">
+      <div class="row better-row" style="max-width: 960px;">
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 20px; text-align: center; padding-top: 20px;"> <h3>{{ $year }}</h3> </div>
         <h3 class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="min-height: 20px; text-align: center; ">

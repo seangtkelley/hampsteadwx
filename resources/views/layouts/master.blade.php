@@ -1,4 +1,5 @@
 <?php require_once(app_path('Listeners/AlertListener.php')); ?>
+<!DOCTYPE HTML>
 <html>
     <head>
       @section('head')

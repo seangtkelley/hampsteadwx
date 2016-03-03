@@ -9,7 +9,7 @@
 
 <div class="container" style="min-height: 650px;">
   <h2>Station Information</h2>
-  <div class="row betterRow">
+  <div class="row better-row">
     <div class="col-md-3">
       <h4>Location:</h4>
     </div>

@@ -1,11 +1,21 @@
 <div id="footer" class="footer">
-  <div class="row betterRow">
-    <!--<div class="col-md-1 col-lg-1">
+  <script>
+    $(document).ready(function (){
+      if(($("#main-content").height() + $("#footer").height() + $(".navbar").height()) < $(window).height()){
+        $("#main-content").height($(window).height()-$("#footer").height()-$(".navbar").height());
+      }
 
-    </div>-->
+      $(window).resize(function (){
+        if(($("#main-content").height() + $("#footer").height() + $(".navbar").height()) < $(window).height()){
+          $("#main-content").height($(window).height()-$("#footer").height()-$(".navbar").height());
+        }
+      });
+    });
+  </script>
+  <div class="row better-row">
     <div class="col-md-12 col-lg-12" style="text-align: center; padding-left: 0px; padding-right: 0px">
       <div class="well" style="margin-bottom: 0px; border: none;">
-        <div class="row betterRow">
+        <div class="row better-row">
           <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2" style="text-align: center">
             <h4 style="padding-left:40px;" >Observations</h4>
             <ul>
