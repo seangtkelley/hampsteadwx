@@ -1,4 +1,4 @@
-<?php require_once(app_path('Listeners/AlertListener.php')); ?>
+<?php require_once(app_path('Listeners/Helpers/sessionAlert.php')); ?>
 <!DOCTYPE HTML>
 <html>
     <head>

@@ -39,6 +39,7 @@ body {
 #alerts {
   position: fixed;
   top: 58px;
+  z-index: 999999;
 }
 
 .navElement {

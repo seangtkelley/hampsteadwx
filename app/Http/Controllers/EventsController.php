@@ -23,7 +23,7 @@ class EventsController extends Controller{
      * @return mixed
      */
     public function showEventsHome(){
-        return view('events.home');
+      return view('events.home');
     }
 
     /**
