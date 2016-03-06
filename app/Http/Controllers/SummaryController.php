@@ -318,7 +318,7 @@ class SummaryController extends Controller{
                   $sf_grtr3++;
               }
               if($SF >= 6){
-                  $sf_grtr++;
+                  $sf_grtr6++;
               }
               if($SF >= 12){
                   $sf_grtr12++;
