@@ -25,41 +25,16 @@
     $(document).ready(function() {
       $('#chartsBtn').attr('disabled', 'disabled');
 
-      var options = {
-          responsive: true,
-          scaleBeginAtZero: true,
+      Chart.defaults.global.responsive = true;
+      Chart.defaults.global.elements.point.hitRadius = 25;
+      Chart.defaults.global.display = true;
+      var globaloptions = {
+          scaleBeginAtZero: false,
           barBeginAtOrigin: true,
           scaleStepWidth: 1,
-          ///Boolean - Whether grid lines are shown across the chart
-          scaleShowGridLines : true,
-          //String - Colour of the grid lines
-          scaleGridLineColor : "rgba(0,0,0,.05)",
-          //Number - Width of the grid lines
-          scaleGridLineWidth : 1,
-          //Boolean - Whether to show horizontal lines (except X axis)
-          scaleShowHorizontalLines: true,
-          //Boolean - Whether to show vertical lines (except Y axis)
-          scaleShowVerticalLines: true,
-          //Boolean - Whether the line is curved between points
-          bezierCurve : false,
-          //Number - Tension of the bezier curve between points
-          bezierCurveTension : 0.4,
-          //Boolean - Whether to show a dot for each point
-          pointDot : true,
-          //Number - Radius of each point dot in pixels
-          pointDotRadius : 4,
-          //Number - Pixel width of point dot stroke
-          pointDotStrokeWidth : 1,
-          //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-          pointHitDetectionRadius : 20,
-          //Boolean - Whether to show a stroke for datasets
-          datasetStroke : true,
-          //Number - Pixel width of dataset stroke
-          datasetStrokeWidth : 2,
-          //Boolean - Whether to fill the dataset with a colour
-          datasetFill : true,
-          //String - A legend template
-          legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+          gridLines: {
+            color:"rgba(0, 0, 0, 1)"
+          },
       };
 
       /**
@@ -82,12 +57,17 @@
         datasets: [
             {
                 label: "Max",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                fill: false,
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(151,187,205,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                tension: 0.0,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -104,12 +84,15 @@
             },
             {
                 label: "Max Avg",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
+                fill: false,
+                borderColor: "rgba(220,220,220,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -128,9 +111,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var maxtemp_ctx = $("#maxtemp").get(0).getContext("2d");
+      var maxtemp_ctx = $("#maxtemp");
       // This will get the first returned node in the jQuery collection.
-      var maxtempLineChart = new Chart(maxtemp_ctx).Line(maxtemp_data, options);
+      var maxtempLineChart = new Chart(maxtemp_ctx, {
+        type: 'line',
+        data: maxtemp_data,
+        options: globaloptions
+      });
 
       /**
         Minimum Temperature Line Chart
@@ -152,12 +139,17 @@
         datasets: [
             {
                 label: "Min",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                fill: false,
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(151,187,205,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                tension: 0.0,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -174,12 +166,15 @@
             },
             {
                 label: "Min Avg",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
+                fill: false,
+                borderColor: "rgba(220,220,220,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -198,9 +193,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var mintemp_ctx = $("#mintemp").get(0).getContext("2d");
+      var mintemp_ctx = $("#mintemp");
       // This will get the first returned node in the jQuery collection.
-      var mintempLineChart = new Chart(mintemp_ctx).Line(mintemp_data, options);
+      var mintempLineChart = new Chart(mintemp_ctx, {
+        type: 'line',
+        data: mintemp_data,
+        options: globaloptions
+      });
 
       /**
         At Ob Temperature Line Chart
@@ -222,12 +221,17 @@
         datasets: [
             {
                 label: "Temp",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                fill: false,
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(151,187,205,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                tension: 0.0,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -244,12 +248,15 @@
             },
             {
                 label: "Avg",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
+                fill: false,
+                borderColor: "rgba(220,220,220,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -268,9 +275,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var avgtemp_ctx = $("#avgtemp").get(0).getContext("2d");
+      var avgtemp_ctx = $("#avgtemp");
       // This will get the first returned node in the jQuery collection.
-      var avgtempLineChart = new Chart(avgtemp_ctx).Line(avgtemp_data, options);
+      var avgtempLineChart = new Chart(avgtemp_ctx, {
+        type: 'line',
+        data: avgtemp_data,
+        options: globaloptions
+      });
 
       /**
         Depart Temperature Bar Chart
@@ -292,11 +303,11 @@
         datasets: [
             {
                 label: "Temp",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
+                backgroundColor: "rgba(151,187,205,1)",
+                borderColor: "rgba(151,187,205,1)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(151,187,205,0.5)",
+                hoverBorderColor: "rgba(151,187,205,1)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -315,9 +326,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var departtemp_ctx = $("#departtemp").get(0).getContext("2d");
+      var departtemp_ctx = $("#departtemp");
       // This will get the first returned node in the jQuery collection.
-      var departtempLineChart = new Chart(departtemp_ctx).Bar(departtemp_data, options);
+      var departtempLineChart = new Chart(departtemp_ctx, {
+        type: 'bar',
+        data: departtemp_data,
+        options: globaloptions
+      });
 
       /**
         Precip Line Chart
@@ -339,12 +354,11 @@
         datasets: [
             {
                 label: "Precip",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(151,187,205,1)",
+                hoverBorderColor: "rgba(151,187,205,0.2)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -371,9 +385,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var precip_ctx = $("#precip").get(0).getContext("2d");
+      var precip_ctx = $("#precip");
       // This will get the first returned node in the jQuery collection.
-      var precipLineChart = new Chart(precip_ctx).Bar(precip_data, options);
+      var precipLineChart = new Chart(precip_ctx, {
+        type: 'bar',
+        data: precip_data,
+        options: globaloptions
+      });
 
       /**
         Depart Precip Bar Chart
@@ -395,11 +413,11 @@
         datasets: [
             {
                 label: "Temp",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(151,187,205,1)",
+                hoverBorderColor: "rgba(151,187,205,0.2)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -420,7 +438,11 @@
       // Get context with jQuery - using jQuery's .get() method.
       var departprecip_ctx = $("#departprecip").get(0).getContext("2d");
       // This will get the first returned node in the jQuery collection.
-      var departprecipLineChart = new Chart(departprecip_ctx).Bar(departprecip_data, options);
+      var departprecipLineChart = new Chart(departprecip_ctx, {
+        type: 'bar',
+        data: departprecip_data,
+        options: globaloptions
+      });
 
       /**
         Greatest Day Precip Line Chart
@@ -442,12 +464,11 @@
         datasets: [
             {
                 label: "Precip",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(151,187,205,1)",
+                hoverBorderColor: "rgba(151,187,205,0.2)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -474,9 +495,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var grtsprecip_ctx = $("#grtsprecip").get(0).getContext("2d");
+      var grtsprecip_ctx = $("#grtsprecip");
       // This will get the first returned node in the jQuery collection.
-      var grtsprecipLineChart = new Chart(grtsprecip_ctx).Bar(grtsprecip_data, options);
+      var grtsprecipLineChart = new Chart(grtsprecip_ctx, {
+        type: 'bar',
+        data: grtsprecip_data,
+        options: globaloptions
+      });
 
       /**
         Snowfall Line Chart
@@ -498,12 +523,11 @@
         datasets: [
             {
                 label: "Snowfall",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(151,187,205,1)",
+                hoverBorderColor: "rgba(151,187,205,0.2)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -530,9 +554,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var sf_ctx = $("#sf").get(0).getContext("2d");
+      var sf_ctx = $("#sf");
       // This will get the first returned node in the jQuery collection.
-      var sfLineChart = new Chart(sf_ctx).Bar(sf_data, options);
+      var sfLineChart = new Chart(sf_ctx, {
+        type: 'bar',
+        data: sf_data,
+        options: globaloptions
+      });
 
       /**
         Snowdepth Line Chart
@@ -562,12 +590,11 @@
         datasets: [
             {
                 label: "Snowdepth",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(151,187,205,1)",
+                hoverBorderColor: "rgba(151,187,205,0.2)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -594,9 +621,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var sd_ctx = $("#sd").get(0).getContext("2d");
+      var sd_ctx = $("#sd");
       // This will get the first returned node in the jQuery collection.
-      var sdLineChart = new Chart(sd_ctx).Bar(sd_data, options);
+      var sdLineChart = new Chart(sd_ctx, {
+        type: 'bar',
+        data: sd_data,
+        options: globaloptions
+      });
     });
 
 
@@ -663,7 +694,7 @@
             <h2>Maximum Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="maxtemp" style="width: 100%; height: 400px"></canvas>
+            <canvas id="maxtemp" style="width: 100%; height: 500px"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Maximum: {{ $MxA_str }}</h4>
@@ -672,7 +703,7 @@
             <h2>Minimum Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="mintemp" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="mintemp" style="width: 100%; height: 500px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Minimum: {{ $MnA_str }}</h4>
@@ -681,7 +712,7 @@
             <h2>Average Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="avgtemp" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="avgtemp" style="width: 100%; height: 500px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Temp: {{ $A_str }}</h4>
@@ -690,7 +721,7 @@
             <h2>Monthly Temperature Departure (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="departtemp" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="departtemp" style="width: 100%; height: 500px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Temp: {{ $A_str }}</h4>
@@ -700,7 +731,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="precip" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="precip" style="width: 100%; height: 500px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Precipitation: {{ $total_precip }}</h4>
@@ -709,7 +740,7 @@
             <h2>Monthly Precipitation Departure (in.)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="departprecip" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="departprecip" style="width: 100%; height: 500px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Temp: {{ $A_str }}</h4>
@@ -719,7 +750,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="grtsprecip" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="grtsprecip" style="width: 100%; height: 500px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Greatest Precipitation: {{ $grts_precip }}</h4>
@@ -729,7 +760,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="sf" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="sf" style="width: 100%; height: 500px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Snowfall: {{ $total_sf }}</h4>
@@ -740,7 +771,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="sd" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="sd" style="width: 100%; height: 500px;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Snowfall: {{ $total_sf }}</h4>

@@ -481,7 +481,7 @@
             <h2>Maximum Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="maxtemp" style="width: 100%; height: 400px"></canvas>
+            <canvas id="maxtemp" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Maximum: {{ $summary->max_avg }}</h4>
