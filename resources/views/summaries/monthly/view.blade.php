@@ -30,37 +30,16 @@
     $(document).ready(function() {
       $('#chartsBtn').attr('disabled', 'disabled');
 
-      var options = {
-          ///Boolean - Whether grid lines are shown across the chart
-          scaleShowGridLines : true,
-          //String - Colour of the grid lines
-          scaleGridLineColor : "rgba(0,0,0,.05)",
-          //Number - Width of the grid lines
-          scaleGridLineWidth : 1,
-          //Boolean - Whether to show horizontal lines (except X axis)
-          scaleShowHorizontalLines: true,
-          //Boolean - Whether to show vertical lines (except Y axis)
-          scaleShowVerticalLines: true,
-          //Boolean - Whether the line is curved between points
-          bezierCurve : false,
-          //Number - Tension of the bezier curve between points
-          bezierCurveTension : 0.4,
-          //Boolean - Whether to show a dot for each point
-          pointDot : true,
-          //Number - Radius of each point dot in pixels
-          pointDotRadius : 4,
-          //Number - Pixel width of point dot stroke
-          pointDotStrokeWidth : 1,
-          //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-          pointHitDetectionRadius : 20,
-          //Boolean - Whether to show a stroke for datasets
-          datasetStroke : true,
-          //Number - Pixel width of dataset stroke
-          datasetStrokeWidth : 2,
-          //Boolean - Whether to fill the dataset with a colour
-          datasetFill : true,
-          //String - A legend template
-          legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+      Chart.defaults.global.responsive = true;
+      Chart.defaults.global.elements.point.hitRadius = 25;
+      Chart.defaults.global.display = true;
+      var globaloptions = {
+          scaleBeginAtZero: false,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          gridLines: {
+            color:"rgba(0, 0, 0, 1)"
+          },
       };
 
       /**
@@ -83,12 +62,17 @@
         datasets: [
             {
                 label: "Max",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                fill: false,
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(151,187,205,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                tension: 0.0,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -105,12 +89,15 @@
             },
             {
                 label: "Max Avg",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
+                fill: false,
+                borderColor: "rgba(220,220,220,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -129,9 +116,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var maxtemp_ctx = $("#maxtemp").get(0).getContext("2d");
+      var maxtemp_ctx = $("#maxtemp");
       // This will get the first returned node in the jQuery collection.
-      var maxtempLineChart = new Chart(maxtemp_ctx).Line(maxtemp_data, options);
+      var maxtempLineChart = new Chart(maxtemp_ctx, {
+        type: 'line',
+        data: maxtemp_data,
+        options: globaloptions
+      });
 
       /**
         Minimum Temperature Line Chart
@@ -153,12 +144,17 @@
         datasets: [
             {
                 label: "Min",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                fill: false,
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(151,187,205,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                tension: 0.0,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -175,12 +171,15 @@
             },
             {
                 label: "Min Avg",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
+                fill: false,
+                borderColor: "rgba(220,220,220,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -199,9 +198,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var mintemp_ctx = $("#mintemp").get(0).getContext("2d");
+      var mintemp_ctx = $("#mintemp");
       // This will get the first returned node in the jQuery collection.
-      var mintempLineChart = new Chart(mintemp_ctx).Line(mintemp_data, options);
+      var mintempLineChart = new Chart(mintemp_ctx, {
+        type: 'line',
+        data: mintemp_data,
+        options: globaloptions
+      });
 
       /**
         At Ob Temperature Line Chart
@@ -223,12 +226,17 @@
         datasets: [
             {
                 label: "Temp",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                fill: false,
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                pointBorderColor: "rgba(220,220,220,1)",
+                pointBackgroundColor: "rgba(151,187,205,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(220,220,220,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                tension: 0.0,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -247,12 +255,16 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var atobtemp_ctx = $("#atobtemp").get(0).getContext("2d");
+      var atobtemp_ctx = $("#atobtemp");
       // This will get the first returned node in the jQuery collection.
-      var atobtempLineChart = new Chart(atobtemp_ctx).Line(atobtemp_data, options);
+      var atobtempLineChart = new Chart(atobtemp_ctx, {
+        type: 'line',
+        data: atobtemp_data,
+        options: globaloptions
+      });
 
       /**
-        Precip Line Chart
+        Precip Bar Chart
       */
       var precip_data = {
         labels: [<?php
@@ -271,12 +283,11 @@
         datasets: [
             {
                 label: "Precip",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                backgroundColor: "rgba(151,187,205,1)",
+                borderColor: "rgba(151,187,205,1)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(151,187,205,0.8)",
+                hoverBorderColor: "rgba(151,187,205,1)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -303,9 +314,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var precip_ctx = $("#precip").get(0).getContext("2d");
+      var precip_ctx = $("#precip");
       // This will get the first returned node in the jQuery collection.
-      var precipLineChart = new Chart(precip_ctx).Bar(precip_data, options);
+      var precipLineChart = new Chart(precip_ctx, {
+        type: 'bar',
+        data: precip_data,
+        options: globaloptions
+      });
 
       /**
         Snowfall/SnowDepth Line Chart
@@ -327,12 +342,17 @@
         datasets: [
             {
                 label: "Snowfall",
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
+                fill: true,
+                backgroundColor: "rgba(151,187,205,0.2)",
+                borderColor: "rgba(151,187,205,1)",
+                pointBorderColor: "#fff",
+                pointBackgroundColor: "rgba(151,187,205,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(151,187,205,1)",
+                pointHoverBorderWidth: 2,
+                tension: 0.0,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -357,12 +377,17 @@
             },
             {
                 label: "Snowdepth",
-                fillColor: "rgba(76,175,80, 0.2)",
-                strokeColor: "rgba(76,175,80, 1)",
-                pointColor: "rgba(76,175,80,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(76,175,80,1)",
+                fill: true,
+                backgroundColor: "rgba(76,175,80, 0.2)",
+                borderColor: "rgba(76,175,80, 1)",
+                pointBorderColor: "#fff",
+                pointBackgroundColor: "rgba(76,175,80,1)",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(76,175,80,1)",
+                pointHoverBorderWidth: 2,
+                tension: 0.0,
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -389,9 +414,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var sfsd_ctx = $("#sfsd").get(0).getContext("2d");
+      var sfsd_ctx = $("#sfsd");
       // This will get the first returned node in the jQuery collection.
-      var sfsdLineChart = new Chart(sfsd_ctx).Line(sfsd_data, options);
+      var sfsdLineChart = new Chart(sfsd_ctx, {
+        type: 'line',
+        data: sfsd_data,
+        options: globaloptions
+      });
     });
 
 
@@ -490,7 +519,7 @@
             <h2>Minimum Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="mintemp" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="mintemp" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Minimum: {{ $summary->min_avg }}</h4>
@@ -499,7 +528,7 @@
             <h2>Temperature at Observation (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="atobtemp" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="atobtemp" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Temp: {{ $summary->avg }}</h4>
@@ -509,7 +538,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="precip" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="precip" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Precipitation: {{ $summary->total_precip }}</h4>
@@ -520,7 +549,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="sfsd" style="width: 100%; height: 400px;"></canvas>
+            <canvas id="sfsd" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Snowfall: {{ $summary->total_sf }}</h4>

@@ -306,7 +306,7 @@
                 backgroundColor: "rgba(151,187,205,1)",
                 borderColor: "rgba(151,187,205,1)",
                 borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,0.5)",
+                hoverBackgroundColor: "rgba(151,187,205,0.8)",
                 hoverBorderColor: "rgba(151,187,205,1)",
                 data: [<?php
                   $datastr = "";
@@ -335,7 +335,7 @@
       });
 
       /**
-        Precip Line Chart
+        Precip Bar Chart
       */
       var precip_data = {
         labels: [<?php
@@ -354,11 +354,11 @@
         datasets: [
             {
                 label: "Precip",
-                backgroundColor: "rgba(151,187,205,0.2)",
+                backgroundColor: "rgba(151,187,205,1)",
                 borderColor: "rgba(151,187,205,1)",
                 borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,1)",
-                hoverBorderColor: "rgba(151,187,205,0.2)",
+                hoverBackgroundColor: "rgba(151,187,205,0.8)",
+                hoverBorderColor: "rgba(151,187,205,1)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -413,11 +413,11 @@
         datasets: [
             {
                 label: "Temp",
-                backgroundColor: "rgba(151,187,205,0.2)",
+                backgroundColor: "rgba(151,187,205,1)",
                 borderColor: "rgba(151,187,205,1)",
                 borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,1)",
-                hoverBorderColor: "rgba(151,187,205,0.2)",
+                hoverBackgroundColor: "rgba(151,187,205,0.8)",
+                hoverBorderColor: "rgba(151,187,205,1)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -445,7 +445,7 @@
       });
 
       /**
-        Greatest Day Precip Line Chart
+        Greatest Day Precip Bar Chart
       */
       var grtsprecip_data = {
         labels: [<?php
@@ -464,11 +464,11 @@
         datasets: [
             {
                 label: "Precip",
-                backgroundColor: "rgba(151,187,205,0.2)",
+                backgroundColor: "rgba(151,187,205,1)",
                 borderColor: "rgba(151,187,205,1)",
                 borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,1)",
-                hoverBorderColor: "rgba(151,187,205,0.2)",
+                hoverBackgroundColor: "rgba(151,187,205,0.8)",
+                hoverBorderColor: "rgba(151,187,205,1)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -504,7 +504,7 @@
       });
 
       /**
-        Snowfall Line Chart
+        Snowfall Bar Chart
       */
       var sf_data = {
         labels: [<?php
@@ -523,11 +523,11 @@
         datasets: [
             {
                 label: "Snowfall",
-                backgroundColor: "rgba(151,187,205,0.2)",
+                backgroundColor: "rgba(151,187,205,1)",
                 borderColor: "rgba(151,187,205,1)",
                 borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,1)",
-                hoverBorderColor: "rgba(151,187,205,0.2)",
+                hoverBackgroundColor: "rgba(151,187,205,0.8)",
+                hoverBorderColor: "rgba(151,187,205,1)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -563,7 +563,7 @@
       });
 
       /**
-        Snowdepth Line Chart
+        Snowdepth Bar Chart
       */
       <?php
       /*$winterDays = array();
@@ -590,11 +590,11 @@
         datasets: [
             {
                 label: "Snowdepth",
-                backgroundColor: "rgba(151,187,205,0.2)",
+                backgroundColor: "rgba(151,187,205,1)",
                 borderColor: "rgba(151,187,205,1)",
                 borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,1)",
-                hoverBorderColor: "rgba(151,187,205,0.2)",
+                hoverBackgroundColor: "rgba(151,187,205,0.8)",
+                hoverBorderColor: "rgba(151,187,205,1)",
                 data: [<?php
                   $datastr = "";
                   $i = 0;
@@ -694,7 +694,7 @@
             <h2>Maximum Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="maxtemp" style="width: 100%; height: 500px"></canvas>
+            <canvas id="maxtemp" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Maximum: {{ $MxA_str }}</h4>
@@ -703,7 +703,7 @@
             <h2>Minimum Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="mintemp" style="width: 100%; height: 500px;"></canvas>
+            <canvas id="mintemp" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Minimum: {{ $MnA_str }}</h4>
@@ -712,7 +712,7 @@
             <h2>Average Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="avgtemp" style="width: 100%; height: 500px;"></canvas>
+            <canvas id="avgtemp" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Temp: {{ $A_str }}</h4>
@@ -721,7 +721,7 @@
             <h2>Monthly Temperature Departure (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="departtemp" style="width: 100%; height: 500px;"></canvas>
+            <canvas id="departtemp" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Temp: {{ $A_str }}</h4>
@@ -731,7 +731,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="precip" style="width: 100%; height: 500px;"></canvas>
+            <canvas id="precip" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Precipitation: {{ $total_precip }}</h4>
@@ -740,7 +740,7 @@
             <h2>Monthly Precipitation Departure (in.)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="departprecip" style="width: 100%; height: 500px;"></canvas>
+            <canvas id="departprecip" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Temp: {{ $A_str }}</h4>
@@ -750,7 +750,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="grtsprecip" style="width: 100%; height: 500px;"></canvas>
+            <canvas id="grtsprecip" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Greatest Precipitation: {{ $grts_precip }}</h4>
@@ -760,7 +760,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="sf" style="width: 100%; height: 500px;"></canvas>
+            <canvas id="sf" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Snowfall: {{ $total_sf }}</h4>
@@ -771,7 +771,7 @@
             <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="sd" style="width: 100%; height: 500px;"></canvas>
+            <canvas id="sd" style="width: 100%;"></canvas>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Total Snowfall: {{ $total_sf }}</h4>
