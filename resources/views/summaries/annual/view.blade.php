@@ -116,7 +116,34 @@
       var maxtempLineChart = new Chart(maxtemp_ctx, {
         type: 'line',
         data: maxtemp_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Temperature (°F)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -198,7 +225,34 @@
       var mintempLineChart = new Chart(mintemp_ctx, {
         type: 'line',
         data: mintemp_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Temperature (°F)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -280,7 +334,34 @@
       var avgtempLineChart = new Chart(avgtemp_ctx, {
         type: 'line',
         data: avgtemp_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Temperature (°F)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -331,7 +412,35 @@
       var departtempLineChart = new Chart(departtemp_ctx, {
         type: 'bar',
         data: departtemp_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: false,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Temperature (°F)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -390,7 +499,35 @@
       var precipLineChart = new Chart(precip_ctx, {
         type: 'bar',
         data: precip_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: true,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Precipitation (in.)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -441,7 +578,35 @@
       var departprecipLineChart = new Chart(departprecip_ctx, {
         type: 'bar',
         data: departprecip_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: false,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Precipitation (in.)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -500,7 +665,35 @@
       var grtsprecipLineChart = new Chart(grtsprecip_ctx, {
         type: 'bar',
         data: grtsprecip_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: true,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Precipitation (in.)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -559,7 +752,35 @@
       var sfLineChart = new Chart(sf_ctx, {
         type: 'bar',
         data: sf_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: true,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Snowfall (in.)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -626,7 +847,35 @@
       var sdLineChart = new Chart(sd_ctx, {
         type: 'bar',
         data: sd_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: true,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: false,
+                labelString: "Month",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Snow Depth (in.)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
     });
 

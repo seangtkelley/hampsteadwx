@@ -37,10 +37,121 @@
           scaleBeginAtZero: false,
           barBeginAtOrigin: true,
           scaleStepWidth: 1,
-          gridLines: {
-            color:"rgba(0, 0, 0, 1)"
-          },
+          scales:{
+            xAxes: [{
+              display: true,
+              gridLines: [{
+                color:"rgba(255, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              gridLines: [{
+                color:"rgba(255, 0, 0, 1)"
+              }]
+            }]
+          }
       };
+
+      /**
+        Max/Min Double Bar Chart
+      */
+      var maxmintemp_data = {
+        labels: [<?php
+          $datastr = "";
+          $i = 1;
+          foreach($dailyObs as $ob){
+            if(isset($dailyObs[$i])){
+                $datastr .= $i . ",";
+            } else {
+                $datastr .= $i;
+            }
+            $i++;
+          }
+          echo $datastr;
+        ?>],
+        datasets: [
+            {
+                label: "Max",
+                backgroundColor: "rgba(211,47,47,1)",
+                borderColor: "rgba(211,47,47,0.2)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(211,47,47,0.8)",
+                hoverBorderColor: "rgba(211,47,47,1)",
+                data: [<?php
+                  $datastr = "";
+                  $i = 0;
+                  foreach($dailyObs as $ob){
+                    if(isset($dailyObs[$i+1])){
+                        $datastr .= $ob->max . ",";
+                    } else {
+                        $datastr .= $ob->max;
+                    }
+                    $i++;
+                  }
+                  echo $datastr;
+                ?>]
+            },
+            {
+                label: "Min",
+                backgroundColor: "rgba(48,63,159,1)",
+                borderColor: "rgba(48,63,159,0.2)",
+                borderWidth: 1,
+                hoverBackgroundColor: "rgba(48,63,159,0.8)",
+                hoverBorderColor: "rgba(48,63,159,1)",
+                data: [<?php
+                  $datastr = "";
+                  $i = 0;
+                  foreach($dailyObs as $ob){
+                    if(isset($dailyObs[$i+1])){
+                        $datastr .= $ob->min . ",";
+                    } else {
+                        $datastr .= $ob->min;
+                    }
+                    $i++;
+                  }
+                  echo $datastr;
+                ?>]
+            }
+        ]
+      };
+
+      // Get context with jQuery - using jQuery's .get() method.
+      var maxmintemp_ctx = $("#maxmintemp");
+      // This will get the first returned node in the jQuery collection.
+      var maxmintempLineChart = new Chart(maxmintemp_ctx, {
+        type: 'bar',
+        data: maxmintemp_data,
+        options: {
+          scaleBeginAtZero: false,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Day",
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Temperature (°F)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
+      });
 
       /**
         Maximum Temperature Line Chart
@@ -116,13 +227,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var maxtemp_ctx = $("#maxtemp");
+      //var maxtemp_ctx = $("#maxtemp");
       // This will get the first returned node in the jQuery collection.
-      var maxtempLineChart = new Chart(maxtemp_ctx, {
+      /*var maxtempLineChart = new Chart(maxtemp_ctx, {
         type: 'line',
         data: maxtemp_data,
         options: globaloptions
-      });
+      });*/
 
       /**
         Minimum Temperature Line Chart
@@ -198,13 +309,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var mintemp_ctx = $("#mintemp");
+      //var mintemp_ctx = $("#mintemp");
       // This will get the first returned node in the jQuery collection.
-      var mintempLineChart = new Chart(mintemp_ctx, {
+      /*var mintempLineChart = new Chart(mintemp_ctx, {
         type: 'line',
         data: mintemp_data,
         options: globaloptions
-      });
+      });*/
 
       /**
         At Ob Temperature Line Chart
@@ -255,13 +366,13 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var atobtemp_ctx = $("#atobtemp");
+      //var atobtemp_ctx = $("#atobtemp");
       // This will get the first returned node in the jQuery collection.
-      var atobtempLineChart = new Chart(atobtemp_ctx, {
+      /*var atobtempLineChart = new Chart(atobtemp_ctx, {
         type: 'line',
         data: atobtemp_data,
         options: globaloptions
-      });
+      });*/
 
       /**
         Precip Bar Chart
@@ -319,7 +430,35 @@
       var precipLineChart = new Chart(precip_ctx, {
         type: 'bar',
         data: precip_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: false,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Day"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Precipitation (in.)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
 
       /**
@@ -419,7 +558,35 @@
       var sfsdLineChart = new Chart(sfsd_ctx, {
         type: 'line',
         data: sfsd_data,
-        options: globaloptions
+        options: {
+          scaleBeginAtZero: false,
+          barBeginAtOrigin: true,
+          scaleStepWidth: 1,
+          scales:{
+            xAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Day"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: [{
+                display: true,
+                labelString: "Snowfall/Snowdepth (in)"
+              }],
+              gridLines: [{
+                display: true,
+                color:"rgba(0, 0, 0, 1)"
+              }]
+            }]
+          }
+        }
       });
     });
 
@@ -507,23 +674,29 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
         <div id="charts">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <h2>Hi/Lo Temps (°F)</h2>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <canvas id="maxmintemp" style="width: 100%;"></canvas>
+          </div>
+          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Maximum Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <canvas id="maxtemp" style="width: 100%;"></canvas>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Maximum: {{ $summary->max_avg }}</h4>
-          </div>-->
+          </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Minimum Temperature (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <canvas id="mintemp" style="width: 100%;"></canvas>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Minimum: {{ $summary->min_avg }}</h4>
-          </div>-->
+          </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Temperature at Observation (°F)</h2>
           </div>
