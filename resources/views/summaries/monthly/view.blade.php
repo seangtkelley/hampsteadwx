@@ -27,8 +27,29 @@
   @endif
   @if(isset($summary))
   <script>
+    function viewTextSummary(){
+      $('#textSummary').show();
+      $('#charts').hide();
+      $('#textBtn').attr('disabled','disabled');
+      $('#chartsBtn').removeAttr('disabled');
+    }
+
+    function viewCharts(){
+      $('#textSummary').hide();
+      $('#charts').show();
+      $('#textBtn').removeAttr('disabled');
+      $('#chartsBtn').attr('disabled','disabled');
+    }
+
+    function iframeLoaded() {
+      var iFrameID = document.getElementById('textSummaryiFrame');
+      if(iFrameID) {
+        // here you can make the height, I delete it first, then I make it again
+        iFrameID.height = "";
+        iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
+      }
+    }
     $(document).ready(function() {
-      $('#chartsBtn').attr('disabled', 'disabled');
 
       Chart.defaults.global.responsive = true;
       Chart.defaults.global.elements.point.hitRadius = 25;
@@ -588,36 +609,11 @@
           }
         }
       });
+
+      setTimeout(function (){
+        viewTextSummary();
+      }, 1000);
     });
-
-
-
-    function viewTextSummary(){
-      $('#textSummary').show();
-      $('#charts').hide();
-      $('#textBtn').attr('disabled','disabled');
-      $('#chartsBtn').removeAttr('disabled');
-    }
-
-    function viewCharts(){
-      $('#textSummary').hide();
-      $('#charts').show();
-      $('#textBtn').removeAttr('disabled');
-      $('#chartsBtn').attr('disabled','disabled');
-    }
-
-    function showEditRemarks(){
-
-    }
-
-    function iframeLoaded() {
-      var iFrameID = document.getElementById('textSummaryiFrame');
-      if(iFrameID) {
-        // here you can make the height, I delete it first, then I make it again
-        iFrameID.height = "";
-        iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
-      }
-    }
   </script>
   @endif
   <div id="" class="container" style="min-height: 650px;">
