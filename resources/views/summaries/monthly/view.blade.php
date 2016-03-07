@@ -50,6 +50,7 @@
       }
     }
     $(document).ready(function() {
+      $('#textBtn').attr('disabled','disabled');
 
       Chart.defaults.global.responsive = true;
       Chart.defaults.global.elements.point.hitRadius = 25;
@@ -609,10 +610,6 @@
           }
         }
       });
-
-      setTimeout(function (){
-        viewTextSummary();
-      }, 1000);
     });
   </script>
   @endif
@@ -668,7 +665,7 @@
           </button>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
-        <div id="charts">
+        <div id="charts" style="display:none;">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Hi/Lo Temps (°F)</h2>
           </div>
@@ -727,7 +724,7 @@
           @endif
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left; min-height: 20px;"></div>
         </div>
-        <div id="textSummary" style="display:none;">
+        <div id="textSummary">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <iframe id="textSummaryiFrame" style="width:100%; height: 1250px; border:none;" src="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
           </div>
