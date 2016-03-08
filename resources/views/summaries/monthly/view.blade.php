@@ -50,6 +50,10 @@
       }
     }
     $(document).ready(function() {
+      $('#textSummaryiFrame').load(function(){
+          iframeLoaded();
+      });
+
       $('#textBtn').attr('disabled','disabled');
 
       Chart.defaults.global.responsive = true;
@@ -726,7 +730,7 @@
         </div>
         <div id="textSummary">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <iframe id="textSummaryiFrame" style="width:100%; height: 1250px; border:none;" src="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
+            <iframe id="textSummaryiFrame" style="width:100%; border:none;" src="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
           </div>
         </div>
         <div id="editRemarks" class="modal fade" tabindex="-1" role="dialog">

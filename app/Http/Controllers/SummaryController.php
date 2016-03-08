@@ -1172,7 +1172,7 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function editMonthlyRemarks(Request $request, $year, $month){
-      $remarks = strip_tags(\Input::get('remarks'), '<p><a><h5><b><i><ul><li>');
+      $remarks = strip_tags(\Input::get('remarks'), '<p><a><h5><b><i><ul><li><br>');
       $password = \Input::get('password');
 
       if($password == 'cfs613'){
