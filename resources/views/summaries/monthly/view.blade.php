@@ -663,7 +663,8 @@
           <a href="{{route('summaries.monthly.home')}}" class="btn btn-info"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>&nbsp; Back</a>
           <a href="#" id="textBtn" onclick="viewTextSummary()" class="btn btn-primary"><span class="glyphicon glyphicon-font" aria-hidden="true"></span>&nbsp; View Text Summary</a>
           <a href="#" id="chartsBtn" onclick="viewCharts()" class="btn btn-primary"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp; View Charts</a>
-          <a href="{{route('summaries.monthly.html', ['year' => $summary->year, 'month' => $summary->month])}}" class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp; Download HTML</a>
+          <a href="{{route('summaries.monthly.text', ['year' => $summary->year, 'month' => $summary->month])}}" target="_blank" class="btn btn-primary"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp; Open Text Summary</a>
+          <a href="{{route('summaries.monthly.csv', ['year' => $summary->year, 'month' => $summary->month])}}" class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp; Download CSV</a>
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRemarks">
             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; Edit Remarks
           </button>
@@ -730,7 +731,7 @@
         </div>
         <div id="textSummary">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <iframe id="textSummaryiFrame" style="width:100%; border:none;" src="{{route('summaries.monthly.raw', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
+            <iframe id="textSummaryiFrame" style="width:100%; border:none;" src="{{route('summaries.monthly.text', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
           </div>
         </div>
         <div id="editRemarks" class="modal fade" tabindex="-1" role="dialog">

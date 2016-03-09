@@ -1060,7 +1060,7 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
-    public function showRawMonthlySummary(Request $request, $year, $month){
+    public function showTextMonthlySummary(Request $request, $year, $month){
       // get summary
       $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
 
@@ -1085,7 +1085,7 @@ class SummaryController extends Controller{
       $AVG_PRECIP = $avg_precip_array[$month-1];
       $AVG_SNFL = $avg_snfl_array[$month-1];
 
-      return view('summaries.monthly.raw', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+      return view('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
     }
 
     /**
@@ -1119,7 +1119,7 @@ class SummaryController extends Controller{
       $AVG_PRECIP = $avg_precip_array[$month-1];
       $AVG_SNFL = $avg_snfl_array[$month-1];
 
-      $view = \View::make('summaries.monthly.raw', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+      $view = \View::make('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
       $contents = $view->render();
 
       //PDF file is stored under project/public/download/info.pdf
@@ -1161,8 +1161,29 @@ class SummaryController extends Controller{
       $AVG_PRECIP = $avg_precip_array[$month-1];
       $AVG_SNFL = $avg_snfl_array[$month-1];
 
-      $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.monthly.raw', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+      $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
       return $pdf->download('West_Hampstead-' . $year . '_' . $month . '-MonthlySummary.pdf');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function downloadMonthlyCSV(Request $request, $year, $month){
+      // get summary
+      $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+
+      // get contents of csv files
+      $csv = file_get_contents($summary->csv_file);
+
+      // create headers and download file
+      $headers = array(
+        'Content-Type' => 'text/html',
+        'Content-Disposition' => 'attachment; filename="West_Hampstead-' . $year . '_' . $month . '.csv"'
+      );
+      return \Response::make($csv, 200, $headers);
     }
 
     /**
@@ -1226,10 +1247,10 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
-    public function showRawAnnualSummary(Request $request, $year){
+    public function showTextAnnualSummary(Request $request, $year){
       $data = $this->calcAnnual($year);
 
-      return view('summaries.annual.raw', $data);
+      return view('summaries.annual.text', $data);
     }
 
     /**
@@ -1245,7 +1266,7 @@ class SummaryController extends Controller{
         $data = $this->calcAnnual($year);
       }
 
-      $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.annual.raw', $data);
+      $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.annual.text', $data);
       return $pdf->download('West_Hampstead-' . $year . '-AnnualSummary.pdf');
     }
 
@@ -1262,7 +1283,7 @@ class SummaryController extends Controller{
         $data = $this->calcAnnual($year);
       }
 
-      $view = \View::make('summaries.annual.raw', $data);
+      $view = \View::make('summaries.annual.text', $data);
       $contents = $view->render();
 
       //PDF file is stored under project/public/download/info.pdf

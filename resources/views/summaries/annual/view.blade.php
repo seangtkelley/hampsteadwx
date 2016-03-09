@@ -936,7 +936,7 @@
           <a href="{{route('summaries.annual.home')}}" class="btn btn-info"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>&nbsp; Back</a>
           <a href="#" id="textBtn" onclick="viewTextSummary()" class="btn btn-primary"><span class="glyphicon glyphicon-font" aria-hidden="true"></span>&nbsp; View Text Summary</a>
           <a href="#" id="chartsBtn" onclick="viewCharts()" class="btn btn-primary"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp; View Charts</a>
-          <a href="{{route('summaries.annual.html', ['year' => $year])}}" class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp; Download HTML</a>
+          <a href="{{route('summaries.annual.text', ['year' => $year])}}" target="_blank" class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp; Open Text Summary</a>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
         <div id="charts" style="display:none;">
@@ -1031,7 +1031,7 @@
         </div>
         <div id="textSummary">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <iframe id="textSummaryiFrame" style="width:100%; border:none;" src="{{route('summaries.annual.raw', ['year' => $year])}}"></iframe>
+            <iframe id="textSummaryiFrame" style="width:100%; border:none;" src="{{route('summaries.annual.text', ['year' => $year])}}"></iframe>
           </div>
         </div>
       </div>
