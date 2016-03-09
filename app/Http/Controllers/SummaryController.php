@@ -1293,4 +1293,44 @@ class SummaryController extends Controller{
       );
       return \Response::make($contents, 200, $headers);
     }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showPeakFoliageView(){
+        return view('summaries.peakfoliage.view');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showPeakFoliageSubmit(){
+        return view('summaries.peakfoliage.submit');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showSunsetLakeView(){
+        return view('summaries.sunsetlake.view');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function showSunsetLakeSubmit(){
+        return view('summaries.sunsetlake.submit');
+    }
 }
