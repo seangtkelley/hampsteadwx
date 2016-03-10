@@ -8,7 +8,7 @@
 @section('content')
 
 <div class="container">
-  <form action="{{route('events.submit')}}" method="POST">
+  <form action="{{route('peakfoliage.submit')}}" method="POST">
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
     <h2>Submit Peak Foliage</h2>
 

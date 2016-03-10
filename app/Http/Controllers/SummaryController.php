@@ -1320,6 +1320,32 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
+    public function submitPeakFoliage(){
+      if(\Input::get('password') == "cfs613"){
+        $eventObject = new \App\Events;
+        $eventObject->year = trim(\Input::get('year'));
+        $eventObject->date = trim(\Input::get('date'));
+
+        if($eventObject->save()){
+          event(new Alert('create', array('type' => 'success', 'body' => 'Peak Foliage submitted successfully.')));
+          return redirect()->route('peakfoliage.submit');
+        } else {
+          event(new Alert('create', array('type' => 'danger', 'body' => 'Peak Foliage not submitted successfully.')));
+          return redirect()->route('peakfoliage.submit');
+        }
+      } else {
+        event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect password.')));
+        return redirect()->route('peakfoliage.submit');
+      }
+    }
+
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
     public function showSunsetLakeView(){
         return view('summaries.sunsetlake.view');
     }
@@ -1332,5 +1358,37 @@ class SummaryController extends Controller{
      */
     public function showSunsetLakeSubmit(){
         return view('summaries.sunsetlake.submit');
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
+    public function submitIceInIceOut(){
+      if(\Input::get('password') == "cfs613"){
+        $eventObject = new \App\Events;
+        $eventObject->season = trim(\Input::get('season'));
+        $eventObject->icein = trim(\Input::get('icein'));
+        $eventObject->iceout = trim(\Input::get('iceout'));
+
+        $start_date = new DateTime(trim(\Input::get('icein')));
+        $end_date = new DateTime(trim(\Input::get('iceout')));
+
+        $dd = date_diff($end_date, $start_date);
+        $eventObject->duration = $dd->d;
+
+        if($eventObject->save()){
+          event(new Alert('create', array('type' => 'success', 'body' => 'Ice In/Ice Out submitted successfully.')));
+          return redirect()->route('sunsetlake.submit');
+        } else {
+          event(new Alert('create', array('type' => 'danger', 'body' => 'Ice In/Ice Out not submitted successfully.')));
+          return redirect()->route('sunsetlake.submit');
+        }
+      } else {
+        event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect password.')));
+        return redirect()->route('sunsetlake.submit');
+      }
     }
 }

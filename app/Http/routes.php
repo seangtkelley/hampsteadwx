@@ -49,9 +49,11 @@ Route::get('/summaries/annual/{year}/pdf',            ['as' => 'summaries.annual
 
 Route::get('/summaries/peakfoliage',                  ['as' => 'summaries.peakfoliage.view', 'uses'=>'SummaryController@showPeakFoliageView','index'=>true]);
 Route::get('/summaries/peakfoliage/submit',           ['as' => 'summaries.peakfoliage.submit', 'uses'=>'SummaryController@showPeakFoliageSubmit','index'=>false]);
+Route::post('/summaries/peakfoliage/submit',          ['as' => 'summaries.peakfoliage.submit', 'uses'=>'SummaryController@submitPeakFoliage','index'=>false]);
 
-Route::get('/summaries/sunsetlake',                  ['as' => 'summaries.sunsetlake.view', 'uses'=>'SummaryController@showSunsetLakeView','index'=>true]);
-Route::get('/summaries/sunsetlake/submit',           ['as' => 'summaries.sunsetlake.submit', 'uses'=>'SummaryController@showSunsetLakeSubmit','index'=>false]);
+Route::get('/summaries/sunsetlake',                   ['as' => 'summaries.sunsetlake.view', 'uses'=>'SummaryController@showSunsetLakeView','index'=>true]);
+Route::get('/summaries/sunsetlake/submit',            ['as' => 'summaries.sunsetlake.submit', 'uses'=>'SummaryController@showSunsetLakeSubmit','index'=>false]);
+Route::post('/summaries/sunsetlake/submit',           ['as' => 'summaries.sunsetlake.submit', 'uses'=>'SummaryController@submitIceInIceOut','index'=>false]);
 
 /*
  * Events
