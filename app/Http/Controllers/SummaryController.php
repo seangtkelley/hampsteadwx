@@ -1322,7 +1322,7 @@ class SummaryController extends Controller{
      */
     public function submitPeakFoliage(){
       if(\Input::get('password') == "cfs613"){
-        $eventObject = new \App\Events;
+        $eventObject = new \App\PeakFoliage;
         $eventObject->year = trim(\Input::get('year'));
         $eventObject->date = trim(\Input::get('date'));
 
@@ -1368,7 +1368,7 @@ class SummaryController extends Controller{
      */
     public function submitIceInIceOut(){
       if(\Input::get('password') == "cfs613"){
-        $eventObject = new \App\Events;
+        $eventObject = new \App\IceInIceOut;
         $eventObject->season = trim(\Input::get('season'));
         $eventObject->icein = trim(\Input::get('icein'));
         $eventObject->iceout = trim(\Input::get('iceout'));
