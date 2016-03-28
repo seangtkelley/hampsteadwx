@@ -26,7 +26,76 @@
     </script>
   @endif
   @if(isset($summary))
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
+  /*google.charts.load('current', {packages: ['corechart', 'bar']});
+  google.charts.setOnLoadCallback(drawAxisTickColors);
+
+  function drawAxisTickColors() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('timeofday', 'Time of Day');
+    data.addColumn('number', 'Energy Level');
+
+    data.addRows([
+      <?php
+        $datastr = "";
+        $i = 0;
+        foreach($dailyObs as $ob){
+          if(isset($dailyObs[$i+1])){
+              $datastr .= '[{v: [' . strval($i+8) . ', 0, 0], f: ' . strval($i) . '}, ' . strval($i+1) . ', ' . strval($ob->max) . '],';
+          }
+          $i++;
+        }
+        echo $datastr;
+      ?>
+    ]);
+
+    var options = {
+      width: 600,
+      height: 400,
+      title: 'Motivation and Energy Level Throughout the Day',
+      focusTarget: 'category',
+      hAxis: {
+        title: 'Time of Day',
+        format: 'h:mm a',
+        viewWindow: {
+          min: [7, 30, 0],
+          max: [17, 30, 0]
+        },
+        textStyle: {
+          fontSize: 14,
+          color: '#053061',
+          bold: true,
+          italic: false
+        },
+        titleTextStyle: {
+          fontSize: 18,
+          color: '#053061',
+          bold: true,
+          italic: false
+        }
+      },
+      vAxis: {
+        title: 'Rating (scale of 1-10)',
+        textStyle: {
+          fontSize: 18,
+          color: '#67001f',
+          bold: false,
+          italic: false
+        },
+        titleTextStyle: {
+          fontSize: 18,
+          color: '#67001f',
+          bold: true,
+          italic: false
+        }
+      }
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }*/
+
     function viewTextSummary(){
       $('#textSummary').show();
       $('#charts').hide();
@@ -639,12 +708,11 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center" placeholder="Select a Year">
           <select class="yearSelect" style="width: 100%">
-            <option value="2011">2011</option>
-            <option value="2012">2012</option>
-            <option value="2013">2013</option>
-            <option value="2014">2014</option>
-            <option value="2015">2015</option>
-            <option value="2016">2016</option>
+            <?php
+              for($i = 2011; $i <= date("Y"); $i++){
+                echo "<option value=\"" . $i . "\">" . $i . "</option>";
+              }
+            ?>
           </select>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4" style="text-align: center; margin-bottom: 5px;">
@@ -677,6 +745,8 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <canvas id="maxmintemp" style="width: 100%;"></canvas>
           </div>
+          <!--<div id="chart_div" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+          </div>-->
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Maximum Temperature (°F)</h2>
           </div>

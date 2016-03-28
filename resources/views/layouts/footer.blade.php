@@ -31,9 +31,8 @@
               <li><a href="{{route('summaries.monthly.home')}}">Monthly</a></li>
               <li><a href="{{route('summaries.annual.home')}}">Annual</a></li>
               <li><a href="#">Snow Season</a></li>
-              <li><a href="#">Sunset Lake: Ice In/Ice Out</a></li>
-              <li><a href="#">Peak Foliage</a></li>
-              <li><a href="#">Seasonal Graphs</a></li>
+              <li><a href="{{route('summaries.sunsetlake.view')}}">Sunset Lake: Ice In/Ice Out</a></li>
+              <li><a href="{{route('summaries.peakfoliage.view')}}">Peak Foliage</a></li>
             </ul>
           </div>
           <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">

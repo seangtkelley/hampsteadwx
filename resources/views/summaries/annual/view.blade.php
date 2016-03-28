@@ -912,12 +912,11 @@
       <div class="row better-row">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="text-align: center" placeholder="Select a Year">
           <select class="yearSelect" style="width: 100%">
-            <option value="2011">2011</option>
-            <option value="2012">2012</option>
-            <option value="2013">2013</option>
-            <option value="2014">2014</option>
-            <option value="2015">2015</option>
-            <option value="2016">2016</option>
+            <?php
+              for($i = 2011; $i <= date("Y"); $i++){
+                echo "<option value=\"" . $i . "\">" . $i . "</option>";
+              }
+            ?>
           </select>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="text-align: center; margin-bottom: 5px;">
