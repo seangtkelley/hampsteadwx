@@ -1324,20 +1324,34 @@ class SummaryController extends Controller{
      */
     public function submitPeakFoliage(){
       if(\Input::get('password') == "cfs613"){
-        $eventObject = new \App\PeakFoliage;
-        $eventObject->year = trim(\Input::get('year'));
-        $eventObject->date = trim(\Input::get('date'));
+        if(\App\PeakFoliage::where('year', \Input::get('year'))->count() > 0){
+          $eventObject = \App\PeakFoliage::where('year', \Input::get('year'))->first();
+          $eventObject->year = trim(\Input::get('year'));
+          $eventObject->date = trim(\Input::get('date'));
 
-        if($eventObject->save()){
-          event(new Alert('create', array('type' => 'success', 'body' => 'Peak Foliage submitted successfully.')));
-          return redirect()->route('peakfoliage.submit');
+          if($eventObject->save()){
+            event(new Alert('create', array('type' => 'success', 'body' => 'Peak Foliage submitted successfully.')));
+            return redirect()->route('summaries.peakfoliage.submit');
+          } else {
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Peak Foliage not submitted successfully.')));
+            return redirect()->route('summaries.peakfoliage.submit');
+          }
         } else {
-          event(new Alert('create', array('type' => 'danger', 'body' => 'Peak Foliage not submitted successfully.')));
-          return redirect()->route('peakfoliage.submit');
+          $eventObject = new \App\PeakFoliage;
+          $eventObject->year = trim(\Input::get('year'));
+          $eventObject->date = trim(\Input::get('date'));
+
+          if($eventObject->save()){
+            event(new Alert('create', array('type' => 'success', 'body' => 'Peak Foliage submitted successfully.')));
+            return redirect()->route('summaries.peakfoliage.submit');
+          } else {
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Peak Foliage not submitted successfully.')));
+            return redirect()->route('summaries.peakfoliage.submit');
+          }
         }
       } else {
         event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect password.')));
-        return redirect()->route('peakfoliage.submit');
+        return redirect()->route('summaries.peakfoliage.submit');
       }
     }
 
@@ -1372,27 +1386,48 @@ class SummaryController extends Controller{
      */
     public function submitIceInIceOut(){
       if(\Input::get('password') == "cfs613"){
-        $eventObject = new \App\IceInIceOut;
-        $eventObject->season = trim(\Input::get('season'));
-        $eventObject->icein = trim(\Input::get('icein'));
-        $eventObject->iceout = trim(\Input::get('iceout'));
+        if(\App\IceInIceOut::where('season', \Input::get('season'))->count() > 0){
+          $eventObject = \App\IceInIceOut::where('season', \Input::get('season'))->first();
+          $eventObject->season = trim(\Input::get('season'));
+          $eventObject->icein = trim(\Input::get('icein'));
+          $eventObject->iceout = trim(\Input::get('iceout'));
 
-        $start_date = new DateTime(trim(\Input::get('icein')));
-        $end_date = new DateTime(trim(\Input::get('iceout')));
+          $start_date = new \DateTime(trim(\Input::get('icein')));
+          $end_date = new \DateTime(trim(\Input::get('iceout')));
 
-        $dd = date_diff($end_date, $start_date);
-        $eventObject->duration = $dd->d;
+          $dd = date_diff($end_date, $start_date);
+          $eventObject->duration = $dd->d;
 
-        if($eventObject->save()){
-          event(new Alert('create', array('type' => 'success', 'body' => 'Ice In/Ice Out submitted successfully.')));
-          return redirect()->route('sunsetlake.submit');
+          if($eventObject->save()){
+            event(new Alert('create', array('type' => 'success', 'body' => 'Ice In/Ice Out submitted successfully.')));
+            return redirect()->route('summaries.sunsetlake.view');
+          } else {
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Ice In/Ice Out not submitted successfully.')));
+            return redirect()->route('summaries.sunsetlake.submit');
+          }
         } else {
-          event(new Alert('create', array('type' => 'danger', 'body' => 'Ice In/Ice Out not submitted successfully.')));
-          return redirect()->route('sunsetlake.submit');
+          $eventObject = new \App\IceInIceOut;
+          $eventObject->season = trim(\Input::get('season'));
+          $eventObject->icein = trim(\Input::get('icein'));
+          $eventObject->iceout = trim(\Input::get('iceout'));
+
+          $start_date = new \DateTime(trim(\Input::get('icein')));
+          $end_date = new \DateTime(trim(\Input::get('iceout')));
+
+          $dd = date_diff($end_date, $start_date);
+          $eventObject->duration = $dd->d;
+
+          if($eventObject->save()){
+            event(new Alert('create', array('type' => 'success', 'body' => 'Ice In/Ice Out submitted successfully.')));
+            return redirect()->route('summaries.sunsetlake.view');
+          } else {
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Ice In/Ice Out not submitted successfully.')));
+            return redirect()->route('summaries.sunsetlake.submit');
+          }
         }
       } else {
         event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect password.')));
-        return redirect()->route('sunsetlake.submit');
+        return redirect()->route('summaries.sunsetlake.submit');
       }
     }
 }

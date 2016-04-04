@@ -17,18 +17,18 @@
         var dataTable = new google.visualization.DataTable();
 
         dataTable.addColumn({ type: 'string', id: 'Year' });
-        dataTable.addColumn({ type: 'date', id: 'Ice In' });
-        dataTable.addColumn({ type: 'date', id: 'Ice Out' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
         dataTable.addRows([
           <?php
             $i = 0;
             $str = "";
             foreach($summaries as $summary){
-              $start = new DateTime($summary->icein);
-              $end = new DateTime($summary->iceout);
-              $icein = $start->y . "," . $start->m . "," . $start->d;
-              $iceout = $end->y . "," . $end->m . "," . $end->d;
-              $str .= "[ '" . $summary->year . "', new Date(" . $icein . "), new Date(" . $iceout . ")";
+              $start = new \DateTime($summary->icein);
+              $end = new \DateTime($summary->iceout);
+              $icein = $start->format('Y') . "," . strval(intval($start->format('m'))-1) . "," . $start->format('d');
+              $iceout = $end->format('Y') . "," . strval(intval($end->format('m'))-1) . "," . $end->format('d');
+              $str .= "[ '" . $summary->season . "', new Date(" . $icein . "), new Date(" . $iceout . ")";
 
               if(isset($summaries[$i+1])){
                 $str .= "],";
@@ -38,6 +38,7 @@
 
               $i++;
             }
+            echo $str;
           ?>
         ]);
 
