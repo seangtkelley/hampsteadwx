@@ -1301,7 +1301,9 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showPeakFoliageView(){
-        return view('summaries.peakfoliage.view');
+        $allPeaks = \App\PeakFoliage::all();
+
+        return view('summaries.peakfoliage.view', [ 'allPeaks' => $allPeaks]);
     }
 
     /**
