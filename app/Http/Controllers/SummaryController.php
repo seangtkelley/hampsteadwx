@@ -1349,7 +1349,9 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showSunsetLakeView(){
-        return view('summaries.sunsetlake.view');
+        $allSummaries = \App\IceInIceOut::all();
+
+        return view('summaries.sunsetlake.view', [ 'summaries' => $allSummaries]);
     }
 
     /**
