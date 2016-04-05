@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SnowSeason extends Model
 {
-  protected $table = 'snow_seasons';
+  protected $table = 'snowseason';
 
-  protected $fillable = array('year', 'month', 'total_sf', 'grts_sf', 'grts_sd');
+  protected $fillable = array('winter', 'oct', 'nov', 'dec', 'jan', 'feb', 'mar', 'apr', 'may', 'total');
 }

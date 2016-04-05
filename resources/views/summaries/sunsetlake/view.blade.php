@@ -50,10 +50,7 @@
     });
   </script>
   <div id="" class="container" style="min-height: 650px;">
-    <h3>Sunset Lake Ice In/Ice Out</h3>
-    <h3>NWS Cooperative Climatological Station, West Hampstead, New Hampshire</h3>
-    County: Rockingham  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Town: Hampstead
-    <br><br>
-    <div id="timeline" style="height: 180px;"></div>
+    <h3 style="text-align: center;">Sunset Lake Ice In/Ice Out</h3>
+    <div id="timeline"></div>
   </div>
 @endsection

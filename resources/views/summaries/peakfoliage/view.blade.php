@@ -7,10 +7,7 @@
 
 @section('content')
   <div id="" class="container" style="min-height: 650px;">
-    <h3>Peak Foliage</h3>
-    <h3>NWS Cooperative Climatological Station, West Hampstead, New Hampshire</h3>
-    County: Rockingham  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Town: Hampstead
-    <br><br>
+    <h3 style="text-align: center;">Peak Foliage</h3>
     <table class="table-bordered table-hover" style="min-width: 150px">
       <tbody>
         <tr>
