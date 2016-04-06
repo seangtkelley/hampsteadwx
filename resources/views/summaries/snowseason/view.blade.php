@@ -18,7 +18,7 @@
             $i = 0;
             $str = "";
             foreach($summaries as $summary){
-              $str = "['" . $summary->winter . "'," . $summary->total;
+              $str .= "['" . $summary->winter . "'," . $summary->total;
 
               if(isset($summaries[$i+1])){
                 $str .= "],";
@@ -39,6 +39,7 @@
           vAxis: {
             title: 'Season'
           },
+          legend: {position: 'none'},
           bars: 'horizontal',
           series: {
             0: {axis: 'sf'},

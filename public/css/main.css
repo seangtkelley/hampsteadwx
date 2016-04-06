@@ -5988,3 +5988,10 @@ li {
 
 .img-circle {
   border-radius: 50%; }
+
+.footer-element {
+  padding-left: 40px; }
+
+@media screen and (max-width: 767px) {
+  .footer-element {
+    padding-left: 0px; } }
