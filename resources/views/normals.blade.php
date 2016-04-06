@@ -9,7 +9,7 @@
 
 <div class="container" style="min-height: 650px;">
   <h3>1981-2010 Climate Normals</h3>
-  <div style="width: 100%; overflow:scroll;">
+  <div style="width: 100%; overflow: auto;">
     <table class="table-bordered table-hover" style="width: 100%;">
   			<tbody>
         <tr>
