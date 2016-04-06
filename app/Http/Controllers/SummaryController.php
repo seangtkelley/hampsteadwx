@@ -1363,7 +1363,7 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showPeakFoliageView(){
-        $allPeaks = \App\PeakFoliage::all();
+        $allPeaks = \App\PeakFoliage::orderBy('year')->get();
 
         return view('summaries.peakfoliage.view', [ 'allPeaks' => $allPeaks]);
     }
@@ -1393,7 +1393,7 @@ class SummaryController extends Controller{
 
           if($eventObject->save()){
             event(new Alert('create', array('type' => 'success', 'body' => 'Peak Foliage submitted successfully.')));
-            return redirect()->route('summaries.peakfoliage.submit');
+            return redirect()->route('summaries.peakfoliage.view');
           } else {
             event(new Alert('create', array('type' => 'danger', 'body' => 'Peak Foliage not submitted successfully.')));
             return redirect()->route('summaries.peakfoliage.submit');
@@ -1405,7 +1405,7 @@ class SummaryController extends Controller{
 
           if($eventObject->save()){
             event(new Alert('create', array('type' => 'success', 'body' => 'Peak Foliage submitted successfully.')));
-            return redirect()->route('summaries.peakfoliage.submit');
+            return redirect()->route('summaries.peakfoliage.view');
           } else {
             event(new Alert('create', array('type' => 'danger', 'body' => 'Peak Foliage not submitted successfully.')));
             return redirect()->route('summaries.peakfoliage.submit');
@@ -1425,7 +1425,7 @@ class SummaryController extends Controller{
      * @return mixed
      */
     public function showSunsetLakeView(){
-        $allSummaries = \App\IceInIceOut::all();
+        $allSummaries = \App\IceInIceOut::orderBy('season')->get();
 
         return view('summaries.sunsetlake.view', [ 'summaries' => $allSummaries]);
     }
