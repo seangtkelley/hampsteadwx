@@ -529,14 +529,18 @@ class SummaryController extends Controller{
           }
 
           // write to snowseason summary
-          if($month >= 10 && $month <= 12){
+          if(intval($month) >= 10 && intval($month) <= 12){
             if(\App\SnowSeason::where('winter', $year . "-" . strval($year+1))->count() > 0){
               $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year+1))->first();
               $monthNameSm = strtolower(substr($month_name, 0, 3));
+              if($ssObject->$monthNameSm == 0){
+                $ssObject->total = $ssObject->total + ($total_sf == null ? 0 : $total_sf);
+              } else {
+                $ssObject->total = ($ssObject->total-$ssObject->$monthNameSm) + ($total_sf == null ? 0 : $total_sf);
+              }
               $ssObject->$monthNameSm = ($total_sf == null ? 0 : $total_sf);
-              $ssObject->total = $ssObject->total + ($total_sf == null ? 0 : $total_sf);
               if($ssObject->save()){
-                event(new Alert('create', array('type' => 'info', 'body' => 'Snow season summary successfully updated.')));
+                event(new Alert('create', array('type' => 'info', 'body' => $year . "-" . strval($year+1). ' Snow season summary successfully updated.')));
               } else {
                 event(new Alert('create', array('type' => 'danger', 'body' => 'Snow season summary not successfully updated.')));
               }
@@ -544,10 +548,14 @@ class SummaryController extends Controller{
               $ssObject = new \App\SnowSeason();
               $monthNameSm = strtolower(substr($month_name, 0, 3));
               $ssObject->winter = $year . "-" . strval($year+1);
+              if($ssObject->$monthNameSm == 0){
+                $ssObject->total = $ssObject->total + ($total_sf == null ? 0 : $total_sf);
+              } else {
+                $ssObject->total = ($ssObject->total-$ssObject->$monthNameSm) + ($total_sf == null ? 0 : $total_sf);
+              }
               $ssObject->$monthNameSm = ($total_sf == null ? 0 : $total_sf);
-              $ssObject->total = ($total_sf == null ? 0 : $total_sf);
               if($ssObject->save()){
-                event(new Alert('create', array('type' => 'info', 'body' => 'Snow season summary successfully created.')));
+                event(new Alert('create', array('type' => 'info', 'body' => $year . "-" . strval($year+1). ' Snow season summary successfully created.')));
               } else {
                 event(new Alert('create', array('type' => 'danger', 'body' => 'Snow season summary not successfully created.')));
               }
@@ -556,21 +564,29 @@ class SummaryController extends Controller{
             if(\App\SnowSeason::where('winter', strval($year-1) . "-" . $year)->count() > 0){
               $ssObject = \App\SnowSeason::where('winter', strval($year-1) . "-" . $year)->first();
               $monthNameSm = strtolower(substr($month_name, 0, 3));
+              if($ssObject->$monthNameSm == 0){
+                $ssObject->total = $ssObject->total + ($total_sf == null ? 0 : $total_sf);
+              } else {
+                $ssObject->total = ($ssObject->total-$ssObject->$monthNameSm) + ($total_sf == null ? 0 : $total_sf);
+              }
               $ssObject->$monthNameSm = ($total_sf == null ? 0 : $total_sf);
-              $ssObject->total = $ssObject->total + ($total_sf == null ? 0 : $total_sf);
               if($ssObject->save()){
-                event(new Alert('create', array('type' => 'info', 'body' => 'Snow season summary successfully updated.')));
+                event(new Alert('create', array('type' => 'info', 'body' => strval($year-1) . "-" . $year. ' Snow season summary successfully updated.')));
               } else {
                 event(new Alert('create', array('type' => 'danger', 'body' => 'Snow season summary not successfully updated.')));
               }
             } else {
               $ssObject = new \App\SnowSeason();
               $monthNameSm = strtolower(substr($month_name, 0, 3));
-              $ssObject->winter = $year . "-" . strval($year+1);
+              $ssObject->winter = strval($year-1) . "-" . $year;
+              if($ssObject->$monthNameSm == 0){
+                $ssObject->total = $ssObject->total + ($total_sf == null ? 0 : $total_sf);
+              } else {
+                $ssObject->total = ($ssObject->total-$ssObject->$monthNameSm) + ($total_sf == null ? 0 : $total_sf);
+              }
               $ssObject->$monthNameSm = ($total_sf == null ? 0 : $total_sf);
-              $ssObject->total = ($total_sf == null ? 0 : $total_sf);
               if($ssObject->save()){
-                event(new Alert('create', array('type' => 'info', 'body' => 'Snow season summary successfully created.')));
+                event(new Alert('create', array('type' => 'info', 'body' => strval($year-1) . "-" . $year. ' Snow season summary successfully created.')));
               } else {
                 event(new Alert('create', array('type' => 'danger', 'body' => 'Snow season summary not successfully created.')));
               }
