@@ -326,7 +326,7 @@ class SummaryController extends Controller{
               if($SF >= 18){
                   $sf_grtr18++;
               }
-              if($ob[6] == "T"){
+              if($ob[6] == "T" OR $SD >= 0.1){
                   $sd_grtrtrace++;
               }
               if($SD >= 1){
