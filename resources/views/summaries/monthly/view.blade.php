@@ -763,7 +763,11 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
         <div id="charts" style="display:none;">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Hi/Lo Temps (°F)</h2>
+            <h2>
+              <?php echo date('F', mktime(0, 0, 0, $summary->month, 10)) . " " . $summary->year; ?> <br>
+              Daily Maximum & Minimum Temperatures (°F) <br>
+              West Hampstead, NH
+            </h2>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <canvas id="maxmintemp" style="width: 100%;"></canvas>
