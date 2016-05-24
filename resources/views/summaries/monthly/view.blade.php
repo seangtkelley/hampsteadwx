@@ -28,73 +28,90 @@
   @if(isset($summary))
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
-  /*google.charts.load('current', {packages: ['corechart', 'bar']});
-  google.charts.setOnLoadCallback(drawAxisTickColors);
 
-  function drawAxisTickColors() {
-    var data = new google.visualization.DataTable();
-    data.addColumn('timeofday', 'Time of Day');
-    data.addColumn('number', 'Energy Level');
+    google.charts.load('current', {'packages':['corechart']});
+    //google.charts.setOnLoadCallback(drawVisualization);
 
-    data.addRows([
-      <?php
-        $datastr = "";
-        $i = 0;
-        foreach($dailyObs as $ob){
-          if(isset($dailyObs[$i+1])){
-              $datastr .= '[{v: [' . strval($i+8) . ', 0, 0], f: ' . strval($i) . '}, ' . strval($i+1) . ', ' . strval($ob->max) . '],';
+
+    function drawVisualization() {
+      // Some raw data (not necessarily accurate)
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Day');
+      data.addColumn('number', 'Maximum');
+      data.addColumn('number', 'Minimum');
+      data.addColumn('number', 'Average');
+
+      data.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($dailyObs as $ob){
+             $str .= "[" . $i . "," . $ob->max . "," . $ob->min . "," . ($ob->max + $ob->min)/2;
+
+             if(isset($dailyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      dataview = new google.visualization.DataView(data);
+      dataview.setColumns([0,1,2]);
+
+      var options = {
+        //title : 'Temperature',
+        vAxis: {title: 'Temperature (°F)'},
+        hAxis: {
+          title: 'Day',
+          ticks: [
+            <?php
+            $i = 1;
+            $str = "";
+            foreach($dailyObs as $ob){
+              $str .= $i;
+
+              if(isset($dailyObs[$i])){
+                $str .= ",";
+              } else {
+                $str .= "";
+              }
+
+              $i++;
+            }
+            echo $str;
+          ?>
+          ]
+        },
+        legend: 'top',
+        seriesType: 'bars',
+        series: [
+          {color: 'rgb(211,47,47)', visibleInLegend: true},
+          {color: 'rgb(48,63,159)', visibleInLegend: true},
+          {color: 'rgb(83,197,17)', visibleInLegend: true},
+        ],
+        chartArea: {'width': '90%', 'height': '80%'},
+        trendlines: {
+          0: {
+            type: 'linear',
+            //degree: 5,
+            visibleInLegend: true,
+          },
+          1: {
+            type: 'linear',
+            //degree: 5,
+            visibleInLegend: true,
           }
-          $i++;
         }
-        echo $datastr;
-      ?>
-    ]);
+      };
 
-    var options = {
-      width: 600,
-      height: 400,
-      title: 'Motivation and Energy Level Throughout the Day',
-      focusTarget: 'category',
-      hAxis: {
-        title: 'Time of Day',
-        format: 'h:mm a',
-        viewWindow: {
-          min: [7, 30, 0],
-          max: [17, 30, 0]
-        },
-        textStyle: {
-          fontSize: 14,
-          color: '#053061',
-          bold: true,
-          italic: false
-        },
-        titleTextStyle: {
-          fontSize: 18,
-          color: '#053061',
-          bold: true,
-          italic: false
-        }
-      },
-      vAxis: {
-        title: 'Rating (scale of 1-10)',
-        textStyle: {
-          fontSize: 18,
-          color: '#67001f',
-          bold: false,
-          italic: false
-        },
-        titleTextStyle: {
-          fontSize: 18,
-          color: '#67001f',
-          bold: true,
-          italic: false
-        }
-      }
-    };
-
-    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-  }*/
+      var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+      chart.draw(dataview, options);
+    }
 
     function viewTextSummary(){
       $('#textSummary').show();
@@ -108,6 +125,8 @@
       $('#charts').show();
       $('#textBtn').removeAttr('disabled');
       $('#chartsBtn').attr('disabled','disabled');
+      //setTimeout(drawVisualization, 500);
+      drawVisualization();
     }
 
     function iframeLoaded() {
@@ -124,6 +143,10 @@
       });
 
       $('#textBtn').attr('disabled','disabled');
+
+      $(window).resize(function (){
+        drawVisualization();
+      });
 
       Chart.defaults.global.responsive = true;
       Chart.defaults.global.elements.point.hitRadius = 25;
@@ -212,9 +235,9 @@
       };
 
       // Get context with jQuery - using jQuery's .get() method.
-      var maxmintemp_ctx = $("#maxmintemp");
+      //var maxmintemp_ctx = $("#maxmintemp");
       // This will get the first returned node in the jQuery collection.
-      var maxmintempLineChart = new Chart(maxmintemp_ctx, {
+      /*var maxmintempLineChart = new Chart(maxmintemp_ctx, {
         type: 'bar',
         data: maxmintemp_data,
         options: {
@@ -246,7 +269,7 @@
             }]
           }
         }
-      });
+      });*/
 
       /**
         Maximum Temperature Line Chart
@@ -742,11 +765,12 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Hi/Lo Temps (°F)</h2>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <canvas id="maxmintemp" style="width: 100%;"></canvas>
-          </div>
-          <!--<div id="chart_div" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
           </div>-->
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <div id="chart_div" style="width: 100%; min-height: 555px;"></div>
+          </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Maximum Temperature (°F)</h2>
           </div>
