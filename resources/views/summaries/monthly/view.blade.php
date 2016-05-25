@@ -65,7 +65,24 @@
 
       var options = {
         //title : 'Temperature',
-        vAxis: {title: 'Temperature (°F)'},
+        vAxis: {
+          title: 'Temperature (°F)',
+          viewWindowMode:'explicit',
+          viewWindow: {
+            max: <?php echo (ceil($summary->highest / 10) * 10) ?>,
+            min: <?php if($summary->lowest < 0){ echo (floor($summary->lowest / 10) * 10); } else { echo 0; } ?>
+          },
+          gridlines: {
+            count:
+            <?php
+              if($summary->lowest < 0){
+                echo ((ceil(($summary->highest - $summary->lowest) / 10) * 10) / 5) + 2;
+              } else {
+                echo ((ceil($summary->highest / 10) * 10)/5);
+              }
+            ?>
+          }
+        },
         hAxis: {
           title: 'Day',
           ticks: [
