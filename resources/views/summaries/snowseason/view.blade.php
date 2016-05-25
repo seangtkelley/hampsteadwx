@@ -60,6 +60,13 @@
   </script>
   <div id="" class="container" style="min-height: 650px;">
     <h3 style="text-align: center;">Snow Season Summaries</h3>
-    <div id="chart_div"></div>
+    <h4 style="text-align: center;">1990-1991 to 2002-2003 data are from Mr. Maurice Randall, Hampstead Town Historian</h4>
+    <div id="chart_div" style="height: <?php
+      $height = 0;
+      foreach($summaries as $summary){
+        $height += 35;
+      }
+      echo $height;
+    ?>px;"></div>
   </div>
 @endsection
