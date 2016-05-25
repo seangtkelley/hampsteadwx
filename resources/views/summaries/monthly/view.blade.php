@@ -90,12 +90,14 @@
             $i = 1;
             $str = "";
             foreach($dailyObs as $ob){
-              $str .= $i;
+              if(!($i & 1)){
+                $str .= $i;
 
-              if(isset($dailyObs[$i])){
-                $str .= ",";
-              } else {
-                $str .= "";
+                if(isset($dailyObs[$i])){
+                  $str .= ",";
+                } else {
+                  $str .= "";
+                }
               }
 
               $i++;
@@ -111,7 +113,7 @@
           {color: 'rgb(48,63,159)', visibleInLegend: true},
           {color: 'rgb(83,197,17)', visibleInLegend: true},
         ],
-        chartArea: {'width': '90%', 'height': '80%'},
+        chartArea: {'width': '80%', 'height': '80%'},
         trendlines: {
           0: {
             type: 'linear',
