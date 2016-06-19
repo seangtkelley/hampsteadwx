@@ -48,6 +48,7 @@ Route::get('/summaries/annual/{year}/html',           ['as' => 'summaries.annual
 Route::get('/summaries/annual/{year}/pdf',            ['as' => 'summaries.annual.pdf',  'uses'=>'SummaryController@downloadAnnualPDF','index'=>false]);
 
 Route::get('/summaries/snowseason',                   ['as' => 'summaries.snowseason.view', 'uses'=>'SummaryController@showSnowSeasonView','index'=>true]);
+Route::get('/summaries/snowseason/{winter}',          ['as' => 'summaries.snowseason.winter', 'uses'=>'SummaryController@showSnowSeasonWinterView','index'=>true]);
 
 Route::get('/summaries/peakfoliage',                  ['as' => 'summaries.peakfoliage.view', 'uses'=>'SummaryController@showPeakFoliageView','index'=>true]);
 Route::get('/summaries/peakfoliage/submit',           ['as' => 'summaries.peakfoliage.submit', 'uses'=>'SummaryController@showPeakFoliageSubmit','index'=>false]);

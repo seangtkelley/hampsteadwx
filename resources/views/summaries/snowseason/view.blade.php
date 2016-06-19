@@ -11,6 +11,7 @@
     $(document).ready(function (){
       google.charts.load('current', {packages: ['corechart', 'bar']});
       google.charts.setOnLoadCallback(drawChart);
+
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Season', 'Total Snowfall'],
@@ -52,6 +53,13 @@
         };
         var material = new google.charts.Bar(document.getElementById('chart_div'));
         material.draw(data, options);
+
+        google.visualization.events.addListener(material, 'select', function (){
+          var selection = material.getSelection();
+          var item = selection[0];
+          var winter = data.getFormattedValue(item.row, 0);
+          window.location.href = '/summaries/snowseason/' + winter;
+        });
       }
       $(window).resize(function (){
         drawChart();

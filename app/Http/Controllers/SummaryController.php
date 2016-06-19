@@ -1378,6 +1378,18 @@ class SummaryController extends Controller{
      * @param string $locale
      * @return mixed
      */
+    public function showSnowSeasonWinterView(Request $request, $winter){
+        $summary = \App\SnowSeason::where('winter', $winter)->first();
+
+        return view('summaries.snowseason.winter', [ 'summary' => $summary]);
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param string $locale
+     * @return mixed
+     */
     public function showPeakFoliageView(){
         $allPeaks = \App\PeakFoliage::orderBy('year')->get();
 
