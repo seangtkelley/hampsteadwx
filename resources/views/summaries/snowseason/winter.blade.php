@@ -16,33 +16,34 @@
         var dataTable = new google.visualization.DataTable();
         dataTable.addColumn('string', 'Month');
         dataTable.addColumn('number', 'Total Snowfall (in.)');
+        dataTable.addColumn({type: 'string', role: 'annotation'});
         dataTable.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
 
         dataTable.addRows([
           <?php
             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">October</h4>" . ($summary->oct == -77 ? 'Trace' : $summary->oct) . "</div>";
-            $str  = "['October', " . (($summary->oct == -77 || $summary->oct < 0.5) ? 0.5 : $summary->oct) . ", '" . $tooltip . "'],";
+            $str  = "['October', " . (($summary->oct == -77 || $summary->oct < 0.5) ? 0.5 : $summary->oct) . ",'" . ($summary->oct == -77 ? 'Trace' : $summary->oct) . "', '" . $tooltip . "'],";
 
             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">November</h4>" . ($summary->nov == -77 ? 'Trace' : $summary->nov) . "</div>";
-            $str .= "['November', " . (($summary->nov == -77 || $summary->nov < 0.5) ? 0.5 : $summary->nov) . ", '" . $tooltip . "'],";
+            $str .= "['November', " . (($summary->nov == -77 || $summary->nov < 0.5) ? 0.5 : $summary->nov) . ",'" . ($summary->nov == -77 ? 'Trace' : $summary->nov) . "', '" . $tooltip . "'],";
 
             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">December</h4>" . ($summary->dec == -77 ? 'Trace' : $summary->dec) . "</div>";
-            $str .= "['December', " . (($summary->dec == -77 || $summary->dec < 0.5) ? 0.5 : $summary->dec) . ", '" . $tooltip . "'],";
+            $str .= "['December', " . (($summary->dec == -77 || $summary->dec < 0.5) ? 0.5 : $summary->dec) . ",'" . ($summary->dec == -77 ? 'Trace' : $summary->dec) . "', '" . $tooltip . "'],";
 
             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">January</h4>" . ($summary->jan == -77 ? 'Trace' : $summary->jan) . "</div>";
-            $str .= "['January', " . (($summary->jan == -77 || $summary->jan < 0.5) ? 0.5 : $summary->jan) . ", '" . $tooltip . "'],";
+            $str .= "['January', " . (($summary->jan == -77 || $summary->jan < 0.5) ? 0.5 : $summary->jan) . ",'" . ($summary->jan == -77 ? 'Trace' : $summary->jan) . "', '" . $tooltip . "'],";
 
             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">February</h4>" . ($summary->feb == -77 ? 'Trace' : $summary->feb) . "</div>";
-            $str .= "['February', " . (($summary->feb == -77 || $summary->feb < 0.5) ? 0.5 : $summary->feb) . ", '" . $tooltip . "'],";
+            $str .= "['February', " . (($summary->feb == -77 || $summary->feb < 0.5) ? 0.5 : $summary->feb) . ",'" . ($summary->jan == -77 ? 'Trace' : $summary->jan) . "', '" . $tooltip . "'],";
 
             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">March</h4>" . ($summary->mar == -77 ? 'Trace' : $summary->mar) . "</div>";
-            $str .= "['March', " . (($summary->mar == -77 || $summary->mar < 0.5) ? 0.5 : $summary->mar) . ", '" . $tooltip . "'],";
+            $str .= "['March', " . (($summary->mar == -77 || $summary->mar < 0.5) ? 0.5 : $summary->mar) . ",'" . ($summary->mar == -77 ? 'Trace' : $summary->mar) . "', '" . $tooltip . "'],";
 
             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">April</h4>" . ($summary->apr == -77 ? 'Trace' : $summary->apr) . "</div>";
-            $str .= "['April', " . (($summary->apr == -77 || $summary->apr < 0.5) ? 0.5 : $summary->apr) . ", '" . $tooltip . "'],";
+            $str .= "['April', " . (($summary->apr == -77 || $summary->apr < 0.5) ? 0.5 : $summary->apr) . ",'" . ($summary->apr == -77 ? 'Trace' : $summary->apr) . "', '" . $tooltip . "'],";
 
             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">May</h4>" . ($summary->may == -77 ? 'Trace' : $summary->may) . "</div>";
-            $str .= "['May', " . (($summary->may == -77 || $summary->may < 0.5) ? 0.5 : $summary->may) . ", '" . $tooltip . "']";
+            $str .= "['May', " . (($summary->may == -77 || $summary->may < 0.5) ? 0.5 : $summary->may) . ",'" . ($summary->may == -77 ? 'Trace' : $summary->may) . "', '" . $tooltip . "']";
 
             echo $str;
           ?>
