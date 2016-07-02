@@ -30,10 +30,9 @@
   <script>
 
     google.charts.load('current', {'packages':['corechart']});
-    //google.charts.setOnLoadCallback(drawVisualization);
 
 
-    function drawVisualization() {
+    function drawMinMaxChart() {
       // Some raw data (not necessarily accurate)
       var data = new google.visualization.DataTable();
       data.addColumn('number', 'Day');
@@ -128,8 +127,72 @@
         }
       };
 
-      var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+      var chart = new google.visualization.ComboChart(document.getElementById('maxmintemp'));
       chart.draw(dataview, options);
+    }
+
+    function drawPrecipChart() {
+      // Some raw data (not necessarily accurate)
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('number', 'Day');
+      dataTable.addColumn('number', 'Precipitation');
+      dataTable.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+
+      dataTable.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($dailyObs as $ob){
+             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">October</h4>" . ($ob->precip == -77 ? 'Trace' : $ob->precip) . "</div>";
+             $str .= "[" . $i . "," . (($ob->precip == -77) ? 0.01 : $ob->precip) . ", '" . $tooltip . "'";
+
+             if(isset($dailyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      var options = {
+        hAxis: {
+          title: 'Day',
+          ticks: [
+            <?php
+            $i = 1;
+            $str = "";
+            foreach($dailyObs as $ob){
+              if(!($i & 1)){
+                $str .= $i;
+
+                if(isset($dailyObs[$i])){
+                  $str .= ",";
+                } else {
+                  $str .= "";
+                }
+              }
+
+              $i++;
+            }
+            echo $str;
+          ?>
+          ]
+        },
+        vAxis: {
+          title: 'Precipitation (in.)'
+        },
+        legend: {position: 'none'},
+        chartArea: {'width': '80%', 'height': '80%'},
+        bars: 'vertical',
+        tooltip: { isHtml: true }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('precip'));
+      chart.draw(dataTable, options);
     }
 
     function viewTextSummary(){
@@ -144,8 +207,9 @@
       $('#charts').show();
       $('#textBtn').removeAttr('disabled');
       $('#chartsBtn').attr('disabled','disabled');
-      //setTimeout(drawVisualization, 500);
-      drawVisualization();
+      //setTimeout(drawMinMaxChart, 500);
+      drawMinMaxChart();
+      drawPrecipChart();
     }
 
     function iframeLoaded() {
@@ -164,7 +228,8 @@
       $('#textBtn').attr('disabled','disabled');
 
       $(window).resize(function (){
-        drawVisualization();
+        drawMinMaxChart();
+        drawPrecipChart();
       });
 
       Chart.defaults.global.responsive = true;
@@ -189,414 +254,6 @@
             }]
           }
       };
-
-      /**
-        Max/Min Double Bar Chart
-      */
-      var maxmintemp_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 1;
-          foreach($dailyObs as $ob){
-            if(isset($dailyObs[$i])){
-                $datastr .= $i . ",";
-            } else {
-                $datastr .= $i;
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Max",
-                backgroundColor: "rgba(211,47,47,1)",
-                borderColor: "rgba(211,47,47,0.2)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(211,47,47,0.8)",
-                hoverBorderColor: "rgba(211,47,47,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        $datastr .= $ob->max . ",";
-                    } else {
-                        $datastr .= $ob->max;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            },
-            {
-                label: "Min",
-                backgroundColor: "rgba(48,63,159,1)",
-                borderColor: "rgba(48,63,159,0.2)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(48,63,159,0.8)",
-                hoverBorderColor: "rgba(48,63,159,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        $datastr .= $ob->min . ",";
-                    } else {
-                        $datastr .= $ob->min;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      //var maxmintemp_ctx = $("#maxmintemp");
-      // This will get the first returned node in the jQuery collection.
-      /*var maxmintempLineChart = new Chart(maxmintemp_ctx, {
-        type: 'bar',
-        data: maxmintemp_data,
-        options: {
-          scaleBeginAtZero: false,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Day",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Temperature (°F)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });*/
-
-      /**
-        Maximum Temperature Line Chart
-      */
-      var maxtemp_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 1;
-          foreach($dailyObs as $ob){
-            if(isset($dailyObs[$i])){
-                $datastr .= $i . ",";
-            } else {
-                $datastr .= $i;
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Max",
-                fill: false,
-                backgroundColor: "rgba(151,187,205,0.2)",
-                borderColor: "rgba(151,187,205,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(151,187,205,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                tension: 0.0,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        $datastr .= $ob->max . ",";
-                    } else {
-                        $datastr .= $ob->max;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            },
-            {
-                label: "Max Avg",
-                fill: false,
-                borderColor: "rgba(220,220,220,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(220,220,220,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        $datastr .= $summary->max_avg . ",";
-                    } else {
-                        $datastr .= $summary->max_avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      //var maxtemp_ctx = $("#maxtemp");
-      // This will get the first returned node in the jQuery collection.
-      /*var maxtempLineChart = new Chart(maxtemp_ctx, {
-        type: 'line',
-        data: maxtemp_data,
-        options: globaloptions
-      });*/
-
-      /**
-        Minimum Temperature Line Chart
-      */
-      var mintemp_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 1;
-          foreach($dailyObs as $ob){
-            if(isset($dailyObs[$i])){
-                $datastr .= $i . ",";
-            } else {
-                $datastr .= $i;
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Min",
-                fill: false,
-                backgroundColor: "rgba(151,187,205,0.2)",
-                borderColor: "rgba(151,187,205,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(151,187,205,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                tension: 0.0,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        $datastr .= $ob->min . ",";
-                    } else {
-                        $datastr .= $ob->min;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            },
-            {
-                label: "Min Avg",
-                fill: false,
-                borderColor: "rgba(220,220,220,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(220,220,220,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        $datastr .= $summary->min_avg . ",";
-                    } else {
-                        $datastr .= $summary->min_avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      //var mintemp_ctx = $("#mintemp");
-      // This will get the first returned node in the jQuery collection.
-      /*var mintempLineChart = new Chart(mintemp_ctx, {
-        type: 'line',
-        data: mintemp_data,
-        options: globaloptions
-      });*/
-
-      /**
-        At Ob Temperature Line Chart
-      */
-      var atobtemp_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 1;
-          foreach($dailyObs as $ob){
-            if(isset($dailyObs[$i])){
-                $datastr .= $i . ",";
-            } else {
-                $datastr .= $i;
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Temp",
-                fill: false,
-                backgroundColor: "rgba(151,187,205,0.2)",
-                borderColor: "rgba(151,187,205,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(151,187,205,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                tension: 0.0,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        $datastr .= $ob->atob . ",";
-                    } else {
-                        $datastr .= $ob->atob;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      //var atobtemp_ctx = $("#atobtemp");
-      // This will get the first returned node in the jQuery collection.
-      /*var atobtempLineChart = new Chart(atobtemp_ctx, {
-        type: 'line',
-        data: atobtemp_data,
-        options: globaloptions
-      });*/
-
-      /**
-        Precip Bar Chart
-      */
-      var precip_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 1;
-          foreach($dailyObs as $ob){
-            if(isset($dailyObs[$i])){
-                $datastr .= $i . ",";
-            } else {
-                $datastr .= $i;
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Precip",
-                backgroundColor: "rgba(151,187,205,1)",
-                borderColor: "rgba(151,187,205,1)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,0.8)",
-                hoverBorderColor: "rgba(151,187,205,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        if($ob->precip == -77){
-                          $datastr .= 0.001 . ",";
-                        } else {
-                          $datastr .= $ob->precip . ",";
-                        }
-                    } else {
-                      if($ob->precip == -77){
-                        $datastr .= 0.001;
-                      } else {
-                        $datastr .= $ob->precip;
-                      }
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var precip_ctx = $("#precip");
-      // This will get the first returned node in the jQuery collection.
-      var precipLineChart = new Chart(precip_ctx, {
-        type: 'bar',
-        data: precip_data,
-        options: {
-          scaleBeginAtZero: false,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Day"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Precipitation (in.)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
 
       /**
         Snowfall/SnowDepth Line Chart
@@ -788,49 +445,15 @@
               West Hampstead, NH
             </h2>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="maxmintemp" style="width: 100%;"></canvas>
-          </div>-->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <div id="chart_div" style="width: 100%; min-height: 555px;"></div>
+            <div id="maxmintemp" style="width: 100%; min-height: 555px;"></div>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Maximum Temperature (°F)</h2>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="maxtemp" style="width: 100%;"></canvas>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Average Maximum: {{ $summary->max_avg }}</h4>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Minimum Temperature (°F)</h2>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="mintemp" style="width: 100%;"></canvas>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Average Minimum: {{ $summary->min_avg }}</h4>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Temperature at Observation (°F)</h2>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="atobtemp" style="width: 100%;"></canvas>
-          </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Average Temp: {{ $summary->avg }}</h4>
-          </div>-->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Precipitation (in.)</h2>
-            <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="precip" style="width: 100%;"></canvas>
+            <div id="precip" style="width: 100%; min-height: 555px;"></div>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Total Precipitation: {{ $summary->total_precip }}</h4>
-          </div>-->
           @if(in_array($summary->month, array(10,11,12,1,2,3,4)))
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Snowfall/Snowdepth (in.)</h2>
@@ -839,10 +462,6 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <canvas id="sfsd" style="width: 100%;"></canvas>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Total Snowfall: {{ $summary->total_sf }}</h4>
-            <h4>Greatest Snowdepth: {{ $summary->grts_sd }}</h4>
-          </div>-->
           @endif
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left; min-height: 20px;"></div>
         </div>
