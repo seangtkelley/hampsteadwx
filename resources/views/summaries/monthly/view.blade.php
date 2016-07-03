@@ -34,13 +34,13 @@
 
     function drawMinMaxChart() {
       // Some raw data (not necessarily accurate)
-      var data = new google.visualization.DataTable();
-      data.addColumn('number', 'Day');
-      data.addColumn('number', 'Maximum');
-      data.addColumn('number', 'Minimum');
-      data.addColumn('number', 'Average');
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('number', 'Day');
+      dataTable.addColumn('number', 'Maximum');
+      dataTable.addColumn('number', 'Minimum');
+      dataTable.addColumn('number', 'Average');
 
-      data.addRows([
+      dataTable.addRows([
          <?php
            $i = 1;
            $str = "";
@@ -59,7 +59,7 @@
          ?>
       ]);
 
-      dataview = new google.visualization.DataView(data);
+      dataview = new google.visualization.DataView(dataTable);
       dataview.setColumns([0,1,2]);
 
       var options = {

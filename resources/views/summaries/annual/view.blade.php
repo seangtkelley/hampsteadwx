@@ -21,7 +21,59 @@
     </script>
   @endif
   @if(!is_null($year))
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script>
+
+    google.charts.load('current', {'packages':['corechart']});
+
+    function drawAvgChart() {
+      // Some raw data (not necessarily accurate)
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('string', 'Month');
+      dataTable.addColumn('number', 'Average Temperature');
+      dataTable.addColumn('number', 'Departure From Normal');
+
+      dataTable.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($monthlyObs as $ob){
+             $str .= "['" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'," . $ob->avg . "," . $ob->depart_temp_avg;
+
+             if(isset($monthlyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      var options = {
+        //title : 'Temperature',
+        vAxis: {
+          title: 'Temperature (°F)'
+        },
+        hAxis: {
+          title: 'Month'
+        },
+        legend: 'top',
+        seriesType: 'bars',
+        series: [
+          {color: 'rgb(211,47,47)', visibleInLegend: true},
+          {color: 'rgb(48,63,159)', visibleInLegend: true},
+          {color: 'rgb(83,197,17)', visibleInLegend: true},
+        ],
+        chartArea: {'width': '80%', 'height': '80%'},
+      };
+
+      var chart = new google.visualization.ComboChart(document.getElementById('avgtempChart'));
+      chart.draw(dataTable, options);
+    }
+
     function viewTextSummary(){
       $('#textSummary').show();
       $('#charts').hide();
@@ -34,6 +86,7 @@
       $('#charts').show();
       $('#textBtn').removeAttr('disabled');
       $('#chartsBtn').attr('disabled','disabled');
+      drawAvgChart();
     }
 
     function iframeLoaded() {
@@ -50,6 +103,10 @@
       });
 
       $('#textBtn').attr('disabled','disabled');
+
+      $(window).resize(function (){
+        drawAvgChart();
+      });
 
       Chart.defaults.global.responsive = true;
       Chart.defaults.global.elements.point.hitRadius = 25;
@@ -940,10 +997,10 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
         <div id="charts" style="display:none;">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Maximum Temperature (°F)</h2>
+            <h2>Average Temperature and Departure from Normal (°F)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="maxtemp" style="width: 100%;"></canvas>
+            <div id="avgtempChart" style="width: 100%; min-height: 555px;"></div>
           </div>
           <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
             <h4>Average Maximum: {{ $MxA_str }}</h4>
