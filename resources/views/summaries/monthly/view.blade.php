@@ -143,7 +143,8 @@
            $i = 1;
            $str = "";
            foreach($dailyObs as $ob){
-             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">October</h4>" . ($ob->precip == -77 ? 'Trace' : $ob->precip) . "</div>";
+             $datestr = $summary->month . "/" . $i . "/" . $summary->year;
+             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">" . $datestr . "</h4>" . ($ob->precip == -77 ? 'Trace' : $ob->precip) . "</div>";
              $str .= "[" . $i . "," . (($ob->precip == -77) ? 0.01 : $ob->precip) . ", '" . $tooltip . "'";
 
              if(isset($dailyObs[$i])){
@@ -186,12 +187,142 @@
           title: 'Precipitation (in.)'
         },
         legend: {position: 'none'},
-        chartArea: {'width': '80%', 'height': '80%'},
+        chartArea: {top: 5, 'width': '80%', 'height': '90%'},
         bars: 'vertical',
         tooltip: { isHtml: true }
       };
 
       var chart = new google.visualization.ColumnChart(document.getElementById('precip'));
+      chart.draw(dataTable, options);
+    }
+
+    function drawSnowfallChart() {
+      // Some raw data (not necessarily accurate)
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('number', 'Day');
+      dataTable.addColumn('number', 'Snowfall');
+      dataTable.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+
+      dataTable.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($dailyObs as $ob){
+             $datestr = $summary->month . "/" . $i . "/" . $summary->year;
+             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">" . $datestr . "</h4>" . ($ob->snowfall == -77 ? 'Trace' : $ob->snowfall) . "</div>";
+             $str .= "[" . $i . "," . (($ob->snowfall == -77) ? 0.01 : $ob->snowfall) . ", '" . $tooltip . "'";
+
+             if(isset($dailyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      var options = {
+        hAxis: {
+          title: 'Day',
+          ticks: [
+            <?php
+            $i = 1;
+            $str = "";
+            foreach($dailyObs as $ob){
+              if(!($i & 1)){
+                $str .= $i;
+
+                if(isset($dailyObs[$i])){
+                  $str .= ",";
+                } else {
+                  $str .= "";
+                }
+              }
+
+              $i++;
+            }
+            echo $str;
+          ?>
+          ]
+        },
+        vAxis: {
+          title: 'Snowfall (in.)'
+        },
+        legend: {position: 'none'},
+        chartArea: {top: 5, 'width': '80%', 'height': '90%'},
+        bars: 'vertical',
+        tooltip: { isHtml: true }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('snowfall'));
+      chart.draw(dataTable, options);
+    }
+
+    function drawSnowDepthChart() {
+      // Some raw data (not necessarily accurate)
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('number', 'Day');
+      dataTable.addColumn('number', 'Snow Depth');
+      dataTable.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+
+      dataTable.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($dailyObs as $ob){
+             $datestr = $summary->month . "/" . $i . "/" . $summary->year;
+             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">" . $datestr . "</h4>" . ($ob->snowdepth == -77 ? 'Trace' : $ob->snowdepth) . "</div>";
+             $str .= "[" . $i . "," . (($ob->snowdepth == -77) ? 0.01 : $ob->snowdepth) . ", '" . $tooltip . "'";
+
+             if(isset($dailyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      var options = {
+        hAxis: {
+          title: 'Day',
+          ticks: [
+            <?php
+            $i = 1;
+            $str = "";
+            foreach($dailyObs as $ob){
+              if(!($i & 1)){
+                $str .= $i;
+
+                if(isset($dailyObs[$i])){
+                  $str .= ",";
+                } else {
+                  $str .= "";
+                }
+              }
+
+              $i++;
+            }
+            echo $str;
+          ?>
+          ]
+        },
+        vAxis: {
+          title: 'Snow Depth (in.)'
+        },
+        legend: {position: 'none'},
+        chartArea: {top: 5, 'width': '80%', 'height': '90%'},
+        bars: 'vertical',
+        tooltip: { isHtml: true }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('snowdepth'));
       chart.draw(dataTable, options);
     }
 
@@ -207,9 +338,10 @@
       $('#charts').show();
       $('#textBtn').removeAttr('disabled');
       $('#chartsBtn').attr('disabled','disabled');
-      //setTimeout(drawMinMaxChart, 500);
       drawMinMaxChart();
       drawPrecipChart();
+      drawSnowfallChart();
+      drawSnowDepthChart();
     }
 
     function iframeLoaded() {
@@ -230,157 +362,8 @@
       $(window).resize(function (){
         drawMinMaxChart();
         drawPrecipChart();
-      });
-
-      Chart.defaults.global.responsive = true;
-      Chart.defaults.global.elements.point.hitRadius = 25;
-      Chart.defaults.global.display = true;
-      var globaloptions = {
-          scaleBeginAtZero: false,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              gridLines: [{
-                color:"rgba(255, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              gridLines: [{
-                color:"rgba(255, 0, 0, 1)"
-              }]
-            }]
-          }
-      };
-
-      /**
-        Snowfall/SnowDepth Line Chart
-      */
-      var sfsd_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 1;
-          foreach($dailyObs as $ob){
-            if(isset($dailyObs[$i])){
-                $datastr .= $i . ",";
-            } else {
-                $datastr .= $i;
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Snowfall",
-                fill: true,
-                backgroundColor: "rgba(151,187,205,0.2)",
-                borderColor: "rgba(151,187,205,1)",
-                pointBorderColor: "#fff",
-                pointBackgroundColor: "rgba(151,187,205,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(151,187,205,1)",
-                pointHoverBorderWidth: 2,
-                tension: 0.0,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        if($ob->snowfall == -77){
-                          $datastr .= 0.001 . ",";
-                        } else {
-                          $datastr .= $ob->snowfall . ",";
-                        }
-                    } else {
-                      if($ob->snowfall == -77){
-                        $datastr .= 0.001;
-                      } else {
-                        $datastr .= $ob->snowfall;
-                      }
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            },
-            {
-                label: "Snowdepth",
-                fill: true,
-                backgroundColor: "rgba(76,175,80, 0.2)",
-                borderColor: "rgba(76,175,80, 1)",
-                pointBorderColor: "#fff",
-                pointBackgroundColor: "rgba(76,175,80,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(76,175,80,1)",
-                pointHoverBorderWidth: 2,
-                tension: 0.0,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($dailyObs as $ob){
-                    if(isset($dailyObs[$i+1])){
-                        if($ob->snowdepth == -77){
-                          $datastr .= 0.001 . ",";
-                        } else {
-                          $datastr .= $ob->snowdepth . ",";
-                        }
-                    } else {
-                      if($ob->snowdepth == -77){
-                        $datastr .= 0.001;
-                      } else {
-                        $datastr .= $ob->snowdepth;
-                      }
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var sfsd_ctx = $("#sfsd");
-      // This will get the first returned node in the jQuery collection.
-      var sfsdLineChart = new Chart(sfsd_ctx, {
-        type: 'line',
-        data: sfsd_data,
-        options: {
-          scaleBeginAtZero: false,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Day"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Snowfall/Snowdepth (in)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
+        drawSnowfallChart();
+        drawSnowDepthChart();
       });
     });
   </script>
@@ -449,18 +432,23 @@
             <div id="maxmintemp" style="width: 100%; min-height: 555px;"></div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Precipitation (in.)</h2>
+            <h2>Daily Precipitation (in.)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <div id="precip" style="width: 100%; min-height: 555px;"></div>
           </div>
           @if(in_array($summary->month, array(10,11,12,1,2,3,4)))
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Snowfall/Snowdepth (in.)</h2>
-            <h4>0.001 = Trace</h4>
+            <h2>Daily Snowfall (in.)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="sfsd" style="width: 100%;"></canvas>
+            <div id="snowfall" style="width: 100%; min-height: 555px;"></div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <h2>Daily Snow Depth (in.)</h2>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <div id="snowdepth" style="width: 100%; min-height: 555px;"></div>
           </div>
           @endif
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left; min-height: 20px;"></div>
