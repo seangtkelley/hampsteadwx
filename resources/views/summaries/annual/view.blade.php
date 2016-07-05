@@ -67,10 +67,202 @@
           {color: 'rgb(48,63,159)', visibleInLegend: true},
           {color: 'rgb(83,197,17)', visibleInLegend: true},
         ],
-        chartArea: {'width': '80%', 'height': '80%'},
+        chartArea: {'width': '80%', 'height': '75%'},
       };
 
       var chart = new google.visualization.ComboChart(document.getElementById('avgtempChart'));
+      chart.draw(dataTable, options);
+    }
+
+    function drawPrecipChart() {
+      // Some raw data (not necessarily accurate)
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('string', 'Month');
+      dataTable.addColumn('number', 'Total Precipitation');
+      dataTable.addColumn('number', 'Departure From Normal');
+
+      dataTable.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($monthlyObs as $ob){
+             $str .= "['" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'," . $ob->total_precip . "," . ($ob->total_precip - $avg_precip_array[$ob->month-1]);
+
+             if(isset($monthlyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      var options = {
+        //title : 'Temperature',
+        vAxis: {
+          title: 'Precipitation (in.)'
+        },
+        hAxis: {
+          title: 'Month'
+        },
+        legend: 'top',
+        seriesType: 'bars',
+        series: [
+          {color: 'rgb(211,47,47)', visibleInLegend: true},
+          {color: 'rgb(48,63,159)', visibleInLegend: true},
+          {color: 'rgb(83,197,17)', visibleInLegend: true},
+        ],
+        chartArea: {'width': '80%', 'height': '75%'},
+      };
+
+      var chart = new google.visualization.ComboChart(document.getElementById('precipChart'));
+      chart.draw(dataTable, options);
+    }
+
+    function drawGrtsPrecipChart() {
+      // Some raw data (not necessarily accurate)
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('string', 'Month');
+      dataTable.addColumn('number', 'Greatest Precipitation');
+      dataTable.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+
+      dataTable.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($monthlyObs as $ob){
+             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">" . $ob->grts_precip_dates . "</h4>" . ($ob->grts_precip == -77 ? 'Trace' : $ob->grts_precip) . "</div>";
+             $str .= "['" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'," . (($ob->grts_precip == -77) ? 0.01 : $ob->grts_precip) . ",'" . $tooltip . "'";
+
+             if(isset($monthlyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      var options = {
+        //title : 'Temperature',
+        vAxis: {
+          title: 'Precipitation (in.)'
+        },
+        hAxis: {
+          title: 'Month'
+        },
+        legend: 'none',
+        seriesType: 'bars',
+        series: [
+          {color: 'rgb(48,63,159)', visibleInLegend: true},
+        ],
+        chartArea: {'width': '80%', 'height': '75%'},
+        tooltip: { isHtml: true }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('grtsPrecipChart'));
+      chart.draw(dataTable, options);
+    }
+
+    function drawSnowfallChart() {
+      // Some raw data (not necessarily accurate)
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('string', 'Month');
+      dataTable.addColumn('number', 'Total Snowfall');
+      dataTable.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+
+      dataTable.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($monthlyObs as $ob){
+             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "</h4>" . ($ob->total_sf == -77 ? 'Trace' : $ob->total_sf) . "</div>";
+             $str .= "['" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'," . (($ob->total_sf == -77) ? 0.01 : $ob->total_sf) . ",'" . $tooltip . "'";
+
+             if(isset($monthlyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      var options = {
+        //title : 'Temperature',
+        vAxis: {
+          title: 'Total Snowfall (in.)'
+        },
+        hAxis: {
+          title: 'Month'
+        },
+        legend: 'none',
+        seriesType: 'bars',
+        series: [
+          {color: 'rgb(48,63,159)', visibleInLegend: true},
+        ],
+        chartArea: {'width': '80%', 'height': '75%'},
+        tooltip: { isHtml: true }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('snowfallChart'));
+      chart.draw(dataTable, options);
+    }
+
+    function drawSnowDepthChart() {
+      // Some raw data (not necessarily accurate)
+      var dataTable = new google.visualization.DataTable();
+      dataTable.addColumn('string', 'Month');
+      dataTable.addColumn('number', 'Greatest Snow Depth');
+      dataTable.addColumn({'type': 'string', 'role': 'tooltip', 'p': {'html': true}});
+
+      dataTable.addRows([
+         <?php
+           $i = 1;
+           $str = "";
+           foreach($monthlyObs as $ob){
+             $tooltip  = "<div style=\"margin: 5px;\"><h4 style=\"border-bottom: 1px solid grey;\">" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "</h4>" . ($ob->grts_sd == -77 ? 'Trace' : $ob->grts_sd) . "</div>";
+             $str .= "['" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'," . (($ob->grts_sd == -77) ? 0.01 : $ob->grts_sd) . ",'" . $tooltip . "'";
+
+             if(isset($monthlyObs[$i])){
+               $str .= "],";
+             } else {
+               $str .= "]";
+             }
+
+             $i++;
+           }
+           echo $str;
+         ?>
+      ]);
+
+      var options = {
+        //title : 'Temperature',
+        vAxis: {
+          title: 'Snow Depth (in.)'
+        },
+        hAxis: {
+          title: 'Month'
+        },
+        legend: 'none',
+        seriesType: 'bars',
+        series: [
+          {color: 'rgb(48,63,159)', visibleInLegend: true},
+        ],
+        chartArea: {'width': '80%', 'height': '75%'},
+        tooltip: { isHtml: true }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('snowDepthChart'));
       chart.draw(dataTable, options);
     }
 
@@ -87,6 +279,10 @@
       $('#textBtn').removeAttr('disabled');
       $('#chartsBtn').attr('disabled','disabled');
       drawAvgChart();
+      drawPrecipChart();
+      drawGrtsPrecipChart();
+      drawSnowfallChart();
+      drawSnowDepthChart();
     }
 
     function iframeLoaded() {
@@ -106,860 +302,12 @@
 
       $(window).resize(function (){
         drawAvgChart();
+        drawPrecipChart();
+        drawGrtsPrecipChart();
+        drawSnowfallChart();
+        drawSnowDepthChart();
       });
 
-      Chart.defaults.global.responsive = true;
-      Chart.defaults.global.elements.point.hitRadius = 25;
-      Chart.defaults.global.display = true;
-      var globaloptions = {
-          scaleBeginAtZero: false,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          gridLines: {
-            color:"rgba(0, 0, 0, 1)"
-          },
-      };
-
-      /**
-        Maximum Temperature Line Chart
-      */
-      var maxtemp_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Max",
-                fill: false,
-                backgroundColor: "rgba(151,187,205,0.2)",
-                borderColor: "rgba(151,187,205,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(151,187,205,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                tension: 0.0,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        $datastr .= $ob->max_avg . ",";
-                    } else {
-                        $datastr .= $ob->max_avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            },
-            {
-                label: "Max Avg",
-                fill: false,
-                borderColor: "rgba(220,220,220,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(220,220,220,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        $datastr .= $max_avg . ",";
-                    } else {
-                        $datastr .= $max_avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var maxtemp_ctx = $("#maxtemp");
-      // This will get the first returned node in the jQuery collection.
-      var maxtempLineChart = new Chart(maxtemp_ctx, {
-        type: 'line',
-        data: maxtemp_data,
-        options: {
-          scaleBeginAtZero: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Temperature (°F)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
-
-      /**
-        Minimum Temperature Line Chart
-      */
-      var mintemp_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Min",
-                fill: false,
-                backgroundColor: "rgba(151,187,205,0.2)",
-                borderColor: "rgba(151,187,205,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(151,187,205,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                tension: 0.0,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        $datastr .= $ob->min_avg . ",";
-                    } else {
-                        $datastr .= $ob->min_avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            },
-            {
-                label: "Min Avg",
-                fill: false,
-                borderColor: "rgba(220,220,220,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(220,220,220,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        $datastr .= $min_avg . ",";
-                    } else {
-                        $datastr .= $min_avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var mintemp_ctx = $("#mintemp");
-      // This will get the first returned node in the jQuery collection.
-      var mintempLineChart = new Chart(mintemp_ctx, {
-        type: 'line',
-        data: mintemp_data,
-        options: {
-          scaleBeginAtZero: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Temperature (°F)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
-
-      /**
-        At Ob Temperature Line Chart
-      */
-      var avgtemp_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Temp",
-                fill: false,
-                backgroundColor: "rgba(151,187,205,0.2)",
-                borderColor: "rgba(151,187,205,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(151,187,205,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                tension: 0.0,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        $datastr .= $ob->avg . ",";
-                    } else {
-                        $datastr .= $ob->avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            },
-            {
-                label: "Avg",
-                fill: false,
-                borderColor: "rgba(220,220,220,1)",
-                pointBorderColor: "rgba(220,220,220,1)",
-                pointBackgroundColor: "rgba(220,220,220,1)",
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(220,220,220,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        $datastr .= $avg . ",";
-                    } else {
-                        $datastr .= $avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var avgtemp_ctx = $("#avgtemp");
-      // This will get the first returned node in the jQuery collection.
-      var avgtempLineChart = new Chart(avgtemp_ctx, {
-        type: 'line',
-        data: avgtemp_data,
-        options: {
-          scaleBeginAtZero: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Temperature (°F)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
-
-      /**
-        Depart Temperature Bar Chart
-      */
-      var departtemp_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Temp",
-                backgroundColor: "rgba(151,187,205,1)",
-                borderColor: "rgba(151,187,205,1)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,0.8)",
-                hoverBorderColor: "rgba(151,187,205,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        $datastr .= $ob->depart_temp_avg . ",";
-                    } else {
-                        $datastr .= $ob->depart_temp_avg;
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var departtemp_ctx = $("#departtemp");
-      // This will get the first returned node in the jQuery collection.
-      var departtempLineChart = new Chart(departtemp_ctx, {
-        type: 'bar',
-        data: departtemp_data,
-        options: {
-          scaleBeginAtZero: false,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Temperature (°F)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
-
-      /**
-        Precip Bar Chart
-      */
-      var precip_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Precip",
-                backgroundColor: "rgba(151,187,205,1)",
-                borderColor: "rgba(151,187,205,1)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,0.8)",
-                hoverBorderColor: "rgba(151,187,205,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        if($ob->total_precip == -77){
-                          $datastr .= 0.001 . ",";
-                        } else {
-                          $datastr .= $ob->total_precip . ",";
-                        }
-                    } else {
-                      if($ob->total_precip == -77){
-                        $datastr .= 0.001;
-                      } else {
-                        $datastr .= $ob->total_precip;
-                      }
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var precip_ctx = $("#precip");
-      // This will get the first returned node in the jQuery collection.
-      var precipLineChart = new Chart(precip_ctx, {
-        type: 'bar',
-        data: precip_data,
-        options: {
-          scaleBeginAtZero: true,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Precipitation (in.)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
-
-      /**
-        Depart Precip Bar Chart
-      */
-      var departprecip_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Temp",
-                backgroundColor: "rgba(151,187,205,1)",
-                borderColor: "rgba(151,187,205,1)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,0.8)",
-                hoverBorderColor: "rgba(151,187,205,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        $datastr .= $ob->total_precip - $avg_precip_array[$ob->month-1] . ",";
-                    } else {
-                        $datastr .= $ob->total_precip - $avg_precip_array[$ob->month-1];
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var departprecip_ctx = $("#departprecip").get(0).getContext("2d");
-      // This will get the first returned node in the jQuery collection.
-      var departprecipLineChart = new Chart(departprecip_ctx, {
-        type: 'bar',
-        data: departprecip_data,
-        options: {
-          scaleBeginAtZero: false,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Precipitation (in.)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
-
-      /**
-        Greatest Day Precip Bar Chart
-      */
-      var grtsprecip_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Precip",
-                backgroundColor: "rgba(151,187,205,1)",
-                borderColor: "rgba(151,187,205,1)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,0.8)",
-                hoverBorderColor: "rgba(151,187,205,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        if($ob->grts_precip == -77){
-                          $datastr .= 0.001 . ",";
-                        } else {
-                          $datastr .= $ob->grts_precip . ",";
-                        }
-                    } else {
-                      if($ob->grts_precip == -77){
-                        $datastr .= 0.001;
-                      } else {
-                        $datastr .= $ob->grts_precip;
-                      }
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var grtsprecip_ctx = $("#grtsprecip");
-      // This will get the first returned node in the jQuery collection.
-      var grtsprecipLineChart = new Chart(grtsprecip_ctx, {
-        type: 'bar',
-        data: grtsprecip_data,
-        options: {
-          scaleBeginAtZero: true,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Precipitation (in.)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
-
-      /**
-        Snowfall Bar Chart
-      */
-      var sf_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Snowfall",
-                backgroundColor: "rgba(151,187,205,1)",
-                borderColor: "rgba(151,187,205,1)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,0.8)",
-                hoverBorderColor: "rgba(151,187,205,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                        if($ob->total_sf == -77){
-                          $datastr .= 0.001 . ",";
-                        } else {
-                          $datastr .= $ob->total_sf . ",";
-                        }
-                    } else {
-                      if($ob->total_sf == -77){
-                        $datastr .= 0.001;
-                      } else {
-                        $datastr .= $ob->total_sf;
-                      }
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var sf_ctx = $("#sf");
-      // This will get the first returned node in the jQuery collection.
-      var sfLineChart = new Chart(sf_ctx, {
-        type: 'bar',
-        data: sf_data,
-        options: {
-          scaleBeginAtZero: true,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Snowfall (in.)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
-
-      /**
-        Snowdepth Bar Chart
-      */
-      <?php
-      /*$winterDays = array();
-      foreach($dailyObs as $ob){
-        if(in_array($ob->month, array(10,11,12,1,2,3,4))){
-         array_push($winterDays, $ob);
-        }
-      }*/
-      ?>
-      var sd_data = {
-        labels: [<?php
-          $datastr = "";
-          $i = 0;
-          foreach($monthlyObs as $ob){
-            if(isset($monthlyObs[$i+1])){
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "',";
-            } else {
-                $datastr .= "'" . date('F', mktime(0, 0, 0, $ob->month, 10)) . "'";
-            }
-            $i++;
-          }
-          echo $datastr;
-        ?>],
-        datasets: [
-            {
-                label: "Snowdepth",
-                backgroundColor: "rgba(151,187,205,1)",
-                borderColor: "rgba(151,187,205,1)",
-                borderWidth: 1,
-                hoverBackgroundColor: "rgba(151,187,205,0.8)",
-                hoverBorderColor: "rgba(151,187,205,1)",
-                data: [<?php
-                  $datastr = "";
-                  $i = 0;
-                  foreach($monthlyObs as $ob){
-                    if(isset($monthlyObs[$i+1])){
-                      if($ob->grts_sd == -77){
-                        $datastr .= 0.001 . ",";
-                      } else {
-                        $datastr .= $ob->grts_sd . ",";
-                      }
-                    } else {
-                      if($ob->grts_sd == -77){
-                        $datastr .= 0.001;
-                      } else {
-                        $datastr .= $ob->grts_sd;
-                      }
-                    }
-                    $i++;
-                  }
-                  echo $datastr;
-                ?>]
-            }
-        ]
-      };
-
-      // Get context with jQuery - using jQuery's .get() method.
-      var sd_ctx = $("#sd");
-      // This will get the first returned node in the jQuery collection.
-      var sdLineChart = new Chart(sd_ctx, {
-        type: 'bar',
-        data: sd_data,
-        options: {
-          scaleBeginAtZero: true,
-          barBeginAtOrigin: true,
-          scaleStepWidth: 1,
-          scales:{
-            xAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: false,
-                labelString: "Month",
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }],
-            yAxes: [{
-              display: true,
-              scaleLabel: [{
-                display: true,
-                labelString: "Snow Depth (in.)"
-              }],
-              gridLines: [{
-                display: true,
-                color:"rgba(0, 0, 0, 1)"
-              }]
-            }]
-          }
-        }
-      });
     });
   </script>
   @endif
@@ -1002,87 +350,32 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <div id="avgtempChart" style="width: 100%; min-height: 555px;"></div>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Average Maximum: {{ $MxA_str }}</h4>
-          </div>-->
+          <br>
+          <br>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Minimum Temperature (°F)</h2>
+            <h2>Total Precipitation and Monthly Precipitation Departure (in.)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="mintemp" style="width: 100%;"></canvas>
+            <div id="precipChart" style="width: 100%; min-height: 555px;"></div>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Average Minimum: {{ $MnA_str }}</h4>
-          </div>-->
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Average Temperature (°F)</h2>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="avgtemp" style="width: 100%;"></canvas>
-          </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Average Temp: {{ $A_str }}</h4>
-          </div>-->
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Monthly Temperature Departure (°F)</h2>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="departtemp" style="width: 100%;"></canvas>
-          </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Average Temp: {{ $A_str }}</h4>
-          </div>-->
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Total Precipitation (in.)</h2>
-            <h4>0.001 = Trace</h4>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="precip" style="width: 100%;"></canvas>
-          </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Total Precipitation: {{ $total_precip }}</h4>
-          </div>-->
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Monthly Precipitation Departure (in.)</h2>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="departprecip" style="width: 100%;"></canvas>
-          </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Average Temp: {{ $A_str }}</h4>
-          </div>-->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
             <h2>Greatest Precipitation Day (in.)</h2>
-            <h4>0.001 = Trace</h4>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="grtsprecip" style="width: 100%;"></canvas>
-          </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Greatest Precipitation: {{ $grts_precip }}</h4>
-          </div>-->
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Snowfall (in.)</h2>
-            <h4>0.001 = Trace</h4>
+            <div id="grtsPrecipChart" style="width: 100%; min-height: 555px;"></div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="sf" style="width: 100%;"></canvas>
-          </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Total Snowfall: {{ $total_sf }}</h4>
-            <h4>Greatest Snowdepth: {{ $grts_sd }}</h4>
-          </div>-->
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <h2>Greatest Snowdepth (in.)</h2>
-            <h4>0.001 = Trace</h4>
+            <h2>Total Snowfall (in.)</h2>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-            <canvas id="sd" style="width: 100%;"></canvas>
+            <div id="snowfallChart" style="width: 100%; min-height: 555px;"></div>
           </div>
-          <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-            <h4>Total Snowfall: {{ $total_sf }}</h4>
-            <h4>Greatest Snowdepth: {{ $grts_sd }}</h4>
-          </div>-->
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <h2>Greatest Snow Depth (in.)</h2>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <div id="snowDepthChart" style="width: 100%; min-height: 555px;"></div>
+          </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left; min-height: 20px;"></div>
         </div>
         <div id="textSummary">

@@ -19,7 +19,6 @@
     "jquery-ui": "master",
     "jquery-file-upload": "master",
     "select2": "~4.0.0",
-    "Chart.js": "https://github.com/nnnick/Chart.js.git#v2.0-dev",
     "moment": "^2.11.2"
   }
 }
