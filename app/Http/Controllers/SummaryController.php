@@ -1117,7 +1117,22 @@ class SummaryController extends Controller{
       $AVG_PRECIP = $avg_precip_array[$month-1];
       $AVG_SNFL = $avg_snfl_array[$month-1];
 
-      return view('summaries.monthly.view', ['summary' => $summary, 'dailyObs' => $dailyObs, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+        // find precip to date departure from normal
+        $normalPrecipToDate = 0;
+        foreach ($allSummaries as $result){
+            $normalPrecipToDate += $avg_precip_array[$result->month-1];
+        }
+        $precipToDateDepart = $normalPrecipToDate - $precip_toDate;
+
+      return view('summaries.monthly.view', [
+          'summary' => $summary,
+          'dailyObs' => $dailyObs,
+          'AVG_TEMP' => $AVG_TEMP,
+          'AVG_PRECIP' => $AVG_PRECIP,
+          'AVG_SNFL' => $AVG_SNFL,
+          'precip_toDate' => $precip_toDate,
+          'precipToDateDepart' => $precipToDateDepart
+      ]);
     }
 
     /**
@@ -1151,7 +1166,21 @@ class SummaryController extends Controller{
       $AVG_PRECIP = $avg_precip_array[$month-1];
       $AVG_SNFL = $avg_snfl_array[$month-1];
 
-      return view('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+        // find precip to date departure from normal
+        $normalPrecipToDate = 0;
+        foreach ($allSummaries as $result){
+            $normalPrecipToDate += $avg_precip_array[$result->month-1];
+        }
+        $precipToDateDepart = $normalPrecipToDate - $precip_toDate;
+
+      return view('summaries.monthly.text', [
+          'summary' => $summary,
+          'AVG_TEMP' => $AVG_TEMP,
+          'AVG_PRECIP' => $AVG_PRECIP,
+          'AVG_SNFL' => $AVG_SNFL,
+          'precip_toDate' => $precip_toDate,
+          'precipToDateDepart' => $precipToDateDepart
+      ]);
     }
 
     /**
@@ -1185,7 +1214,14 @@ class SummaryController extends Controller{
       $AVG_PRECIP = $avg_precip_array[$month-1];
       $AVG_SNFL = $avg_snfl_array[$month-1];
 
-      $view = \View::make('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+        // find precip to date departure from normal
+        $normalPrecipToDate = 0;
+        foreach ($allSummaries as $result){
+            $normalPrecipToDate += $avg_precip_array[$result->month-1];
+        }
+        $precipToDateDepart = $normalPrecipToDate - $precip_toDate;
+
+      $view = \View::make('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate, 'precipToDateDepart' => $precipToDateDepart]);
       $contents = $view->render();
 
       //PDF file is stored under project/public/download/info.pdf
@@ -1227,7 +1263,21 @@ class SummaryController extends Controller{
       $AVG_PRECIP = $avg_precip_array[$month-1];
       $AVG_SNFL = $avg_snfl_array[$month-1];
 
-      $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate]);
+        // find precip to date departure from normal
+        $normalPrecipToDate = 0;
+        foreach ($allSummaries as $result){
+            $normalPrecipToDate += $avg_precip_array[$result->month-1];
+        }
+        $precipToDateDepart = $normalPrecipToDate - $precip_toDate;
+
+      $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.monthly.text', [
+          'summary' => $summary,
+          'AVG_TEMP' => $AVG_TEMP,
+          'AVG_PRECIP' => $AVG_PRECIP,
+          'AVG_SNFL' => $AVG_SNFL,
+          'precip_toDate' => $precip_toDate,
+          'precipToDateDepart' => $precipToDateDepart
+      ]);
       return $pdf->download('West_Hampstead-' . $year . '_' . $month . '-MonthlySummary.pdf');
     }
 

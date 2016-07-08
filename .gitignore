@@ -2,3 +2,4 @@ vendor/
 Homestead.yaml
 .env
 *.gitignore~
+.idea/

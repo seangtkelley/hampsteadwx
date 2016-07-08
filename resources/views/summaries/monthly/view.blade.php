@@ -117,12 +117,12 @@
           0: {
             type: 'linear',
             //degree: 5,
-            visibleInLegend: true,
+            visibleInLegend: true
           },
           1: {
             type: 'linear',
             //degree: 5,
-            visibleInLegend: true,
+            visibleInLegend: true
           }
         }
       };
