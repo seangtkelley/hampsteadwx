@@ -6,7 +6,7 @@
 
 @section('content')
     <div id="" class="container" style="min-height: 650px;">
-        <h3 style="text-align: center;">Precipitation</h3>
+        <h3 style="text-align: center;">Precipitation Summary</h3>
         <table class="table table-striped">
             <tr>
                 <th>Year</th>
@@ -49,6 +49,7 @@
                     }
                     $i++;
                 }
+                echo $str;
             ?>
         </table>
     </div>
