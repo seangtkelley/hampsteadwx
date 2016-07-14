@@ -44,6 +44,7 @@ Route::post('/summaries/monthly/{year}/{month}/editRemarks',   ['as' => 'summari
 Route::get('/summaries/annual',                       ['as' => 'summaries.annual.home', 'uses'=>'SummaryController@showAnnualHome','index'=>true]);
 Route::get('/summaries/annual/{year}',                ['as' => 'summaries.annual.view', 'uses'=>'SummaryController@showAnnualSummary','index'=>true]);
 Route::get('/summaries/annual/{year}/text',           ['as' => 'summaries.annual.text',  'uses'=>'SummaryController@showTextAnnualSummary','index'=>true]);
+Route::get('/summaries/annual/{year}/table',          ['as' => 'summaries.annual.table',  'uses'=>'SummaryController@showTableAnnualSummary','index'=>true]);
 Route::get('/summaries/annual/{year}/html',           ['as' => 'summaries.annual.html', 'uses'=>'SummaryController@downloadAnnualHTML','index'=>false]);
 Route::get('/summaries/annual/{year}/pdf',            ['as' => 'summaries.annual.pdf',  'uses'=>'SummaryController@downloadAnnualPDF','index'=>false]);
 

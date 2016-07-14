@@ -736,13 +736,13 @@ class SummaryController extends Controller
         $AVG_SNFL = $avg_snfl_array[12];
 
         //create object array of all the year's observations
-        $obs_array = \App\MonthlyObs::where('year', $year)->get();
+        $obs_array = \App\MonthlyObs::where('year', $year)->orderBy('month', 'asc')->get();
         if (empty($obs_array) OR $obs_array == NULL) {
             die("Observation doesn't exist.");
         }
 
         // get all daily obs
-        $dailyObs = \App\DailyObs::where('year', $year)->orderBy('month', 'asc')->get();
+        $dailyObs = \App\DailyObs::where('year', $year)->orderBy('month', 'asc')->orderBy('day', 'asc')->get();
 
         $count;
         $hi = 0;
@@ -1400,6 +1400,21 @@ class SummaryController extends Controller
         $data = $this->calcAnnual($year);
 
         return view('summaries.annual.text', $data);
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param Request $request
+     * @param $year
+     * @return mixed
+     * @internal param string $locale
+     */
+    public function showTableAnnualSummary(Request $request, $year)
+    {
+        $data = $this->calcAnnual($year);
+
+        return view('summaries.annual.table', $data);
     }
 
     /**
