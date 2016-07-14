@@ -1012,6 +1012,7 @@ class SummaryController extends Controller
             'dailyObs' => $dailyObs,
             'avg_temp_array' => $avg_temp_array,
             'avg_precip_array' => $avg_precip_array,
+            'avg_snfl_array' => $avg_snfl_array,
             'AVG_TEMP' => $AVG_TEMP,
             'AVG_PRECIP' => $AVG_PRECIP,
             'AVG_SNFL' => $AVG_SNFL,
