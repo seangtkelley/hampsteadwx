@@ -52,12 +52,14 @@ class SummaryController extends Controller
 
                 $monthly_CSV_handle = fopen($fullpath, "r");
                 if (!$monthly_CSV_handle) {
-                    die("Couldn't read file.");
+                    event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly summary csv file. <br>' . error_get_last())));
+                    return redirect()->route('summaries.monthly.home');
                 }
                 //open 30 year normal file and if it cant be opened; die
                 $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
                 if (!$yr_avg_handle) {
-                    die("Couldn't read monthly climate normals file.");
+                    event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
+                    return redirect()->route('summaries.monthly.home');
                 }
 
                 // get 30 year average temp, precip, and snowfall
@@ -724,7 +726,8 @@ class SummaryController extends Controller
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
         if (!$yr_avg_handle) {
-            die("Couldn't read monthly climate normals file.");
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
+            return redirect()->route('summaries.annual.home');
         }
 
         // get 30 year average temp, precip, and snowfall
@@ -737,22 +740,23 @@ class SummaryController extends Controller
 
         //create object array of all the year's observations
         $obs_array = \App\MonthlyObs::where('year', $year)->orderBy('month', 'asc')->get();
-        if (empty($obs_array) OR $obs_array == NULL) {
-            die("Observation doesn't exist.");
+        if (!isset($obs_array[0])) {
+            event(new Alert('create', array('type' => 'danger', 'body' => "No observations found for {$year}")));
+            return redirect()->route('summaries.annual.home');
         }
 
         // get all daily obs
         $dailyObs = \App\DailyObs::where('year', $year)->orderBy('month', 'asc')->orderBy('day', 'asc')->get();
 
-        $count;
+        $count = 0;
         $hi = 0;
         $li = 0;
-        $max_total;
-        $min_total;
-        $avg_total;
-        $highest;
+        $max_total = 0;
+        $min_total = 0;
+        $avg_total = 0;
+        $highest = 0;
         $highest_dates = array();
-        $lowest;
+        $lowest = 0;
         $lowest_dates = array();
         $hdd_count = 0;
         $cdd_count = 0;
@@ -760,16 +764,16 @@ class SummaryController extends Controller
         $max_below32 = 0;
         $min_below0 = 0;
         $min_below32 = 0;
-        $total_precip;
-        $total_sf;
-        $grts_precip;
-        $grts_precip_dates;
+        $total_precip = 0;
+        $total_sf = 0;
+        $grts_precip = 0;
+        $grts_precip_dates = array();
         $GPI = 0;
-        $grts_sf;
-        $grts_sf_dates;
+        $grts_sf = 0;
+        $grts_sf_dates = array();
         $GSFI = 0;
-        $grts_sd;
-        $grts_sd_dates;
+        $grts_sd = 0;
+        $grts_sd_dates = array();
         $GSDI = 0;
         $grtr01 = 0;
         $grtr10 = 0;
@@ -782,7 +786,7 @@ class SummaryController extends Controller
         $sf_grtr6 = 0;
         $sf_grtr12 = 0;
         $sf_grtr18 = 0;
-        $SD_grtrtrace = 0;
+        $sd_grtrtrace = 0;
         $sd_grtr1 = 0;
         $sd_grtr3 = 0;
         $sd_grtr6 = 0;
@@ -798,53 +802,6 @@ class SummaryController extends Controller
             // find precip, snowfall and snowdepth for that day
             $precip = $ob->total_precip;
             $SF = $ob->total_sf;
-
-            // pull in global variables for use in foreach loop
-            global $highest;
-            global $highest_dates;
-            global $lowest;
-            global $lowest_dates;
-            global $hdd_count;
-            global $cdd_count;
-            global $max_over90;
-            global $max_below32;
-            global $min_below32;
-            global $min_below0;
-            global $max_total;
-            global $min_total;
-            global $avg_total;
-            global $count;
-            global $hi;
-            global $li;
-            global $month_num;
-            global $total_precip;
-            global $total_sf;
-            global $grts_precip;
-            global $grts_precip_dates;
-            global $GPI;
-            global $grts_sf;
-            global $grts_sf_dates;
-            global $GSFI;
-            global $grts_sd;
-            global $grts_sd_dates;
-            global $GSDI;
-            global $grtr01;
-            global $grtr10;
-            global $grtr50;
-            global $grtr100;
-            global $precip_grtrtrace;
-            global $sf_grtrtrace;
-            global $sf_grtr1;
-            global $sf_grtr3;
-            global $sf_grtr6;
-            global $sf_grtr12;
-            global $sf_grtr18;
-            global $sd_grtrtrace;
-            global $sd_grtr1;
-            global $sd_grtr3;
-            global $sd_grtr6;
-            global $sd_grtr12;
-            global $sd_grtr18;
 
             // add that months max and min into the total of all the maxes and mins
             $max_total += $max;
@@ -1100,6 +1057,10 @@ class SummaryController extends Controller
     {
         // get summary
         $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+        if (is_null($summary)) {
+            event(new Alert('create', array('type' => 'danger', 'body' => "No observations found for ". date('F', mktime(0, 0, 0, $month, 10)) . " {$year}")));
+            return redirect()->route('summaries.monthly.home');
+        }
 
         // find precip to date
         $allSummaries = \App\MonthlyObs::where('year', $year)->get();
@@ -1111,7 +1072,8 @@ class SummaryController extends Controller
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
         if (!$yr_avg_handle) {
-            die("Couldn't read monthly climate normals file.");
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
+            return redirect()->route('summaries.monthly.home');
         }
 
         // get all daily obs
@@ -1160,7 +1122,8 @@ class SummaryController extends Controller
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
         if (!$yr_avg_handle) {
-            die("Couldn't read monthly climate normals file.");
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
+            return redirect()->route('summaries.monthly.home');
         }
 
         // find precip to date
@@ -1212,7 +1175,8 @@ class SummaryController extends Controller
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
         if (!$yr_avg_handle) {
-            die("Couldn't read monthly climate normals file.");
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
+            return redirect()->route('summaries.monthly.home');
         }
 
         // find precip to date
@@ -1265,7 +1229,8 @@ class SummaryController extends Controller
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
         if (!$yr_avg_handle) {
-            die("Couldn't read monthly climate normals file.");
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
+            return redirect()->route('summaries.monthly.home');
         }
 
         // find precip to date
@@ -1360,11 +1325,7 @@ class SummaryController extends Controller
      */
     public function showAnnualHome()
     {
-        if (!isset($year) || is_null($year) || empty($year)) {
-            $data = array('year' => null);
-        } else {
-            $data = $this->calcAnnual($year);
-        }
+        $data = array('year' => null);
 
         return view('summaries.annual.view', $data);
     }
@@ -1385,7 +1346,11 @@ class SummaryController extends Controller
             $data = $this->calcAnnual($year);
         }
 
-        return view('summaries.annual.view', $data);
+        if(is_array($data)){
+            return view('summaries.annual.view', $data);
+        } else {
+            return $data;
+        }
     }
 
     /**
