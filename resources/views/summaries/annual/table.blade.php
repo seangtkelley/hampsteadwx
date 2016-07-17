@@ -16,7 +16,7 @@
             <th>Date</th>
             <th>Lowest</th>
             <th>Date</th>
-            <th colspan="4">Number of Days w/</th>
+            <th colspan="4" style="min-width: 170px;">Number of Days w/ <br>>=90 <=32 <=32 <=0</th>
             <th>Total Precip.</th>
             <th>Dep.</th>
             <th>Greatest Day</th>
@@ -35,14 +35,6 @@
             <th>Th</th>
             <th>Hail</th>
             <th>Dam Wind</th>
-        </tr>
-        <tr>
-            <th colspan="9" style="border: none;"></th>
-            <th style="border: none;">>=90</th>
-            <th style="border: none;"><=32</th>
-            <th style="border: none;"><=32</th>
-            <th style="border: none;"><=0</th>
-            <th colspan="18" style="border: none;"></th>
         </tr>
         @foreach ($monthlyObs as $ob)
             <tr>
