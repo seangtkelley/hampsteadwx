@@ -406,7 +406,7 @@
     @if(isset($summary))
       <div class="row better-row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left">
-          <h1>{{date('F', mktime(0, 0, 0, $summary->month, 10))}} Monthly Summary</h1>
+          <h1>{{date('F', mktime(0, 0, 0, $summary->month, 10))}} {{$summary->year}} Monthly Summary</h1>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px; border-top: 1px solid grey;"></div>
         <div id="summaryBtns" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: left; margin-bottom:5px;">
