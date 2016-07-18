@@ -2,12 +2,12 @@
   <script>
     $(document).ready(function (){
       if(($("#main-content").height() + $("#footer").height() + $(".navbar").height()) < $(window).height()){
-        $("#main-content").height($(window).height()-$("#footer").height()-$(".navbar").height());
+        $("#main-content").height($(window).height()-$("#footer").height()-$(".navbar").height()-1);
       }
 
       $(window).resize(function (){
         if(($("#main-content").height() + $("#footer").height() + $(".navbar").height()) < $(window).height()){
-          $("#main-content").height($(window).height()-$("#footer").height()-$(".navbar").height());
+          $("#main-content").height($(window).height()-$("#footer").height()-$(".navbar").height()-1);
         }
       });
     });
