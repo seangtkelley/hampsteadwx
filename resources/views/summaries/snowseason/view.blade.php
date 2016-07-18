@@ -56,7 +56,7 @@
           var selection = chart.getSelection();
           var item = selection[0];
           var winter = dataTable.getFormattedValue(item.row, 0);
-          window.location.href = '/summaries/snowseason/' + winter;
+          window.location.href = '{{route('summaries.snowseason.view')}}/' + winter;
         });
 
         google.visualization.events.addListener(chart, 'onmouseover', function (){
