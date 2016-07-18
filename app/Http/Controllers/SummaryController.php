@@ -611,7 +611,7 @@ class SummaryController extends Controller
                     $monthlyObsObject->highest_dates = $highest_dates_str;
                     $monthlyObsObject->lowest = $lowest;
                     $monthlyObsObject->lowest_dates = $lowest_dates_str;
-                    $monthlyObsObject->hdd_count = $hdd_count;
+                    $monthlyObsObject->hdd_count = ($hdd_count == null ? 0 : $hdd_count);
                     $monthlyObsObject->cdd_count = ($cdd_count == null ? 0 : $cdd_count);
                     $monthlyObsObject->max_over90 = ($max_over90 == null ? 0 : $max_over90);
                     $monthlyObsObject->max_below32 = ($max_below32 == null ? 0 : $max_below32);
@@ -663,7 +663,7 @@ class SummaryController extends Controller
                     $monthlyObsObject->highest_dates = $highest_dates_str;
                     $monthlyObsObject->lowest = $lowest;
                     $monthlyObsObject->lowest_dates = $lowest_dates_str;
-                    $monthlyObsObject->hdd_count = $hdd_count;
+                    $monthlyObsObject->hdd_count = ($hdd_count == null ? 0 : $hdd_count);
                     $monthlyObsObject->cdd_count = ($cdd_count == null ? 0 : $cdd_count);
                     $monthlyObsObject->max_over90 = ($max_over90 == null ? 0 : $max_over90);
                     $monthlyObsObject->max_below32 = ($max_below32 == null ? 0 : $max_below32);
