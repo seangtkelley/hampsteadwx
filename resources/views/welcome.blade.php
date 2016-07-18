@@ -2,7 +2,7 @@
 
 @section('title', 'Home')
 
-@section('navbar-type', 'fixed-top')
+@section('navbar-type', 'static-top')
 
 
 @section('content')
@@ -48,7 +48,6 @@
     <div class="well" style="margin-bottom: 0px;">
       <h2 style="margin-top: 0px;">Related Sites</h2>
       <div class="row better-row">
-        <div class="col-md-1 col-lg-1"></div>
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2" style="text-align: center">
           <a href="http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=KNHHAMPS5">
             <h4>Hampstead Fire Dept. Weather Station</h4>
@@ -76,6 +75,12 @@
         <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
           <a href="http://waterdata.usgs.gov/nwis/uv/?site_no=010735562">
             <h4>Sandown USGS Rain Gauge</h4><br>
+            <img src="http://waterdata.usgs.gov/nwisweb/icons/USGS_header_graphic_usgsIdentifier_white.jpg"/>
+          </a>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+          <a href="http://groundwaterwatch.usgs.gov/AWLSites.asp?mt=g&S=424841071004101&ncd=awl">
+            <h4>USGS Groundwater Monitoring Station</h4><br>
             <img src="http://waterdata.usgs.gov/nwisweb/icons/USGS_header_graphic_usgsIdentifier_white.jpg"/>
           </a>
         </div>

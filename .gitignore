@@ -3,3 +3,4 @@ Homestead.yaml
 .env
 *.gitignore~
 .idea/
+node_modules/

@@ -2,7 +2,7 @@
 
 @section('title', 'Snow Season ')
 
-@section('navbar-type', 'fixed-top')
+@section('navbar-type', 'static-top')
 
 
 @section('content')

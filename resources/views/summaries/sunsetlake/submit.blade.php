@@ -2,7 +2,7 @@
 
 @section('title', 'Sunset Lake Ice In/Ice Out')
 
-@section('navbar-type', 'fixed-top')
+@section('navbar-type', 'static-top')
 
 
 @section('content')

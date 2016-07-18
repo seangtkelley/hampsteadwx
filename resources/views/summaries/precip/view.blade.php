@@ -2,7 +2,7 @@
 
 @section('title', 'Precipitation Summary' )
 
-@section('navbar-type', 'fixed-top')
+@section('navbar-type', 'static-top')
 
 @section('content')
     <div id="" class="container" style="min-height: 650px;">

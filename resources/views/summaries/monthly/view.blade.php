@@ -2,7 +2,7 @@
 
 @section('title', (isset($summary)) ? date('F', mktime(0, 0, 0, $summary->month, 10)) . ' Monthly Summary' : 'Monthly Summary' )
 
-@section('navbar-type', 'fixed-top')
+@section('navbar-type', 'static-top')
 
 
 @section('content')
