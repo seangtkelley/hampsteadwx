@@ -1271,6 +1271,9 @@ class SummaryController extends Controller
                 event(new Alert('create', array('type' => 'danger', 'body' => 'Remarks Not Successfully Created.')));
                 return redirect()->route('summaries.monthly.view', ['year' => $year, 'month' => $month]);
             }
+        } else {
+            event(new Alert('create', array('type' => 'danger', 'body' => 'Incorrect Password.')));
+            return redirect()->route('summaries.monthly.view', ['year' => $year, 'month' => $month]);
         }
     }
 
