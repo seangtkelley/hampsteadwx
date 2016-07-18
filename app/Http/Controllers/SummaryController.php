@@ -37,7 +37,7 @@ class SummaryController extends Controller
     public function calcMonthly()
     {
 
-        if (\Input::get('password') == "cfs613") {
+        if (\Input::get('password') == getenv('SITE_PASS')) {
             $year = \Input::get('year');
             $month = \Input::get('month');
 
@@ -1261,7 +1261,7 @@ class SummaryController extends Controller
         $remarks = strip_tags(\Input::get('remarks'), '<p><a><h5><b><i><ul><li><br>');
         $password = \Input::get('password');
 
-        if ($password == 'cfs613') {
+        if ($password == getenv('SITE_PASS')) {
             $monthlyObsObject = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
             $monthlyObsObject->remarks = $remarks;
             if ($monthlyObsObject->save()) {
@@ -1442,7 +1442,7 @@ class SummaryController extends Controller
      */
     public function submitPeakFoliage()
     {
-        if (\Input::get('password') == "cfs613") {
+        if (\Input::get('password') == getenv('SITE_PASS')) {
             if (\App\PeakFoliage::where('year', \Input::get('year'))->count() > 0) {
                 $eventObject = \App\PeakFoliage::where('year', \Input::get('year'))->first();
                 $eventObject->year = trim(\Input::get('year'));
@@ -1504,7 +1504,7 @@ class SummaryController extends Controller
      */
     public function submitIceInIceOut()
     {
-        if (\Input::get('password') == "cfs613") {
+        if (\Input::get('password') == getenv('SITE_PASS')) {
             if (\App\IceInIceOut::where('season', \Input::get('season'))->count() > 0) {
                 $eventObject = \App\IceInIceOut::where('season', \Input::get('season'))->first();
                 $eventObject->season = trim(\Input::get('season'));
