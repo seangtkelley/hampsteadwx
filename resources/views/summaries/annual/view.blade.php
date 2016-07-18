@@ -15,7 +15,7 @@
                 });
                 $('.yearSelect').val('').trigger('change');
                 $('#find').click(function () {
-                    window.location = "/summaries/annual/" + $(".yearSelect").val();
+                    window.location = "{{route('summaries.annual.home')}}/" + $(".yearSelect").val();
                 });
             });
         </script>

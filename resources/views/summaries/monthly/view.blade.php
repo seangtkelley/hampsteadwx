@@ -20,7 +20,7 @@
         });
         $('.yearSelect').val('').trigger('change');
         $('#find').click(function (){
-          window.location = "/summaries/monthly/" + $(".yearSelect").val() + "/" + $(".monthSelect").val();
+          window.location = "{{route('summaries.monthly.home')}}/" + $(".yearSelect").val() + "/" + $(".monthSelect").val();
         });
       });
     </script>
