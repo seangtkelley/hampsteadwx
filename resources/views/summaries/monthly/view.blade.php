@@ -473,7 +473,7 @@
                          style="text-align: left; min-height: 20px;"></div>
                 </div>
                 <div id="textSummary">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0;">
                         <iframe id="textSummaryiFrame" style="width:100%; border:none;"
                                 src="{{route('summaries.monthly.text', ['year' => $summary->year, 'month' => $summary->month])}}"></iframe>
                     </div>

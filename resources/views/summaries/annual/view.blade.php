@@ -312,7 +312,7 @@
             });
         </script>
     @endif
-    <div id="" class="container" style="min-height: 650px;">
+    <div class="container" style="min-height: 650px;">
         @if(is_null($year))
             <h2 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #777;">Find Summary</h2>
             <div class="row better-row">
@@ -394,13 +394,12 @@
                          style="text-align: left; min-height: 20px;"></div>
                 </div>
                 <div id="textSummary">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0;">
                         <iframe id="textSummaryiFrame" style="width:100%; border:none;"
                                 src="{{route('summaries.annual.text', ['year' => $year])}}"></iframe>
                     </div>
                 </div>
             </div>
         @endif
-
     </div>
 @endsection
