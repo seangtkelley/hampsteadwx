@@ -341,18 +341,18 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
                      style="min-height: 5px; border-top: 1px solid grey;"></div>
                 <div id="summaryBtns" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-                     style="text-align: left; margin-bottom:5px;">
-                    <a href="{{route('summaries.annual.home')}}" class="btn btn-info"><span
+                     style="text-align: left; margin-bottom:2px;">
+                    <a href="{{route('summaries.annual.home')}}" class="btn btn-info" style="margin-bottom: 3px"><span
                                 class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>&nbsp; Back</a>
-                    <a href="#" id="textBtn" onclick="viewTextSummary()" class="btn btn-primary"><span
+                    <a href="#" id="textBtn" onclick="viewTextSummary()" class="btn btn-primary" style="margin-bottom: 3px"><span
                                 class="glyphicon glyphicon-font" aria-hidden="true"></span>&nbsp; View Text Summary</a>
-                    <a href="#" id="chartsBtn" onclick="viewCharts()" class="btn btn-primary"><span
+                    <a href="#" id="chartsBtn" onclick="viewCharts()" class="btn btn-primary" style="margin-bottom: 3px"><span
                                 class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp; View Charts</a>
                     <a href="{{route('summaries.annual.text', ['year' => $year])}}" target="_blank"
-                       class="btn btn-primary"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp;
+                       class="btn btn-primary" style="margin-bottom: 3px"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>&nbsp;
                         Open Text Summary</a>
                     <a href="{{route('summaries.annual.table', ['year' => $year])}}" target="_blank"
-                       class="btn btn-primary"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>&nbsp;
+                       class="btn btn-primary" style="margin-bottom: 3px"><span class="glyphicon glyphicon-th" aria-hidden="true"></span>&nbsp;
                         Open Table Summary</a>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
