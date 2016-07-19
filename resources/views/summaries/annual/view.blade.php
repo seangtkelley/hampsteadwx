@@ -11,7 +11,8 @@
             $(document).ready(function () {
                 $(".yearSelect").select2({
                     placeholder: "Select a Year",
-                    allowClear: true
+                    allowClear: true,
+                    minimumResultsForSearch: -1
                 });
                 $('.yearSelect').val('').trigger('change');
                 $('#find').click(function () {
