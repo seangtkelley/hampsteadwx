@@ -315,7 +315,7 @@
         @if(is_null($year))
             <h2 style="margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #777;">Find Summary</h2>
             <div class="row better-row">
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="text-align: center"
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: center"
                      placeholder="Select a Year">
                     <select class="yearSelect" style="width: 100%">
                         <?php
@@ -325,7 +325,7 @@
                         ?>
                     </select>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="text-align: center; margin-bottom: 5px;">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="text-align: center; margin-bottom: 5px;">
                     <input type="button" id="find" class="btn btn-success" style="width: 100%" value="Find Summary"/>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"

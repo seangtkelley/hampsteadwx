@@ -45,7 +45,7 @@ class PhotosController extends Controller{
      * @return mixed
      */
     public function submitPhoto(){
-      if(\Input::get('password') == getenv('SITE_PASS')){
+      if(\Input::get('password') == env('SITE_PASS')){
 
         // getting all of the post data
         $file = array('image' => \Input::file('image'));

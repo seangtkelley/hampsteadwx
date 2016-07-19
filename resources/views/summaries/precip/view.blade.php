@@ -7,21 +7,21 @@
 @section('content')
     <div id="" class="container" style="min-height: 650px;">
         <h3 style="text-align: center;">Precipitation Summary</h3>
-        <table class="table table-striped">
+        <table class="table-striped" style="width: 100%;">
             <tr>
                 <th>Year</th>
-                <th>January</th>
-                <th>February</th>
-                <th>March</th>
-                <th>April</th>
+                <th>Jan</th>
+                <th>Feb</th>
+                <th>Mar</th>
+                <th>Apr</th>
                 <th>May</th>
-                <th>June</th>
-                <th>July</th>
-                <th>August</th>
-                <th>September</th>
-                <th>October</th>
-                <th>November</th>
-                <th>December</th>
+                <th>Jun</th>
+                <th>Jul</th>
+                <th>Aug</th>
+                <th>Sep</th>
+                <th>Oct</th>
+                <th>Nov</th>
+                <th>Dec</th>
             </tr>
             <?php
                 $str = "";
