@@ -6,6 +6,11 @@
                 {{unserialize($alert)->body}}
             </div>
         @endforeach
+        <script>
+            setTimeout(function (){
+                $(".alert").fadeOut();
+            }, 4000);
+        </script>
     @endif
 
     <?php

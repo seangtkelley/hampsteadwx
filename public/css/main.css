@@ -5764,7 +5764,7 @@ body {
   font-family: 'Helvetica', serif; }
 
 #alerts {
-  position: fixed;
+  position: absolute;
   top: 58px;
   z-index: 999999; }
 

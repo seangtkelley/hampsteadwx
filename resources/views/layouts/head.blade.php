@@ -8,10 +8,10 @@
 <!--<script src="{{asset('js/ChartNew.js')}}"></script>-->
 <script>
     $( document ).ready(function() {
-        $("#alerts").width($(window).width());
+        $("#alerts").width($("#main-content").width()*0.5).css("left", $("#main-content").width()*0.25);
 
         $( window ).resize(function() {
-            $("#alerts").width($(window).width());
+            $("#alerts").width($("#main-content").width()*0.5).css("left", $("#main-content").width()*0.25);
         });
     });
 </script>
