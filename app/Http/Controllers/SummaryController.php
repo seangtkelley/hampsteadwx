@@ -1048,7 +1048,7 @@ class SummaryController extends Controller
         foreach ($allSummaries as $result) {
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
         }
-        $precipToDateDepart = $normalPrecipToDate - $precip_toDate;
+        $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
 
         return view('summaries.monthly.view', [
             'summary' => $summary,
@@ -1102,7 +1102,7 @@ class SummaryController extends Controller
         foreach ($allSummaries as $result) {
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
         }
-        $precipToDateDepart = $normalPrecipToDate - $precip_toDate;
+        $precipToDateDepart = $precip_toDate - $normalPrecipToDate;
 
         return view('summaries.monthly.text', [
             'summary' => $summary,
@@ -1155,7 +1155,7 @@ class SummaryController extends Controller
         foreach ($allSummaries as $result) {
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
         }
-        $precipToDateDepart = $normalPrecipToDate - $precip_toDate;
+        $precipToDateDepart = $precip_toDate - $normalPrecipToDate;
 
         $view = \View::make('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate, 'precipToDateDepart' => $precipToDateDepart]);
         $contents = $view->render();
@@ -1209,7 +1209,7 @@ class SummaryController extends Controller
         foreach ($allSummaries as $result) {
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
         }
-        $precipToDateDepart = $normalPrecipToDate - $precip_toDate;
+        $precipToDateDepart = $precip_toDate - $normalPrecipToDate;
 
         $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.monthly.text', [
             'summary' => $summary,
