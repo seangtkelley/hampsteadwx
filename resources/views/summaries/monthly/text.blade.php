@@ -158,7 +158,7 @@
             echo number_format($summary->total_sf, 1);
           }
          ?> </div>
-         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Total Annual Snowfall to date: {{ $snowfall_toDate }}</div>
+         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Total Seasonal Snowfall to date: {{ $snowfall_toDate }}</div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Mean Total: {{ $AVG_SNFL }} </div>
