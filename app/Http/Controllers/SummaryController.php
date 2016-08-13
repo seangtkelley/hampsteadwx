@@ -1018,23 +1018,12 @@ class SummaryController extends Controller
             return redirect()->route('summaries.monthly.home');
         }
 
-        // find precip to date
-        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
-        $precip_toDate = 0;
-        foreach ($allSummaries as $result) {
-            $precip_toDate += $result->total_precip;
-        }
-
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
         if (!$yr_avg_handle) {
             event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
             return redirect()->route('summaries.monthly.home');
         }
-
-        // get all daily obs
-        $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
-
         // get 30 year average temp, precip, and snowfall
         $avg_temp_array = fgetcsv($yr_avg_handle);
         $avg_precip_array = fgetcsv($yr_avg_handle);
@@ -1043,12 +1032,48 @@ class SummaryController extends Controller
         $AVG_PRECIP = $avg_precip_array[$month - 1];
         $AVG_SNFL = $avg_snfl_array[$month - 1];
 
-        // find precip to date departure from normal
+        // find precip to date and departure from normal
+        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
+        $precip_toDate = 0;
+        foreach ($allSummaries as $result) {
+            $precip_toDate += $result->total_precip;
+        }
         $normalPrecipToDate = 0;
         foreach ($allSummaries as $result) {
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
         }
         $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
+
+        // find snowfall to date and departure from normal
+        $ssMonths = [10, 11, 12, 1, 2, 3, 4];
+        $snowfall_toDate = 0;
+        $normalSnowfallToDate = 0;
+        if (intval($month) > 6 && intval($month) <= 12) {
+            $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
+        } else if ($month >= 1 && $month <= 6) {
+            $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
+        }
+        $stopMonth = $month;
+        if(intval($month) > 6 && intval($month) < 10){
+            $stopMonth = 9;
+        } else if(intval($month) > 6 && intval($month) <= 12){
+            $stopMonth = 5;
+        }
+        foreach($ssMonths as $ssMonth){
+            if($ssMonth == $stopMonth+1) {
+                break;
+            } else {
+                $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
+                $monthNameSm = strtolower(substr($month_name, 0, 3));
+
+                $snowfall_toDate += $ssObject->$monthNameSm;
+                $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+            }
+        }
+        $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
+        // get all daily obs
+        $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
 
         return view('summaries.monthly.view', [
             'summary' => $summary,
@@ -1057,7 +1082,9 @@ class SummaryController extends Controller
             'AVG_PRECIP' => $AVG_PRECIP,
             'AVG_SNFL' => $AVG_SNFL,
             'precip_toDate' => $precip_toDate,
-            'precipToDateDepart' => $precipToDateDepart
+            'precipToDateDepart' => $precipToDateDepart,
+            'snowfall_toDate' => $snowfall_toDate,
+            'snowfallToDateDepart' => $snowfallToDateDepart
         ]);
     }
 
@@ -1074,6 +1101,10 @@ class SummaryController extends Controller
     {
         // get summary
         $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+        if (is_null($summary)) {
+            event(new Alert('create', array('type' => 'danger', 'body' => "No observations found for ". date('F', mktime(0, 0, 0, $month, 10)) . " {$year}")));
+            return redirect()->route('summaries.monthly.home');
+        }
 
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
@@ -1081,14 +1112,6 @@ class SummaryController extends Controller
             event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
             return redirect()->route('summaries.monthly.home');
         }
-
-        // find precip to date
-        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
-        $precip_toDate = 0;
-        foreach ($allSummaries as $result) {
-            $precip_toDate += $result->total_precip;
-        }
-
         // get 30 year average temp, precip, and snowfall
         $avg_temp_array = fgetcsv($yr_avg_handle);
         $avg_precip_array = fgetcsv($yr_avg_handle);
@@ -1097,20 +1120,59 @@ class SummaryController extends Controller
         $AVG_PRECIP = $avg_precip_array[$month - 1];
         $AVG_SNFL = $avg_snfl_array[$month - 1];
 
-        // find precip to date departure from normal
+        // find precip to date and departure from normal
+        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
+        $precip_toDate = 0;
+        foreach ($allSummaries as $result) {
+            $precip_toDate += $result->total_precip;
+        }
         $normalPrecipToDate = 0;
         foreach ($allSummaries as $result) {
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
         }
-        $precipToDateDepart = $precip_toDate - $normalPrecipToDate;
+        $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
+
+        // find snowfall to date and departure from normal
+        $ssMonths = [10, 11, 12, 1, 2, 3, 4];
+        $snowfall_toDate = 0;
+        $normalSnowfallToDate = 0;
+        if (intval($month) > 6 && intval($month) <= 12) {
+            $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
+        } else if ($month >= 1 && $month <= 6) {
+            $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
+        }
+        $stopMonth = $month;
+        if(intval($month) > 6 && intval($month) < 10){
+            $stopMonth = 9;
+        } else if(intval($month) > 6 && intval($month) <= 12){
+            $stopMonth = 5;
+        }
+        foreach($ssMonths as $ssMonth){
+            if($ssMonth == $stopMonth+1) {
+                break;
+            } else {
+                $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
+                $monthNameSm = strtolower(substr($month_name, 0, 3));
+
+                $snowfall_toDate += $ssObject->$monthNameSm;
+                $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+            }
+        }
+        $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
+        // get all daily obs
+        $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
 
         return view('summaries.monthly.text', [
             'summary' => $summary,
+            'dailyObs' => $dailyObs,
             'AVG_TEMP' => $AVG_TEMP,
             'AVG_PRECIP' => $AVG_PRECIP,
             'AVG_SNFL' => $AVG_SNFL,
             'precip_toDate' => $precip_toDate,
-            'precipToDateDepart' => $precipToDateDepart
+            'precipToDateDepart' => $precipToDateDepart,
+            'snowfall_toDate' => $snowfall_toDate,
+            'snowfallToDateDepart' => $snowfallToDateDepart
         ]);
     }
 
@@ -1127,6 +1189,10 @@ class SummaryController extends Controller
     {
         // get summary
         $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+        if (is_null($summary)) {
+            event(new Alert('create', array('type' => 'danger', 'body' => "No observations found for ". date('F', mktime(0, 0, 0, $month, 10)) . " {$year}")));
+            return redirect()->route('summaries.monthly.home');
+        }
 
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
@@ -1134,14 +1200,6 @@ class SummaryController extends Controller
             event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
             return redirect()->route('summaries.monthly.home');
         }
-
-        // find precip to date
-        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
-        $precip_toDate = 0;
-        foreach ($allSummaries as $result) {
-            $precip_toDate += $result->total_precip;
-        }
-
         // get 30 year average temp, precip, and snowfall
         $avg_temp_array = fgetcsv($yr_avg_handle);
         $avg_precip_array = fgetcsv($yr_avg_handle);
@@ -1150,14 +1208,60 @@ class SummaryController extends Controller
         $AVG_PRECIP = $avg_precip_array[$month - 1];
         $AVG_SNFL = $avg_snfl_array[$month - 1];
 
-        // find precip to date departure from normal
+        // find precip to date and departure from normal
+        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
+        $precip_toDate = 0;
+        foreach ($allSummaries as $result) {
+            $precip_toDate += $result->total_precip;
+        }
         $normalPrecipToDate = 0;
         foreach ($allSummaries as $result) {
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
         }
-        $precipToDateDepart = $precip_toDate - $normalPrecipToDate;
+        $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
 
-        $view = \View::make('summaries.monthly.text', ['summary' => $summary, 'AVG_TEMP' => $AVG_TEMP, 'AVG_PRECIP' => $AVG_PRECIP, 'AVG_SNFL' => $AVG_SNFL, 'precip_toDate' => $precip_toDate, 'precipToDateDepart' => $precipToDateDepart]);
+        // find snowfall to date and departure from normal
+        $ssMonths = [10, 11, 12, 1, 2, 3, 4];
+        $snowfall_toDate = 0;
+        $normalSnowfallToDate = 0;
+        if (intval($month) > 6 && intval($month) <= 12) {
+            $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
+        } else if ($month >= 1 && $month <= 6) {
+            $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
+        }
+        $stopMonth = $month;
+        if(intval($month) > 6 && intval($month) < 10){
+            $stopMonth = 9;
+        } else if(intval($month) > 6 && intval($month) <= 12){
+            $stopMonth = 5;
+        }
+        foreach($ssMonths as $ssMonth){
+            if($ssMonth == $stopMonth+1) {
+                break;
+            } else {
+                $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
+                $monthNameSm = strtolower(substr($month_name, 0, 3));
+
+                $snowfall_toDate += $ssObject->$monthNameSm;
+                $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+            }
+        }
+        $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
+        // get all daily obs
+        $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
+
+        $view = \View::make('summaries.monthly.text', [
+            'summary' => $summary,
+            'dailyObs' => $dailyObs,
+            'AVG_TEMP' => $AVG_TEMP,
+            'AVG_PRECIP' => $AVG_PRECIP,
+            'AVG_SNFL' => $AVG_SNFL,
+            'precip_toDate' => $precip_toDate,
+            'precipToDateDepart' => $precipToDateDepart,
+            'snowfall_toDate' => $snowfall_toDate,
+            'snowfallToDateDepart' => $snowfallToDateDepart
+        ]);
         $contents = $view->render();
 
         //PDF file is stored under project/public/download/info.pdf
@@ -1181,6 +1285,10 @@ class SummaryController extends Controller
     {
         // get summary
         $summary = \App\MonthlyObs::where('month', $month)->where('year', $year)->first();
+        if (is_null($summary)) {
+            event(new Alert('create', array('type' => 'danger', 'body' => "No observations found for ". date('F', mktime(0, 0, 0, $month, 10)) . " {$year}")));
+            return redirect()->route('summaries.monthly.home');
+        }
 
         //open 30 year normal file and if it cant be opened; die
         $yr_avg_handle = fopen("./storage/HMPN3-Monthly-Climate-Normals.csv", "r");
@@ -1188,14 +1296,6 @@ class SummaryController extends Controller
             event(new Alert('create', array('type' => 'danger', 'body' => 'Could not read monthly climate normals file. <br>' . error_get_last())));
             return redirect()->route('summaries.monthly.home');
         }
-
-        // find precip to date
-        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
-        $precip_toDate = 0;
-        foreach ($allSummaries as $result) {
-            $precip_toDate += $result->total_precip;
-        }
-
         // get 30 year average temp, precip, and snowfall
         $avg_temp_array = fgetcsv($yr_avg_handle);
         $avg_precip_array = fgetcsv($yr_avg_handle);
@@ -1204,20 +1304,59 @@ class SummaryController extends Controller
         $AVG_PRECIP = $avg_precip_array[$month - 1];
         $AVG_SNFL = $avg_snfl_array[$month - 1];
 
-        // find precip to date departure from normal
+        // find precip to date and departure from normal
+        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
+        $precip_toDate = 0;
+        foreach ($allSummaries as $result) {
+            $precip_toDate += $result->total_precip;
+        }
         $normalPrecipToDate = 0;
         foreach ($allSummaries as $result) {
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
         }
-        $precipToDateDepart = $precip_toDate - $normalPrecipToDate;
+        $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
+
+        // find snowfall to date and departure from normal
+        $ssMonths = [10, 11, 12, 1, 2, 3, 4];
+        $snowfall_toDate = 0;
+        $normalSnowfallToDate = 0;
+        if (intval($month) > 6 && intval($month) <= 12) {
+            $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
+        } else if ($month >= 1 && $month <= 6) {
+            $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
+        }
+        $stopMonth = $month;
+        if(intval($month) > 6 && intval($month) < 10){
+            $stopMonth = 9;
+        } else if(intval($month) > 6 && intval($month) <= 12){
+            $stopMonth = 5;
+        }
+        foreach($ssMonths as $ssMonth){
+            if($ssMonth == $stopMonth+1) {
+                break;
+            } else {
+                $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
+                $monthNameSm = strtolower(substr($month_name, 0, 3));
+
+                $snowfall_toDate += $ssObject->$monthNameSm;
+                $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+            }
+        }
+        $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
+        // get all daily obs
+        $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
 
         $pdf = \Barryvdh\DomPDF\Facade::loadView('summaries.monthly.text', [
             'summary' => $summary,
+            'dailyObs' => $dailyObs,
             'AVG_TEMP' => $AVG_TEMP,
             'AVG_PRECIP' => $AVG_PRECIP,
             'AVG_SNFL' => $AVG_SNFL,
             'precip_toDate' => $precip_toDate,
-            'precipToDateDepart' => $precipToDateDepart
+            'precipToDateDepart' => $precipToDateDepart,
+            'snowfall_toDate' => $snowfall_toDate,
+            'snowfallToDateDepart' => $snowfallToDateDepart
         ]);
         return $pdf->download('West_Hampstead-' . $year . '_' . $month . '-MonthlySummary.pdf');
     }

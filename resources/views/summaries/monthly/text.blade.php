@@ -151,16 +151,24 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Snowfall (in.)</h4></div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Snowfall: <?php
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Total Snowfall: <?php
           if($summary->total_sf == 0 AND $summary->sf_grtrtrace > 0){
             echo "Trace";
           } else {
             echo number_format($summary->total_sf, 1);
           }
          ?> </div>
+         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Total Annual Snowfall to date: {{ $snowfall_toDate }}</div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Mean Total: {{ $AVG_SNFL }} </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Mean Total: {{ $AVG_SNFL }} </div>
+          <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Depart. from Normal: <?php
+              if($snowfallToDateDepart > 0){
+                  echo "+" . $snowfallToDateDepart;
+              } else {
+                  echo $snowfallToDateDepart;
+              }
+              ?> </div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Departure from Normal: <?php
