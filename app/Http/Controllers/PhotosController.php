@@ -88,7 +88,7 @@ class PhotosController extends Controller{
            }
          } else {
            // sending back with error message.
-           event(new Alert('create', array('type' => 'success', 'body' => 'Photo not valid.')));
+           event(new Alert('create', array('type' => 'danger', 'body' => 'Photo not valid.')));
            return redirect()->route('photos.submit');
          }
         }
