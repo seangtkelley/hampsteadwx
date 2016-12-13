@@ -36,12 +36,12 @@
               <li><a href="{{route('summaries.peakfoliage.view')}}">Peak Foliage</a></li>
             </ul>
           </div>
-          <div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
+          <!--<div class="col-xs-6 col-sm-6 col-md-2 col-lg-2">
             <h4 class="footer-element">Events</h4>
             <ul class="footer-element">
               <li><a href="{{route('events.home')}}">All Events</a></li>
             </ul>
-          </div>
+          </div>-->
           <div class="col-xs-6 col-sm-6 col-xs-2 col-sm-2 col-md-2 col-lg-2">
             <h4 class="footer-element">Normals</h4>
             <ul class="footer-element">

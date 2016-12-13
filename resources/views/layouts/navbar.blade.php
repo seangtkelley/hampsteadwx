@@ -64,7 +64,7 @@
                         </ul>
                     </li>
 
-                    <li><a href="{{route('events.home')}}">Events</a></li>
+                    <!--<li><a href="{{route('events.home')}}">Events</a></li>-->
 
                     <li><a href="{{route('normals')}}">Normals</a></li>
 
