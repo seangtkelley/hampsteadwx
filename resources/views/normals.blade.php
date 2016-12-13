@@ -2,7 +2,7 @@
 
 @section('title', '30-year Normals')
 
-@section('navbar-type', 'fixed-top')
+@section('navbar-type', 'static-top')
 
 
 @section('content')

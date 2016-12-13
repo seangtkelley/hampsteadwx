@@ -43,7 +43,7 @@ class EventsController extends Controller{
      * @return mixed
      */
     public function submitEvent(){
-      if(\Input::get('password') == "cfs613"){
+      if(\Input::get('password') == env('SITE_PASS')){
         $eventObject = new \App\Events;
         $eventObject->type = trim(\Input::get('type'));
         $eventObject->startdate = trim(\Input::get('startdate'));

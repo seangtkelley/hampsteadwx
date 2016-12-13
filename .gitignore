@@ -4,3 +4,4 @@ Homestead.yaml
 *.gitignore~
 .idea/
 public/storage/csv
+node_modules/

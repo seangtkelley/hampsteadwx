@@ -2,7 +2,7 @@
 
 @section('title', 'Weather Events')
 
-@section('navbar-type', 'fixed-top')
+@section('navbar-type', 'static-top')
 
 
 @section('content')

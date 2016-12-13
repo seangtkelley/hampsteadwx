@@ -9,11 +9,7 @@
     }
   </style>
 
-  <script>
-
-  </script>
-
-  <div class="" style="min-height: 500px; width: 100%;">
+  <div style="min-height: 500px; width: 100%;">
 
     @if(isset($summary))
       <div class="row better-row" style="max-width: 960px;">
@@ -87,7 +83,7 @@
         <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="min-height: 20px;"><b>Minimums:</b> </div>
         <div class="col-xs-3 col-sm-3 col-md-6 col-lg-6" style="min-height: 20px;"> 32 or lower: {{ $summary->min_below32 }} </div>
 
-        <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3" style="min-height: 20px"></div>
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3" style="min-height: 20px"></div>
         <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 32 or lower: {{ $summary->max_below32 }} </div>
         <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1" style="min-height: 20px;"></div>
         <div class="col-xs-3 col-sm-3 col-md-6 col-lg-6" style="min-height: 20px;"> 0 or lower: {{ $summary->min_below0 }} </div>
@@ -97,16 +93,24 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Precipitation (in.)</h4></div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 2px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Precipitation: <?php
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Total Precipitation: <?php
           if($summary->total_precip == 0 AND $summary->precip_grtrtrace > 0){
               echo "Trace";
           } else {
               echo number_format($summary->total_precip, 2);
           }
         ?> </div>
+        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Total Annual Precip to date: {{ $precip_toDate }}</div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 2px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Mean Total: {{ $AVG_PRECIP }} </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Mean Total: {{ $AVG_PRECIP }} </div>
+        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Depart. from Normal: <?php
+            if($precipToDateDepart > 0){
+                echo "+" . $precipToDateDepart;
+            } else {
+                echo $precipToDateDepart;
+            }
+         ?> </div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Depart. from Normal: <?php
@@ -128,38 +132,43 @@
         ?></div>
         <div class="col-xs-7 col-sm-8 col-md-9 col-lg-9" style="min-height: 20px;">Dates: {{ $summary->grts_precip_dates }}</div>
 
-        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Annual Precip to date: {{ $precip_toDate }}</div>
-
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 5px;"></div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;"><h5>Number of Days with: </h5></div>
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 20px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> A trace or more: {{ $summary->precip_grtrtrace }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.01" or greater: {{ $summary->grtr01 }} </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 0.10" or greater: {{ $summary->grtr10 }} </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> A trace or more: {{ $summary->precip_grtrtrace }}</div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> 0.01" or greater: {{ $summary->grtr01 }} </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;"> 0.10" or greater: {{ $summary->grtr10 }} </div>
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 20px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 0.50" or greater: {{ $summary->grtr50 }}  </div>
-        <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6" style="min-height: 20px;"> 1.00" or greater: {{ $summary->grtr100 }}  </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> 0.50" or greater: {{ $summary->grtr50 }}  </div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="min-height: 20px;"> 1.00" or greater: {{ $summary->grtr100 }}  </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 10px; min-height: 5px; border-top: 1px solid grey;"></div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Snowfall (in.)</h4></div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Total Snowfall: <?php
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Total Snowfall: <?php
           if($summary->total_sf == 0 AND $summary->sf_grtrtrace > 0){
             echo "Trace";
           } else {
             echo number_format($summary->total_sf, 1);
           }
          ?> </div>
+         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Total Seasonal Snowfall to date: {{ $snowfall_toDate }}</div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
-        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Mean Total: {{ $AVG_SNFL }} </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Mean Total: {{ $AVG_SNFL }} </div>
+          <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Depart. from Normal: <?php
+              if($snowfallToDateDepart > 0){
+                  echo "+" . $snowfallToDateDepart;
+              } else {
+                  echo $snowfallToDateDepart;
+              }
+              ?> </div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Departure from Normal: <?php
@@ -200,14 +209,14 @@
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" style="min-height: 20px;"> <b>Snowfall: </b></div>
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 20px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> A trace or more: {{ $summary->sf_grtrtrace }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 1.0" or greater: {{ $summary->sf_grtr1 }} </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 3.0" or greater: {{ $summary->sf_grtr3 }} </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> A trace or more: {{ $summary->sf_grtrtrace }}</div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> 1.0" or greater: {{ $summary->sf_grtr1 }} </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;"> 3.0" or greater: {{ $summary->sf_grtr3 }} </div>
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 20px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 6.0" or greater: {{ $summary->sf_grtr6 }}  </div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 12.0" or greater: {{ $summary->sf_grtr12 }}  </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 18.0" or greater: {{ $summary->sf_grtr18 }}  </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> 6.0" or greater: {{ $summary->sf_grtr6 }}  </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> 12.0" or greater: {{ $summary->sf_grtr12 }}  </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;"> 18.0" or greater: {{ $summary->sf_grtr18 }}  </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 10px"></div>
 
@@ -215,16 +224,17 @@
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" style="min-height: 20px;"> <b>Snow Depth: </b></div>
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 20px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> A trace or more: {{ $summary->sd_grtrtrace }}</div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 1" or greater: {{ $summary->sd_grtr1 }} </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-6" style="min-height: 20px;"> 3" or greater: {{ $summary->sd_grtr3 }} </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> A trace or more: {{ $summary->sd_grtrtrace }}</div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> 1" or greater: {{ $summary->sd_grtr1 }} </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;"> 3" or greater: {{ $summary->sd_grtr3 }} </div>
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="min-height: 20px"></div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 6" or greater: {{ $summary->sd_grtr6 }}  </div>
-        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2" style="min-height: 20px;"> 12" or greater: {{ $summary->sd_grtr12 }}  </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> 6" or greater: {{ $summary->sd_grtr6 }}  </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="min-height: 20px;"> 12" or greater: {{ $summary->sd_grtr12 }}  </div>
         <div class="col-xs-3 col-sm-3 col-md-4 col-lg-4" style="min-height: 20px;"> 18" or greater: {{ $summary->sd_grtr18 }}  </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 8px; min-height: 10px; border-top: 1px solid grey;"></div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 8px; min-height: 20px;"></div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 8px; min-height: 10px; border-top: 1px solid grey;"></div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="min-height: 20px; margin-top: 5px;"><h4>Remarks</h4></div>
 

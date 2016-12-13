@@ -29,9 +29,9 @@ Route::get('/normals',                                ['as' => 'normals', 'uses'
 /*
  * Summaries
  * */
- Route::get('/summaries/monthly/submit',              ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@showMonthlySubmit','index'=>false]);
- Route::post('/summaries/monthly/submit',             ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@calcMonthly','index'=>false]);
- Route::post('/summaries/submit/HandleFile',          ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);
+Route::get('/summaries/monthly/submit',               ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@showMonthlySubmit','index'=>false]);
+Route::post('/summaries/monthly/submit',              ['as' => 'summaries.monthly.submit', 'uses'=>'SummaryController@calcMonthly','index'=>false]);
+Route::post('/summaries/submit/HandleFile',           ['as' => 'summaries.submit.handleFile', 'uses'=>'SummaryController@handleFile','index'=>false]);
 
 Route::get('/summaries/monthly',                      ['as' => 'summaries.monthly.home', 'uses'=>'SummaryController@showMonthlyHome','index'=>true]);
 Route::get('/summaries/monthly/{year}/{month}',       ['as' => 'summaries.monthly.view', 'uses'=>'SummaryController@showMonthlySummary','index'=>true]);
@@ -44,6 +44,7 @@ Route::post('/summaries/monthly/{year}/{month}/editRemarks',   ['as' => 'summari
 Route::get('/summaries/annual',                       ['as' => 'summaries.annual.home', 'uses'=>'SummaryController@showAnnualHome','index'=>true]);
 Route::get('/summaries/annual/{year}',                ['as' => 'summaries.annual.view', 'uses'=>'SummaryController@showAnnualSummary','index'=>true]);
 Route::get('/summaries/annual/{year}/text',           ['as' => 'summaries.annual.text',  'uses'=>'SummaryController@showTextAnnualSummary','index'=>true]);
+Route::get('/summaries/annual/{year}/table',          ['as' => 'summaries.annual.table',  'uses'=>'SummaryController@showTableAnnualSummary','index'=>true]);
 Route::get('/summaries/annual/{year}/html',           ['as' => 'summaries.annual.html', 'uses'=>'SummaryController@downloadAnnualHTML','index'=>false]);
 Route::get('/summaries/annual/{year}/pdf',            ['as' => 'summaries.annual.pdf',  'uses'=>'SummaryController@downloadAnnualPDF','index'=>false]);
 
@@ -57,6 +58,8 @@ Route::post('/summaries/peakfoliage/submit',          ['as' => 'summaries.peakfo
 Route::get('/summaries/sunsetlake',                   ['as' => 'summaries.sunsetlake.view', 'uses'=>'SummaryController@showSunsetLakeView','index'=>true]);
 Route::get('/summaries/sunsetlake/submit',            ['as' => 'summaries.sunsetlake.submit', 'uses'=>'SummaryController@showSunsetLakeSubmit','index'=>false]);
 Route::post('/summaries/sunsetlake/submit',           ['as' => 'summaries.sunsetlake.submit', 'uses'=>'SummaryController@submitIceInIceOut','index'=>false]);
+
+Route::get('/summaries/precip',                       ['as' => 'summaries.precip.view', 'uses'=>'SummaryController@showPrecipView','index'=>true]);
 
 /*
  * Events
