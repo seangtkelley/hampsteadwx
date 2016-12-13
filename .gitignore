@@ -2,3 +2,5 @@ vendor/
 Homestead.yaml
 .env
 *.gitignore~
+.idea/
+public/storage/csv

@@ -205,8 +205,8 @@
         hAxis: {
           title: 'Month'
         },
-        legend: 'none',
         seriesType: 'bars',
+        legend: 'none',
         series: [
           {color: 'rgb(48,63,159)', visibleInLegend: true},
         ],
