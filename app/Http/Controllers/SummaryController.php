@@ -95,13 +95,13 @@ class SummaryController extends Controller
                 $total_precip = 0;
                 $total_sf = 0;
                 $grts_precip = 0;
-                $grts_precip_dates = "";
+                $grts_precip_dates = array();
                 $GPI = 0;
                 $grts_SF = 0;
-                $grts_SF_dates = "";
+                $grts_SF_dates = array();
                 $GSFI = 0;
                 $grts_SD = 0;
-                $grts_SD_dates = "";
+                $grts_SD_dates = array();
                 $GSDI = 0;
                 $grtr01 = 0;
                 $grtr10 = 0;
