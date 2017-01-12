@@ -66,9 +66,9 @@
           $depart_temp_avg = $summary->avg - $AVG_TEMP;
           $depart_temp_avg = round($depart_temp_avg, 1);
           if($depart_temp_avg > 0){
-              echo "+" . $summary->depart_temp_avg;
+              echo "+" . number_format($summary->depart_temp_avg, 1);
           } else {
-              echo $summary->depart_temp_avg;
+              echo number_format($summary->depart_temp_avg, 1);
           }
         ?></div>
 
@@ -158,7 +158,13 @@
             echo number_format($summary->total_sf, 1);
           }
          ?> </div>
-         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Total Seasonal Snowfall to date: {{ $snowfall_toDate }}</div>
+         <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Total Seasonal Snowfall to date: <?php
+             if($snowfall_toDate == 0 && $summary->total_sf == 0 && $summary->sf_grtrtrace > 0){
+                 echo "Trace";
+             } else {
+                 echo number_format($snowfall_toDate, 1);
+             }
+             ?></div>
 
         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="min-height: 20px"></div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Mean Total: {{ $AVG_SNFL }} </div>

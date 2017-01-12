@@ -997,44 +997,52 @@ class SummaryController extends Controller
         $AVG_SNFL = $avg_snfl_array[$month - 1];
 
         // find precip to date and departure from normal
-        $allSummaries = \App\MonthlyObs::where('year', $year)->get();
+        $allSummaries = \App\MonthlyObs::where('year', $year)->orderBy('month', 'asc')->get();
         $precip_toDate = 0;
-        foreach ($allSummaries as $result) {
-            $precip_toDate += $result->total_precip;
-        }
         $normalPrecipToDate = 0;
         foreach ($allSummaries as $result) {
+            $precip_toDate += $result->total_precip;
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
+            if ($result->month >= intval($month)) {
+                break;
+            }
         }
         $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
 
+
         // find snowfall to date and departure from normal
         $ssMonths = [10, 11, 12, 1, 2, 3, 4];
-        $snowfall_toDate = 0;
-        $normalSnowfallToDate = 0;
-        if (intval($month) > 6 && intval($month) <= 12) {
-            $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
-        } else if ($month >= 1 && $month <= 6) {
-            $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
-        }
-        $stopMonth = $month;
-        if(intval($month) > 6 && intval($month) < 10){
-            $stopMonth = 9;
-        } else if(intval($month) > 6 && intval($month) <= 12){
-            $stopMonth = 5;
-        }
-        foreach($ssMonths as $ssMonth){
-            if($ssMonth == $stopMonth+1) {
-                break;
+        if(in_array(intval($month), $ssMonths)){
+            $snowfall_toDate = 0;
+            $normalSnowfallToDate = 0;
+            if (in_array(intval($month), array(10, 11, 12))) {
+                $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
             } else {
-                $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
-                $monthNameSm = strtolower(substr($month_name, 0, 3));
-
-                $snowfall_toDate += $ssObject->$monthNameSm;
-                $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+                $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
             }
+            foreach($ssMonths as $ssMonth){
+                if($ssMonth == intval($month)+1) {
+                    break;
+                } else {
+                    $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
+                    $monthNameSm = strtolower(substr($month_name, 0, 3));
+
+                    $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+
+                    if(intval($month) == 10 && $summary->total_sf == 0 && $summary->sf_grtrtrace > 0){
+                        $snowfall_toDate = 0;
+                    } else {
+                        $snowfall_toDate += $ssObject->$monthNameSm;
+                    }
+                }
+            }
+            $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
+        } else {
+            $snowfall_toDate = 0;
+            $snowfallToDateDepart = 0;
         }
-        $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
 
         // get all daily obs
         $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
@@ -1087,42 +1095,49 @@ class SummaryController extends Controller
         // find precip to date and departure from normal
         $allSummaries = \App\MonthlyObs::where('year', $year)->get();
         $precip_toDate = 0;
-        foreach ($allSummaries as $result) {
-            $precip_toDate += $result->total_precip;
-        }
         $normalPrecipToDate = 0;
         foreach ($allSummaries as $result) {
+            $precip_toDate += $result->total_precip;
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
+            if ($result->month >= intval($month)) {
+                break;
+            }
         }
         $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
 
+
         // find snowfall to date and departure from normal
         $ssMonths = [10, 11, 12, 1, 2, 3, 4];
-        $snowfall_toDate = 0;
-        $normalSnowfallToDate = 0;
-        if (intval($month) > 6 && intval($month) <= 12) {
-            $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
-        } else if ($month >= 1 && $month <= 6) {
-            $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
-        }
-        $stopMonth = $month;
-        if(intval($month) > 6 && intval($month) < 10){
-            $stopMonth = 9;
-        } else if(intval($month) > 6 && intval($month) <= 12){
-            $stopMonth = 5;
-        }
-        foreach($ssMonths as $ssMonth){
-            if($ssMonth == $stopMonth+1) {
-                break;
+        if(in_array(intval($month), $ssMonths)){
+            $snowfall_toDate = 0;
+            $normalSnowfallToDate = 0;
+            if (in_array(intval($month), array(10, 11, 12))) {
+                $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
             } else {
-                $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
-                $monthNameSm = strtolower(substr($month_name, 0, 3));
-
-                $snowfall_toDate += $ssObject->$monthNameSm;
-                $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+                $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
             }
+            foreach($ssMonths as $ssMonth){
+                if($ssMonth == intval($month)+1) {
+                    break;
+                } else {
+                    $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
+                    $monthNameSm = strtolower(substr($month_name, 0, 3));
+
+                    $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+
+                    if(intval($month) == 10 && $summary->total_sf == 0 && $summary->sf_grtrtrace > 0){
+                        $snowfall_toDate = 0;
+                    } else {
+                        $snowfall_toDate += $ssObject->$monthNameSm;
+                    }
+                }
+            }
+            $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
+        } else {
+            $snowfall_toDate = 0;
+            $snowfallToDateDepart = 0;
         }
-        $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
 
         // get all daily obs
         $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
@@ -1175,42 +1190,49 @@ class SummaryController extends Controller
         // find precip to date and departure from normal
         $allSummaries = \App\MonthlyObs::where('year', $year)->get();
         $precip_toDate = 0;
-        foreach ($allSummaries as $result) {
-            $precip_toDate += $result->total_precip;
-        }
         $normalPrecipToDate = 0;
         foreach ($allSummaries as $result) {
+            $precip_toDate += $result->total_precip;
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
+            if ($result->month >= intval($month)) {
+                break;
+            }
         }
         $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
 
+
         // find snowfall to date and departure from normal
         $ssMonths = [10, 11, 12, 1, 2, 3, 4];
-        $snowfall_toDate = 0;
-        $normalSnowfallToDate = 0;
-        if (intval($month) > 6 && intval($month) <= 12) {
-            $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
-        } else if ($month >= 1 && $month <= 6) {
-            $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
-        }
-        $stopMonth = $month;
-        if(intval($month) > 6 && intval($month) < 10){
-            $stopMonth = 9;
-        } else if(intval($month) > 6 && intval($month) <= 12){
-            $stopMonth = 5;
-        }
-        foreach($ssMonths as $ssMonth){
-            if($ssMonth == $stopMonth+1) {
-                break;
+        if(in_array(intval($month), $ssMonths)){
+            $snowfall_toDate = 0;
+            $normalSnowfallToDate = 0;
+            if (in_array(intval($month), array(10, 11, 12))) {
+                $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
             } else {
-                $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
-                $monthNameSm = strtolower(substr($month_name, 0, 3));
-
-                $snowfall_toDate += $ssObject->$monthNameSm;
-                $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+                $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
             }
+            foreach($ssMonths as $ssMonth){
+                if($ssMonth == intval($month)+1) {
+                    break;
+                } else {
+                    $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
+                    $monthNameSm = strtolower(substr($month_name, 0, 3));
+
+                    $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+
+                    if(intval($month) == 10 && $summary->total_sf == 0 && $summary->sf_grtrtrace > 0){
+                        $snowfall_toDate = 0;
+                    } else {
+                        $snowfall_toDate += $ssObject->$monthNameSm;
+                    }
+                }
+            }
+            $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
+        } else {
+            $snowfall_toDate = 0;
+            $snowfallToDateDepart = 0;
         }
-        $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
 
         // get all daily obs
         $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
@@ -1272,42 +1294,49 @@ class SummaryController extends Controller
         // find precip to date and departure from normal
         $allSummaries = \App\MonthlyObs::where('year', $year)->get();
         $precip_toDate = 0;
-        foreach ($allSummaries as $result) {
-            $precip_toDate += $result->total_precip;
-        }
         $normalPrecipToDate = 0;
         foreach ($allSummaries as $result) {
+            $precip_toDate += $result->total_precip;
             $normalPrecipToDate += $avg_precip_array[$result->month - 1];
+            if ($result->month >= intval($month)) {
+                break;
+            }
         }
         $precipToDateDepart =  $precip_toDate - $normalPrecipToDate;
 
+
         // find snowfall to date and departure from normal
         $ssMonths = [10, 11, 12, 1, 2, 3, 4];
-        $snowfall_toDate = 0;
-        $normalSnowfallToDate = 0;
-        if (intval($month) > 6 && intval($month) <= 12) {
-            $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
-        } else if ($month >= 1 && $month <= 6) {
-            $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
-        }
-        $stopMonth = $month;
-        if(intval($month) > 6 && intval($month) < 10){
-            $stopMonth = 9;
-        } else if(intval($month) > 6 && intval($month) <= 12){
-            $stopMonth = 5;
-        }
-        foreach($ssMonths as $ssMonth){
-            if($ssMonth == $stopMonth+1) {
-                break;
+        if(in_array(intval($month), $ssMonths)){
+            $snowfall_toDate = 0;
+            $normalSnowfallToDate = 0;
+            if (in_array(intval($month), array(10, 11, 12))) {
+                $ssObject = \App\SnowSeason::where('winter', $year . "-" . strval($year + 1))->first();
             } else {
-                $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
-                $monthNameSm = strtolower(substr($month_name, 0, 3));
-
-                $snowfall_toDate += $ssObject->$monthNameSm;
-                $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+                $ssObject = \App\SnowSeason::where('winter', strval($year - 1) . "-" . $year)->first();
             }
+            foreach($ssMonths as $ssMonth){
+                if($ssMonth == intval($month)+1) {
+                    break;
+                } else {
+                    $month_name = date("F", mktime(0, 0, 0, $ssMonth, 10));
+                    $monthNameSm = strtolower(substr($month_name, 0, 3));
+
+                    $normalSnowfallToDate += $avg_snfl_array[$ssMonth - 1];
+
+                    if(intval($month) == 10 && $summary->total_sf == 0 && $summary->sf_grtrtrace > 0){
+                        $snowfall_toDate = 0;
+                    } else {
+                        $snowfall_toDate += $ssObject->$monthNameSm;
+                    }
+                }
+            }
+            $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
+
+        } else {
+            $snowfall_toDate = 0;
+            $snowfallToDateDepart = 0;
         }
-        $snowfallToDateDepart =  $snowfall_toDate - $normalSnowfallToDate;
 
         // get all daily obs
         $dailyObs = \App\DailyObs::where('month', $month)->where('year', $year)->get();
