@@ -54,10 +54,10 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'ec2-54-243-149-147.compute-1.amazonaws.com'),
-            'database'  => env('DB_DATABASE', 'd3l127r1981gu3'),
-            'username'  => env('DB_USERNAME', 'mzteqtmppqhjeq'),
-            'password'  => env('DB_PASSWORD', 'yVixCLKUhLGouMRUjvSJBGkUtt'),
+            'host'      => '',
+            'database'  => '',
+            'username'  => '',
+            'password'  => '',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
@@ -66,10 +66,10 @@ return [
 
         'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => 'ec2-54-243-149-147.compute-1.amazonaws.com',
-            'database' => 'd3l127r1981gu3',
-            'username' => 'mzteqtmppqhjeq',
-            'password' => 'yVixCLKUhLGouMRUjvSJBGkUtt',
+            'host'     => env('DB_HOST', 'localhost'),
+            'database' => env('DB_NAME', 'hampsteadwx'),
+            'username' => env('DB_USER', 'postgres'),
+            'password' => env('DB_PASS', 'postgres'),
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
