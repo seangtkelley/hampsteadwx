@@ -5,3 +5,4 @@ Homestead.yaml
 .idea/
 public/storage/csv
 node_modules/
+bower_components/
