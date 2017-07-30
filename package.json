@@ -3,6 +3,9 @@
   "devDependencies": {
     "gulp": "^3.8.8"
   },
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
+  },
   "dependencies": {
     "laravel-elixir": "^2.0.0",
     "bootstrap-sass": "^3.0.0"
