@@ -1,12 +1,12 @@
 {
-  "name": "keysmash",
-  "version": "0.0.1",
+  "name": "HampsteadWX",
+  "version": "1.0.0",
   "authors": [
-    "(Sean Kelley <sgtkode01@gmail.com>) (Adam Hayward <achayhard1@gmail.com>) (Bernard Suwirjo <bsuwirjo@gmail.com>)"
+    "(Sean Kelley <sgtkode01@gmail.com>)"
   ],
-  "description": "A community for young developers to build, collaborate, and learn together",
-  "license": "MIT",
-  "homepage": "dev.keysmash.org",
+  "description": "This website showcases a wide range of weather data taken since 2003 at the Cooperative Climatological Station in West Hampstead, NH.",
+  "license": "Mozilla Public License 2.0",
+  "homepage": "hampsteadwx.herokuapp.com",
   "ignore": [
     "**/.*",
     "node_modules",

@@ -1,0 +1,35 @@
+{
+  "name": "HampsteadWX",
+  "description": "This website showcases a wide range of weather data taken since 2003 at the Cooperative Climatological Station in West Hampstead, NH.",
+  "repository": "https://github.com/seangtkelley/hampsteadwx",
+  "keywords": ["weather", "data" ],
+  "addons": [ "heroku-postgresql" ],
+  "env": {
+    "DB_NAME": {
+      "required": true
+    },
+    "DB_USER": {
+      "required": true
+    },
+    "DB_PASS": {
+      "required": true
+    },
+    "DB_HOST": {
+      "required": true
+    },
+    "SITE_PASS": {
+      "required": true
+    },
+    "APP_KEY": {
+      "required": true
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
