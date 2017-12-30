@@ -108,7 +108,7 @@
             if($precipToDateDepart > 0){
                 echo "+" . $precipToDateDepart;
             } else {
-                echo $precipToDateDepart;
+                echo number_format($precipToDateDepart, 2);
             }
          ?> </div>
 
@@ -118,7 +118,7 @@
           if($depart_precip_avg > 0){
               echo "+" . $depart_precip_avg;
           } else {
-              echo $depart_precip_avg;
+              echo number_format($depart_precip_avg, 2);
           }
         ?> </div>
 
@@ -170,9 +170,9 @@
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="min-height: 20px;">Mean Total: {{ $AVG_SNFL }} </div>
           <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 20px;">Depart. from Normal: <?php
               if($snowfallToDateDepart > 0){
-                  echo "+" . $snowfallToDateDepart;
+                  echo "+" . number_format($snowfallToDateDepart, 1);
               } else {
-                  echo $snowfallToDateDepart;
+                  echo number_format($snowfallToDateDepart, 1);
               }
               ?> </div>
 
@@ -180,9 +180,9 @@
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" style="min-height: 20px;">Departure from Normal: <?php
           $depart_snfl_avg = $summary->total_sf - $AVG_SNFL;
           if($depart_snfl_avg > 0){
-              echo "+" . $depart_snfl_avg;
+              echo "+" . number_format($depart_snfl_avg, 1);
           } else {
-              echo $depart_snfl_avg;
+              echo number_format($depart_snfl_avg, 1);
           }
         ?> </div>
 
